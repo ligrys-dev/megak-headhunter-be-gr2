@@ -6,7 +6,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
   imports: [
     MailerModule.forRootAsync({
       useFactory: () => ({
-        transport: `smtp://admin:admin1@localhost:2500`,
+        transport: `smtp://admin:admin1@localhost:2500`, //XXX Mailsluper -> in future move to real smtp
         defaults: {
           from: 'noreply@megak.headhunter.com',
         },
