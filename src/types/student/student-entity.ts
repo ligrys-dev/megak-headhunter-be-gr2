@@ -28,16 +28,14 @@ export interface StudentEntity {
   status: StudentStatus;
 }
 
-export interface StudentProfileEntity
-  extends Omit<
-    StudentEntity,
-    | 'courseCompletion'
-    | 'courseEngagement'
-    | 'projectDegree'
-    | 'teamProjectDegree'
-    | 'bonusProjectUrls'
-    | 'status'
-  > {}
+export type StudentProfileEntity = Omit<
+  StudentEntity,
+  | 'courseCompletion'
+  | 'courseEngagement'
+  | 'projectDegree'
+  | 'teamProjectDegree'
+  | 'bonusProjectUrls'
+  | 'status'
+>;
 
-export interface NewStudentEntity
-  extends Omit<StudentEntity, 'id' | 'status'> {}
+export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
