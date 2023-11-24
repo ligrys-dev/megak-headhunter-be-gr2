@@ -1,6 +1,7 @@
 import { StudentStatus, TypeWork, ContractType } from './enums';
 
 export interface StudentEntity {
+  id: string;
   email: string;
   tel: number | null;
   firstName: string;

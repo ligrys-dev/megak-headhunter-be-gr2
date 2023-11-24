@@ -1,5 +1,5 @@
 export enum StudentStatus {
-  available,
-  Conversation,
-  Hired,
+  AVAILABLE,
+  CONVERSATION,
+  HIRED,
 }
