@@ -38,3 +38,6 @@ export interface StudentProfileEntity
     | 'bonusProjectUrls'
     | 'status'
   > {}
+
+export interface NewStudentEntity
+  extends Omit<StudentEntity, 'id' | 'status'> {}

@@ -5,3 +5,5 @@ export interface RecruiterEntity {
   company: string;
   maxReservedStudents: number;
 }
+
+export interface NewRecruiterEntity extends Omit<RecruiterEntity, 'id'> {}
