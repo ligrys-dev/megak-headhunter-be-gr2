@@ -11,15 +11,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class StudentImportController {
   constructor(private readonly studentImportService: StudentImportService) {}
 
-  @Post('/upload/csv')
+  @Post('/upload/')
   @UseInterceptors(FileInterceptor('file'))
   uploadCsvFile(@UploadedFile() file: Express.Multer.File) {
-    return this.studentImportService.parseCsv(file);
-  }
-
-  @Post('/upload/json')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadJsonFile(@UploadedFile() file: Express.Multer.File) {
-    return this.studentImportService.parseJson(file);
+    return this.studentImportService.parseFile(file);
   }
 }
