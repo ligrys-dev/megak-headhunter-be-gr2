@@ -3,7 +3,7 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  async findOne(email: string) {
-    return await User.findOneByOrFail({ email });
+  async findOneByEmail(email: string) {
+    return await User.findOneBy({ email });
   }
 }
