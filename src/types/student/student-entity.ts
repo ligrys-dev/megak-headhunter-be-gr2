@@ -26,3 +26,14 @@ export interface StudentEntity {
   courses: string | null;
   status: StudentStatus;
 }
+
+export interface StudentProfileEntity
+  extends Omit<
+    StudentEntity,
+    | 'courseCompletion'
+    | 'courseEngagement'
+    | 'projectDegree'
+    | 'teamProjectDegree'
+    | 'bonusProjectUrls'
+    | 'status'
+  > {}
