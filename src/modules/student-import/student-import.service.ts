@@ -7,12 +7,13 @@ import { Observable, Observer, firstValueFrom } from 'rxjs';
 export class StudentImportService {
   async parseFile(file: Express.Multer.File): Promise<any[]> {
     //TODO add type
+    const uploadingFile = file.buffer.toString();
 
     if (file.mimetype === 'text/csv') {
       return await firstValueFrom(
         new Observable((observer: Observer<any>) => {
           //TODO add type
-          Papa.parse(file.buffer.toString(), {
+          Papa.parse(uploadingFile, {
             header: true,
             complete: (result) => {
               observer.next(result.data);
@@ -25,7 +26,7 @@ export class StudentImportService {
         }),
       );
     } else if (file.mimetype === 'application/json') {
-      return await JSON.parse(file.buffer.toString());
+      return await JSON.parse(uploadingFile);
     } else {
       throw new InvalidDataFormatException();
     }
