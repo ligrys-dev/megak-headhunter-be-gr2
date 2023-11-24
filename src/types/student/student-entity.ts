@@ -14,6 +14,7 @@ export interface StudentEntity {
   githubUsername: string;
   portfolioUrls: string[];
   projectUrls: string[];
+  bio: string;
   expectedTypeWork: TypeWork;
   targetWorkCity: string;
   expectedContractType: ContractType;
