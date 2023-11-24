@@ -6,4 +6,4 @@ export interface RecruiterEntity {
   maxReservedStudents: number;
 }
 
-export interface NewRecruiterEntity extends Omit<RecruiterEntity, 'id'> {}
+export type NewRecruiterEntity = Omit<RecruiterEntity, 'id'>;
