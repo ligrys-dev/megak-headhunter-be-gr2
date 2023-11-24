@@ -1,17 +1,27 @@
 import { StudentStatus, TypeWork, ContractType } from './enums';
 
-export interface StudentEntity {
+export interface StudentEntity
+  extends StudentInitialEntity,
+    StudentProfileEntity {
+  status: StudentStatus;
+}
+
+export interface StudentInitialEntity {
+  email: string;
+  courseCompletion: number;
+  courseEngagement: number;
+  projectDegree: number;
+  teamProjectDegree: number;
+  bonusProjectUrls: number;
+}
+
+export interface StudentProfileEntity {
   id: string;
   email: string;
   tel: number | null;
   firstName: string;
   lastName: string;
   avatar: string | null;
-  courseCompletion: number;
-  courseEngagement: number;
-  projectDegree: number;
-  teamProjectDegree: number;
-  bonusProjectUrls: number;
   githubUsername: string;
   portfolioUrls: string[];
   projectUrls: string[];
@@ -25,17 +35,6 @@ export interface StudentEntity {
   education: string;
   workExperience: string | null;
   courses: string | null;
-  status: StudentStatus;
 }
-
-export type StudentProfileEntity = Omit<
-  StudentEntity,
-  | 'courseCompletion'
-  | 'courseEngagement'
-  | 'projectDegree'
-  | 'teamProjectDegree'
-  | 'bonusProjectUrls'
-  | 'status'
->;
 
 export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
