@@ -9,19 +9,27 @@ import {
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid') id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ nullable: false }) name: string;
+  @Column({ nullable: false, unique: true })
+  username: string;
 
-  @Column({ nullable: false }) email: string;
+  @Column({ nullable: false, unique: true })
+  email: string;
 
-  @Column({ nullable: false }) role: Role;
+  @Column({ nullable: false })
+  role: Role;
 
-  @Column({ nullable: false }) pwdHash: string;
+  @Column({ nullable: false })
+  pwdHash: string;
 
-  @Column({ default: false, nullable: false }) isActive: boolean;
+  @Column({ default: false, nullable: false })
+  isActive: boolean;
 
-  @Column({ default: () => 'uuid()' }) activationToken: string;
+  @Column({ default: () => 'uuid()' })
+  activationToken: string;
 
-  @CreateDateColumn() createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 }
