@@ -12,13 +12,13 @@ export interface StudentInitialEntity {
   courseEngagement: number;
   projectDegree: number;
   teamProjectDegree: number;
-  bonusProjectUrls: number;
+  bonusProjectUrls: string[];
 }
 
 export interface StudentProfileEntity {
   id: string;
   email: string;
-  tel: number | null;
+  tel: string | null;
   firstName: string;
   lastName: string;
   avatar: string | null;
@@ -32,7 +32,7 @@ export interface StudentProfileEntity {
   expectedSalary: number | null;
   canTakeApprenticeship: boolean;
   monthsOfCommercialExp: number;
-  education: string;
+  education: string | null;
   workExperience: string | null;
   courses: string | null;
 }
