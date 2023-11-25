@@ -37,4 +37,4 @@ export interface StudentProfileEntity {
   courses: string | null;
 }
 
-export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
+export type NewStudentEntity = Omit<StudentProfileEntity, 'id'>;
