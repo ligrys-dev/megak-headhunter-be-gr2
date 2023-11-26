@@ -8,6 +8,8 @@ import { MailModule } from './common/mail/mail.module';
 import { StudentImportModule } from './modules/student-import/student-import.module';
 import { UserModule } from './modules/user/user.module';
 import { CoreModule } from './common/core/core.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -20,6 +22,12 @@ import { CoreModule } from './common/core/core.module';
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
