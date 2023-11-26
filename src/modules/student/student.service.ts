@@ -5,23 +5,25 @@ import { Student } from './entities/student.entity';
 
 @Injectable()
 export class StudentService {
-  findAll() {
+  async findAll() {
     return Student.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
+  async findOne(id: string) {
+    return Student.findOneOrFail({
+      where: { id },
+    });
   }
 
   create(createStudentDto: CreateStudentDto) {
     return 'This action adds a new student';
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
+  update(id: string, updateStudentDto: UpdateStudentDto) {
     return `This action updates a #${id} student`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} student`;
   }
 }
