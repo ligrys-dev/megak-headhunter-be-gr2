@@ -23,7 +23,7 @@ export interface StudentProfileEntity {
   lastName: string;
   avatar: string | null;
   githubUsername: string;
-  portfolioUrls: string[];
+  portfolioUrls: string[] | null;
   projectUrls: string[];
   bio: string;
   expectedTypeWork: TypeWork;

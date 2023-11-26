@@ -1,6 +1,7 @@
 import { ContractType, NewStudentEntity, TypeWork } from 'src/types';
 
 export class CreateStudentDto implements NewStudentEntity {
+  id: string;
   avatar: string | null;
   bio: string;
   bonusProjectUrls: string[];
@@ -24,4 +25,6 @@ export class CreateStudentDto implements NewStudentEntity {
   teamProjectDegree: number;
   tel: string | null;
   workExperience: string | null;
+  status: number;
+  [key: string]: any;
 }
