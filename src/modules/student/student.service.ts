@@ -32,11 +32,15 @@ export class StudentService {
     return newStudent;
   }
 
-  update(id: string, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} student`;
+  async update(
+    id: string,
+    updateStudentDto: UpdateStudentDto,
+  ): Promise<StudentEntity> {
+    const updatingStudent: UpdateStudentDto = await this.findOne(id);
+    Object.keys(updateStudentDto).forEach((prop) => {
+      updatingStudent[prop] = updateStudentDto[prop];
+    });
+    await updatingStudent.save();
+    return updatingStudent;
   }
 }
