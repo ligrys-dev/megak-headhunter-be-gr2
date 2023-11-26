@@ -11,4 +11,6 @@ export interface UserEntity {
   createdAt: Date;
 }
 
-export interface NewUserEntity extends Omit<UserEntity, 'id' | 'createdAt'> {}
+export type NewUserEntity = Omit<UserEntity, 'id' | 'createdAt'>;
+
+export type SaveUserEntity = Omit<UserEntity, 'pwdHash' | 'activationToken'>;
