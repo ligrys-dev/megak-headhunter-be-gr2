@@ -10,6 +10,7 @@ import { UserModule } from './modules/user/user.module';
 import { CoreModule } from './common/core/core.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { RolesGuard } from './common/guards/roles.guard';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+    // { //XXX uncomment to enable JwtAuthGuard globally
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
   ],
 })
 export class AppModule {}
