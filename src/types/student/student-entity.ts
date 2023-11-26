@@ -38,3 +38,7 @@ export interface StudentProfileEntity {
 }
 
 export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
+
+export type ListOfStudentsResponse = StudentEntity[];
+
+export type GetOneStudentResponse = StudentEntity;
