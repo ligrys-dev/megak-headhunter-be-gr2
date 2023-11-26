@@ -7,9 +7,11 @@ import { DatabaseModule } from './common/database/database.module';
 import { MailModule } from './common/mail/mail.module';
 import { StudentImportModule } from './modules/student-import/student-import.module';
 import { UserModule } from './modules/user/user.module';
+import { CoreModule } from './common/core/core.module';
 
 @Module({
   imports: [
+    CoreModule,
     AuthModule,
     DatabaseModule,
     MailModule,
