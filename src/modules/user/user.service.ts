@@ -6,10 +6,14 @@ import { hashPwd } from 'src/utils/handle-pwd';
 import { generateRandomPwd } from 'src/utils/generate-random-pwd';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { MailService } from 'src/common/mail/mail.service';
 
 @Injectable()
 export class UserService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private mailService: MailService,
+  ) {}
 
   async findOneByEmail(email: string) {
     return await User.findOneBy({ email });
@@ -42,6 +46,29 @@ export class UserService {
       return await this.cacheManager.set('users-to-activate', createdUsers);
     } catch (e) {
       throw new Error(e);
+    }
+  }
+
+  async sendActivationMail(users: UserWithRandomPwd[]) {
+    for await (const user of users) {
+      const { email, id, activationToken } = user.newUser;
+      await this.mailService.sendMail(
+        email,
+        'headhunter-app account activation',
+        `<p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
+
+       <a href="http://localhost:3001/user/activate/${id}/${activationToken}">
+       http://localhost:3001/user/activate/${id}/${activationToken}</a>
+        
+        <p>Twoje tymczasowe haslo: <strong>${user.password}</strong></p>
+        
+        <p>Po zalogowaniu sie po raz pierwszy, zalecamy zmiane hasla na bardziej bezpieczne.</p>
+        
+        <p>Dziekujemy za korzystanie z naszej aplikacji!</p>
+        
+        <p>Z powazaniem,</p>
+        MegaK v3 gr2`,
+      );
     }
   }
 }
