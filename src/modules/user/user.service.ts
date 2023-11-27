@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { CreateStudentDto } from './dto/create-user.dto';
 import { Role, UserWithRandomPwd as UserWithRandomPwd } from 'src/types';
@@ -17,6 +22,10 @@ export class UserService {
 
   async findOneByEmail(email: string) {
     return await User.findOneBy({ email });
+  }
+
+  async findOneById(id: string) {
+    return await User.findOneBy({ id });
   }
 
   async createStudents(createStudentDtos: CreateStudentDto[]) {
@@ -70,5 +79,16 @@ export class UserService {
         MegaK v3 gr2`,
       );
     }
+  }
+
+  async activateUser(id: string, activationToken: string) {
+    const user = await this.findOneById(id);
+    if (!user) throw new NotFoundException();
+    if (user.activationToken !== activationToken)
+      throw new ForbiddenException();
+
+    user.isActive = true;
+    user.activationToken = null;
+    return await user.save();
   }
 }
