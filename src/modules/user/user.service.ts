@@ -1,18 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { CreateStudentDto } from './dto/create-user.dto';
-import { Role } from 'src/types';
+import { Role, UserWithRandomPwd as UserWithRandomPwd } from 'src/types';
 import { hashPwd } from 'src/utils/handle-pwd';
 import { generateRandomPwd } from 'src/utils/generate-random-pwd';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class UserService {
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+
   async findOneByEmail(email: string) {
     return await User.findOneBy({ email });
   }
 
   async createStudents(createStudentDtos: CreateStudentDto[]) {
-    const createdUsers: { newUser: User; password: string }[] = [];
+    const createdUsers: UserWithRandomPwd[] = [];
 
     try {
       for (const createStudentDto of createStudentDtos) {
@@ -35,7 +39,7 @@ export class UserService {
         // await student.save()
         console.log(data); // TODO to implement when student entitity will be implemented
       }
-      return createdUsers;
+      return await this.cacheManager.set('users-to-activate', createdUsers);
     } catch (e) {
       throw new Error(e);
     }

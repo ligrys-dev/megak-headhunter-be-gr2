@@ -1,3 +1,4 @@
+import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from './enums';
 
 export interface UserEntity {
@@ -11,3 +12,8 @@ export interface UserEntity {
 }
 
 export type NewUserEntity = Pick<UserEntity, 'email'>;
+
+export interface UserWithRandomPwd {
+  newUser: User;
+  password: string;
+}
