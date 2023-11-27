@@ -38,6 +38,18 @@ export class AuthService {
     return { ok: true };
   }
 
+  async logout(res: Response) {
+    try {
+      res.clearCookie('acceess_token', {
+        secure: false,
+        httpOnly: true,
+      });
+      return res.json({ ok: true });
+    } catch (e) {
+      return res.json({ error: e.message });
+    }
+  }
+
   async validateUser(email: string, pwd: string) {
     const user = await this.userService.findOneByEmail(email);
 

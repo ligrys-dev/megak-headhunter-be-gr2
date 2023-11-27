@@ -16,6 +16,11 @@ export class AuthController {
     return this.authService.login(req.user as SaveUserEntity, res);
   }
 
+  @Post('/logout')
+  logout(@Res() res: Response) {
+    return this.authService.logout(res);
+  }
+
   @UseGuards(JwtAuthGuard) //test
   @Get('/test')
   getUserFromReq(@Req() req: Request) {
