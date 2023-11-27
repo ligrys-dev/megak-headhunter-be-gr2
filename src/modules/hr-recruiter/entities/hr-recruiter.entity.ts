@@ -12,7 +12,7 @@ export class Recruiter extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Matches()
+
     @Column({ 
         unique: true,
         type: 'varchar',
@@ -20,13 +20,24 @@ export class Recruiter extends BaseEntity {
     })
     email: string
 
-    @Column({ nullable: false })
+    @Column({ 
+      nullable: false,
+      type: 'varchar',
+      length: 55,
+    })
     fullname: string;
     
-    @Column({ nullable: false })
+    @Column({ 
+      nullable: false,
+      type: 'varchar',
+      length: 55,
+  })
     company: string;
 
-    @Column({ length: 3})
+    @Column({ 
+      length: 3,
+      type: 'int',
+    })
     maxReservedStudents: number;
 
 }
