@@ -7,7 +7,6 @@ import {
 
 export class CreateStudentDto implements NewStudentEntity {
   id: string;
-  avatar: string | null;
   bio: string;
   bonusProjectUrls: string[];
   canTakeApprenticeship: boolean;

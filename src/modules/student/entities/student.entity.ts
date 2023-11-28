@@ -18,9 +18,6 @@ export class Student extends BaseEntity {
   @Column({ length: 50, nullable: false })
   lastName: string;
 
-  @Column({ nullable: true }) // default length is 255
-  avatar: string | null;
-
   @Column({ length: 39, nullable: false })
   githubUsername: string;
 

@@ -4,7 +4,6 @@ import { ContractType, StudentStatus, TypeWork } from 'src/types';
 
 export class UpdateStudentDto extends PartialType(CreateStudentDto) {
   id: string;
-  avatar: string | null;
   bio: string;
   bonusProjectUrls: string[];
   canTakeApprenticeship: boolean;
