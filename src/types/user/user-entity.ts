@@ -1,8 +1,8 @@
+import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from './enums';
 
 export interface UserEntity {
   id: string;
-  username: string;
   email: string;
   role: Role;
   pwdHash: string;
@@ -11,4 +11,9 @@ export interface UserEntity {
   createdAt: Date;
 }
 
-export interface NewUserEntity extends Omit<UserEntity, 'id' | 'createdAt'> {}
+export type NewUserEntity = Pick<UserEntity, 'email'>;
+
+export interface UserWithRandomPwd {
+  newUser: User;
+  password: string;
+}
