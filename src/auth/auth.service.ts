@@ -24,6 +24,7 @@ export class AuthService {
 
     const payload = {
       role: usr.role,
+      isActive: usr.isActive,
       sub: usr.id,
     };
 
