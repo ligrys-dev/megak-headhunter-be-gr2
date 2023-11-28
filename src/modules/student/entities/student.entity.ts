@@ -33,13 +33,13 @@ export class Student extends BaseEntity {
   @Column({ length: 1500, nullable: false })
   bio: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'enum', enum: TypeWork, nullable: false })
   expectedTypeWork: TypeWork;
 
   @Column({ length: 50, nullable: false })
   targetWorkCity: string;
 
-  @Column({ nullable: false })
+  @Column({ type: 'enum', enum: ContractType, nullable: false })
   expectedContractType: ContractType;
 
   @Column({ type: 'numeric', precision: 10, scale: 2, default: null })
@@ -75,6 +75,6 @@ export class Student extends BaseEntity {
   @Column('simple-array')
   bonusProjectUrls: string[];
 
-  @Column({ default: 0 })
+  @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;
 }

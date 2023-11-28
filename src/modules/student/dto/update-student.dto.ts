@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateStudentDto } from './create-student.dto';
-import { ContractType, TypeWork } from 'src/types';
+import { ContractType, StudentStatus, TypeWork } from 'src/types';
 
 export class UpdateStudentDto extends PartialType(CreateStudentDto) {
   id: string;
@@ -27,6 +27,6 @@ export class UpdateStudentDto extends PartialType(CreateStudentDto) {
   teamProjectDegree: number;
   tel: string | null;
   workExperience: string | null;
-  status: number;
+  status: StudentStatus;
   [key: string]: any;
 }

@@ -1,4 +1,9 @@
-import { ContractType, NewStudentEntity, TypeWork } from 'src/types';
+import {
+  ContractType,
+  NewStudentEntity,
+  StudentStatus,
+  TypeWork,
+} from 'src/types';
 
 export class CreateStudentDto implements NewStudentEntity {
   id: string;
@@ -25,6 +30,6 @@ export class CreateStudentDto implements NewStudentEntity {
   teamProjectDegree: number;
   tel: string | null;
   workExperience: string | null;
-  status: number;
+  status: StudentStatus;
   [key: string]: any;
 }
