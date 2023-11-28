@@ -1,5 +1,14 @@
 import { ContractType, StudentStatus, TypeWork } from 'src/types';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  // JoinColumn,
+  // OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+// import { StudentInitial } from './student-initial.entity';
+// todo relacja
 
 @Entity()
 export class StudentProfile extends BaseEntity {
@@ -56,4 +65,8 @@ export class StudentProfile extends BaseEntity {
 
   @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;
+
+  // @OneToOne(() => StudentInitial, (initial) => initial.email)
+  // @JoinColumn()
+  // initial: StudentInitial;
 }

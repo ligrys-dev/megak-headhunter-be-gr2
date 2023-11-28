@@ -1,7 +1,16 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  // JoinColumn,
+  // OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+// import { StudentProfile } from './student-profile.entity';
+// todo relacja
 
 @Entity()
-export class StudentInitialEntity extends BaseEntity {
+export class StudentInitial extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Column({ nullable: false, unique: true }) // default length is 255
   email: string;
@@ -20,4 +29,8 @@ export class StudentInitialEntity extends BaseEntity {
 
   @Column('simple-array')
   bonusProjectUrls: string[];
+
+  // @OneToOne(() => StudentProfile, (profile) => profile.id)
+  // @JoinColumn()
+  // profile: StudentProfile;
 }
