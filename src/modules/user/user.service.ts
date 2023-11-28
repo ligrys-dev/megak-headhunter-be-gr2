@@ -15,6 +15,7 @@ import { MailService } from 'src/common/mail/mail.service';
 
 @Injectable()
 export class UserService {
+
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private mailService: MailService,

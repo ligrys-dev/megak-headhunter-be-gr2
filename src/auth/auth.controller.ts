@@ -1,7 +1,10 @@
-import { Controller, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from 'src/common/guards/local-auth.guard';
+import { Role, SaveUserEntity } from 'src/types';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 @Controller('/')
 export class AuthController {
@@ -9,7 +12,26 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  login(@Req() req: Request) {
-    return this.authService.login(req.user);
+  login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.authService.login(req.user as SaveUserEntity, res);
+  }
+
+  @Post('/logout')
+  logout(@Res() res: Response) {
+    return this.authService.logout(res);
+  }
+
+  @UseGuards(JwtAuthGuard) //test
+  @Get('/test')
+  getUserFromReq(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard) //test
+  @Roles(Role.ADMIN)
+  @Get('/role')
+  testRole(@Req() req: Request) {
+    return req.user;
+
   }
 }
