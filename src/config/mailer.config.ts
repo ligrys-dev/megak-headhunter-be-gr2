@@ -10,3 +10,24 @@ export const getMailerConfig = () => ({
     },
   },
 });
+
+// import { ConfigService } from '@nestjs/config';
+
+// export const getMailerConfig = (configService: ConfigService) => ({
+//   transport: {
+//     host: configService.get('EMAIL_HOST'),
+//     port: +configService.get('EMAIL_PORT'),
+//     auth: {
+//       user: configService.get('EMAIL_USER'),
+//       pass: configService.get('EMAIL_PASSWORD'),
+//     },
+//   },
+//   defaults: {
+//     from: 'noreply@megak.headhunter.com',
+//   },
+//   template: {
+//     dir: '.',
+//     options: {
+//       strict: true,
+//     },
+//   },
