@@ -1,22 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { getMailerConfig } from 'src/config/mailer.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
-      useFactory: () => ({
-        transport: `smtp://admin:admin1@localhost:2500`, //XXX Mailsluper -> in future move to real smtp
-        defaults: {
-          from: 'noreply@megak.headhunter.com',
-        },
-        template: {
-          dir: '.',
-          options: {
-            strict: true,
-          },
-        },
-      }),
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getMailerConfig,
     }),
   ],
   providers: [MailService],
