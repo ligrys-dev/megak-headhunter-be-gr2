@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
+import { CreateStudentProfileDto } from './dto/create-studentProfile.dto';
+import { UpdateStudentProfileDto } from './dto/update-studentProfile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
 import {
   GetOneStudentResponse,
@@ -21,8 +21,10 @@ export class StudentService {
     });
   }
 
-  async create(createStudentDto: CreateStudentDto): Promise<StudentEntity> {
-    const newStudent: CreateStudentDto = new StudentProfile();
+  async create(
+    createStudentDto: CreateStudentProfileDto,
+  ): Promise<StudentEntity> {
+    const newStudent: CreateStudentProfileDto = new StudentProfile();
     newStudent.id = uuid();
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
@@ -34,9 +36,9 @@ export class StudentService {
 
   async update(
     id: string,
-    updateStudentDto: UpdateStudentDto,
-  ): Promise<StudentEntity> {
-    const updatingStudent: UpdateStudentDto = await this.findOne(id);
+    updateStudentDto: UpdateStudentProfileDto,
+  ): Promise<UpdateStudentProfileDto> {
+    const updatingStudent: UpdateStudentProfileDto = await this.findOne(id);
     Object.keys(updateStudentDto).forEach((prop) => {
       updatingStudent[prop] = updateStudentDto[prop];
     });
