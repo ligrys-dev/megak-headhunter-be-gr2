@@ -4,6 +4,12 @@ export interface StudentEntity
   extends StudentInitialEntity,
     StudentProfileEntity {}
 
+export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
+
+export type ListOfStudentsResponse = StudentEntity[];
+
+export type GetOneStudentResponse = StudentEntity;
+
 export interface StudentInitialEntity {
   email: string;
   courseCompletion: number;
@@ -15,7 +21,6 @@ export interface StudentInitialEntity {
 
 export interface StudentProfileEntity {
   id: string;
-  email: string;
   tel: string | null;
   firstName: string;
   lastName: string;
@@ -35,8 +40,6 @@ export interface StudentProfileEntity {
   status: StudentStatus;
 }
 
-export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
+export type ListOfStudentProfilesResponse = StudentProfileEntity[];
 
-export type ListOfStudentsResponse = StudentEntity[];
-
-export type GetOneStudentResponse = StudentEntity;
+export type GetOneStudentProfileResponse = StudentProfileEntity;

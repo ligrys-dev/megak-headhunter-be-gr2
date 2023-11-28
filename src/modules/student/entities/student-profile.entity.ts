@@ -6,9 +6,6 @@ export class StudentProfile extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false, unique: true }) // default length is 255
-  email: string;
-
   @Column({ length: 20, nullable: true })
   tel: string | null;
 
@@ -56,21 +53,6 @@ export class StudentProfile extends BaseEntity {
 
   @Column({ type: 'text', nullable: true })
   courses: string | null;
-
-  @Column({ type: 'decimal', precision: 3, scale: 2, nullable: false })
-  courseCompletion: number;
-
-  @Column({ type: 'decimal', precision: 3, scale: 2, nullable: false })
-  courseEngagement: number;
-
-  @Column({ type: 'decimal', precision: 3, scale: 2, nullable: false })
-  projectDegree: number;
-
-  @Column({ type: 'decimal', precision: 3, scale: 2, nullable: false })
-  teamProjectDegree: number;
-
-  @Column('simple-array')
-  bonusProjectUrls: string[];
 
   @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;

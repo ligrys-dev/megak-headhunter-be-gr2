@@ -3,19 +3,19 @@ import { CreateStudentProfileDto } from './dto/create-studentProfile.dto';
 import { UpdateStudentProfileDto } from './dto/update-studentProfile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
 import {
-  GetOneStudentResponse,
-  ListOfStudentsResponse,
-  StudentEntity,
+  GetOneStudentProfileResponse,
+  ListOfStudentProfilesResponse,
+  StudentProfileEntity,
 } from 'src/types';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class StudentService {
-  async findAll(): Promise<ListOfStudentsResponse> {
+  async findAll(): Promise<ListOfStudentProfilesResponse> {
     return StudentProfile.find();
   }
 
-  async findOne(id: string): Promise<GetOneStudentResponse> {
+  async findOne(id: string): Promise<GetOneStudentProfileResponse> {
     return StudentProfile.findOneOrFail({
       where: { id },
     });
@@ -23,7 +23,7 @@ export class StudentService {
 
   async create(
     createStudentDto: CreateStudentProfileDto,
-  ): Promise<StudentEntity> {
+  ): Promise<StudentProfileEntity> {
     const newStudent: CreateStudentProfileDto = new StudentProfile();
     newStudent.id = uuid();
     Object.keys(createStudentDto).forEach((prop) => {
