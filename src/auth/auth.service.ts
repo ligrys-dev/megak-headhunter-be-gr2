@@ -6,7 +6,7 @@ import {
 import { UserService } from 'src/modules/user/user.service';
 import { comparePwd } from 'src/utils/handle-pwd';
 import { JwtService } from '@nestjs/jwt';
-import { SaveUserEntity } from 'src/types';
+import { SaveUserEntity, UserJwtPayload } from 'src/types';
 import { Response } from 'express';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class AuthService {
       role: usr.role,
       isActive: usr.isActive,
       sub: usr.id,
-    };
+    } as UserJwtPayload;
 
     const accessToken = await this.jwtService.signAsync(payload);
 

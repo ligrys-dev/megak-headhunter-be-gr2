@@ -1,7 +1,7 @@
 import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { JwtPayload } from 'jsonwebtoken';
+import { UserJwtPayload } from 'src/types';
 
 function cookieExtractor(req: any): null | string {
   return req && req.cookies ? req.cookies?.access_token ?? null : null;
@@ -17,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload) {
+  async validate(payload: UserJwtPayload) {
     return {
       userId: payload.sub,
       role: payload.role,
