@@ -2,9 +2,7 @@ import { StudentStatus, TypeWork, ContractType } from './enums';
 
 export interface StudentEntity
   extends StudentInitialEntity,
-    StudentProfileEntity {
-  status: StudentStatus;
-}
+    StudentProfileEntity {}
 
 export interface StudentInitialEntity {
   email: string;
@@ -34,6 +32,7 @@ export interface StudentProfileEntity {
   education: string | null;
   workExperience: string | null;
   courses: string | null;
+  status: StudentStatus;
 }
 
 export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
