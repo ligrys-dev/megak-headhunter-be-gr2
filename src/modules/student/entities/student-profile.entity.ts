@@ -2,7 +2,7 @@ import { ContractType, StudentStatus, TypeWork } from 'src/types';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Student extends BaseEntity {
+export class StudentProfile extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

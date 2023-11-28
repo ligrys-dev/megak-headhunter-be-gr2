@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { Student } from './entities/student.entity';
+import { StudentProfile } from './entities/student-profile.entity';
 import {
   GetOneStudentResponse,
   ListOfStudentsResponse,
@@ -12,17 +12,17 @@ import { v4 as uuid } from 'uuid';
 @Injectable()
 export class StudentService {
   async findAll(): Promise<ListOfStudentsResponse> {
-    return Student.find();
+    return StudentProfile.find();
   }
 
   async findOne(id: string): Promise<GetOneStudentResponse> {
-    return Student.findOneOrFail({
+    return StudentProfile.findOneOrFail({
       where: { id },
     });
   }
 
   async create(createStudentDto: CreateStudentDto): Promise<StudentEntity> {
-    const newStudent: CreateStudentDto = new Student();
+    const newStudent: CreateStudentDto = new StudentProfile();
     newStudent.id = uuid();
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
