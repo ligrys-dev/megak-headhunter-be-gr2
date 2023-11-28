@@ -53,15 +53,13 @@ export class AuthService {
   async validateUser(email: string, pwd: string) {
     const user = await this.userService.findOneByEmail(email);
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    if (!user) throw new NotFoundException('User not found');
+    if (!user.isActive) throw new UnauthorizedException('User not activated');
 
     const isPasswordValid = await comparePwd(pwd, user.pwdHash);
 
-    if (!isPasswordValid) {
+    if (!isPasswordValid)
       throw new UnauthorizedException('Invalid credentials');
-    }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { pwdHash, activationToken, ...result } = user;
