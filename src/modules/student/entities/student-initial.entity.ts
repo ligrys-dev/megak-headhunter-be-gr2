@@ -2,17 +2,16 @@ import {
   BaseEntity,
   Column,
   Entity,
+  PrimaryColumn,
   // JoinColumn,
   // OneToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 // import { StudentProfile } from './student-profile.entity';
 // todo relacja
 
 @Entity()
 export class StudentInitial extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  @Column({ nullable: false, unique: true }) // default length is 255
+  @PrimaryColumn()
   email: string;
 
   @Column({ type: 'decimal', precision: 3, scale: 2, nullable: false })
