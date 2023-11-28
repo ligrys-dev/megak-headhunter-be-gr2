@@ -11,6 +11,7 @@ import { CoreModule } from './common/core/core.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     MailModule,
     StudentImportModule,
     UserModule,
+    CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],

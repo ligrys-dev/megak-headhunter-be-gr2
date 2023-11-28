@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Redirect,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,8 +13,9 @@ export class StudentImportController {
   constructor(private readonly studentImportService: StudentImportService) {}
 
   @Post('/upload/')
+  @Redirect('/user/students')
   @UseInterceptors(FileInterceptor('file'))
-  uploadCsvFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.studentImportService.parseFile(file);
   }
 }

@@ -32,5 +32,6 @@ export class AuthController {
   @Get('/role')
   testRole(@Req() req: Request) {
     return req.user;
+
   }
 }

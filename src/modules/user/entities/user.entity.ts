@@ -29,4 +29,6 @@ export class User extends BaseEntity {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  [key: string]: any;
 }
