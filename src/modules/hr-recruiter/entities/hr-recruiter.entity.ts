@@ -14,7 +14,7 @@ export class Recruiter extends BaseEntity {
   @Column({ nullable: false, length: 55 })
   company: string;
 
-  @Column({ length: 3, type: 'int' })
+  @Column({ type: 'smallint' })
   maxReservedStudents: number;
 
   [key: string]: unknown;

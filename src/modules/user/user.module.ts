@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { MailModule } from 'src/common/mail/mail.module';
 import { UserService } from './user.service';
 import { HrRecruiterModule } from '../hr-recruiter/hr-recruiter.module';
+import { StudentModule } from '../student/student.module';
 
 @Module({
   imports: [

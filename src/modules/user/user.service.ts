@@ -18,6 +18,7 @@ import { Cache } from 'cache-manager';
 import { MailService } from 'src/common/mail/mail.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
+import { StudentService } from '../student/student.service';
 
 @Injectable()
 export class UserService {

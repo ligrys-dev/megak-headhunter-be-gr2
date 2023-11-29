@@ -39,7 +39,6 @@ export class UserController {
   }
 
   @Post('/sendActivationMail')
-
   async sendActivationMail() {
     const users: UserWithRandomPwd[] =
       await this.cacheManager.get('users-to-activate');
