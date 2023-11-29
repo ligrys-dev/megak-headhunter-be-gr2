@@ -18,6 +18,7 @@ export class UserService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private mailService: MailService,
+    // private studentService: StudentService,
   ) {}
 
   async findOneByEmail(email: string) {
@@ -43,12 +44,8 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        // const student = new Student()
-        // for (const [key, value] of Object.entries(createStudentDto)) {
-        //   student[key] = value;
-        // }
-        // await student.save()
-        console.log(createStudentDto); // TODO to implement when student entitity will be implemented
+        // await this.studentService.create(createStudentDto) // TODO to implement when student entitity will be implemented
+        console.log(createStudentDto);
       }
       return await this.cacheManager.set('users-to-activate', createdUsers);
     } catch (e) {
