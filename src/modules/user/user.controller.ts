@@ -23,7 +23,7 @@ export class UserController {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  @Post('/students')
+  @Get('/students')
   @Redirect('/user/sendActivationMail')
   async createStudentUsers() {
     const createStudentDtos: CreateStudentDto[] =
@@ -31,7 +31,7 @@ export class UserController {
     return this.userService.createStudents(createStudentDtos);
   }
 
-  @Post('/sendActivationMail')
+  @Get('/sendActivationMail')
   async sendActivationMail() {
     const users: UserWithRandomPwd[] =
       await this.cacheManager.get('users-to-activate');
