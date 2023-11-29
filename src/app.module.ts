@@ -31,10 +31,11 @@ import { CacheModule } from '@nestjs/cache-manager';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
-    // { //XXX uncomment to enable JwtAuthGuard globally
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      //XXX uncomment to enable JwtAuthGuard globally
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}
