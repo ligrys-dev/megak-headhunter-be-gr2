@@ -6,7 +6,11 @@ import { MailModule } from 'src/common/mail/mail.module';
 import { UserService } from './user.service';
 
 @Module({
-  imports: [MailModule, TypeOrmModule.forFeature([User])],
+  imports: [
+    MailModule,
+    // forwardRef(() => StudentModule),
+    TypeOrmModule.forFeature([User]),
+  ],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],
