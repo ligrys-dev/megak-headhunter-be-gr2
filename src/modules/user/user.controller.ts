@@ -1,9 +1,20 @@
-import { Controller, Get, Inject, Param, Redirect } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Post,
+  Redirect,
+  Req,
+} from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CreateStudentDto } from './dto/create-user.dto';
-import { UserWithRandomPwd } from 'src/types';
+import { UserFromReq, UserWithRandomPwd } from 'src/types';
 import { UserService } from './user.service';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -33,5 +44,15 @@ export class UserController {
     @Param('activationToken') activationToken: string,
   ) {
     return this.userService.activateUser(id, activationToken);
+  }
+
+  @Patch('/change-pass')
+  changePassword(@Req() req: Request, @Body('newPwd') newPwd: string) {
+    return this.userService.changePassword(newPwd, req.user as UserFromReq);
+  }
+
+  @Patch('/reset-pass')
+  resetPassword(@Body('email') email: string) {
+    return this.userService.resetPassword(email);
   }
 }

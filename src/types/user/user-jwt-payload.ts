@@ -5,3 +5,9 @@ export interface UserJwtPayload {
   isActive: boolean;
   role: Role;
 }
+
+export interface UserFromReq {
+  userId: string;
+  isActive: boolean;
+  role: Role;
+}
