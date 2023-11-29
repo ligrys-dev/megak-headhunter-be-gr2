@@ -15,7 +15,6 @@ import { MailService } from 'src/common/mail/mail.service';
 
 @Injectable()
 export class UserService {
-
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private mailService: MailService,
@@ -34,11 +33,10 @@ export class UserService {
 
     try {
       for (const createStudentDto of createStudentDtos) {
-        const { email, ...data } = createStudentDto;
         const password = generateRandomPwd();
 
         const user = new User();
-        user.email = email;
+        user.email = createStudentDto.email;
         user.role = Role.STUDENT;
         user.pwdHash = await hashPwd(password);
         const newUser = await user.save();
@@ -46,12 +44,11 @@ export class UserService {
         createdUsers.push({ newUser, password });
 
         // const student = new Student()
-        // for (const [key, value] of Object.entries(data)) {
+        // for (const [key, value] of Object.entries(createStudentDto)) {
         //   student[key] = value;
         // }
-        // student.email = email
         // await student.save()
-        console.log(data); // TODO to implement when student entitity will be implemented
+        console.log(createStudentDto); // TODO to implement when student entitity will be implemented
       }
       return await this.cacheManager.set('users-to-activate', createdUsers);
     } catch (e) {
