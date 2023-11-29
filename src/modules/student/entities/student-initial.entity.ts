@@ -1,12 +1,4 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  PrimaryColumn,
-  JoinColumn,
-  OneToOne,
-} from 'typeorm';
-import { StudentProfile } from './student-profile.entity';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class StudentInitial extends BaseEntity {
@@ -27,8 +19,4 @@ export class StudentInitial extends BaseEntity {
 
   @Column('simple-array')
   bonusProjectUrls: string[];
-
-  @OneToOne(() => StudentProfile, (profile) => profile.id)
-  @JoinColumn()
-  profile: StudentProfile;
 }
