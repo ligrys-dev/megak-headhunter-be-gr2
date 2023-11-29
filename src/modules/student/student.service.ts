@@ -14,17 +14,30 @@ import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
 
 @Injectable()
 export class StudentService {
-  async findAll(): Promise<ListOfStudentProfilesResponse> {
-    return StudentProfile.find();
+  async findAllInitialProfile() {
+    return StudentInitial.find();
   }
 
-  async findOne(id: string): Promise<GetOneStudentProfileResponse> {
-    return StudentProfile.findOneOrFail({
-      where: { id },
+  async findOneInitialProfile(email: string) {
+    return StudentInitial.findOneOrFail({
+      where: { email },
     });
   }
 
-  async createProfile(
+  async findAllProfiles(): Promise<ListOfStudentProfilesResponse> {
+    return StudentProfile.find({
+      relations: ['initialData'],
+    });
+  }
+
+  async findOneProfile(id: string): Promise<GetOneStudentProfileResponse> {
+    return StudentProfile.findOneOrFail({
+      where: { id },
+      relations: ['initialData'],
+    });
+  }
+
+  async createStudentProfile(
     createStudentDto: CreateStudentProfileDto,
   ): Promise<StudentProfileEntity> {
     const newStudent: CreateStudentProfileDto = new StudentProfile();
@@ -48,11 +61,12 @@ export class StudentService {
     return newInitialProfile;
   }
 
-  async update(
+  async updateStudentProfile(
     id: string,
     updateStudentDto: UpdateStudentProfileDto,
   ): Promise<UpdateStudentProfileDto> {
-    const updatingStudent: UpdateStudentProfileDto = await this.findOne(id);
+    const updatingStudent: UpdateStudentProfileDto =
+      await this.findOneProfile(id);
     Object.keys(updateStudentDto).forEach((prop) => {
       updatingStudent[prop] = updateStudentDto[prop];
     });

@@ -1,14 +1,5 @@
 import { StudentStatus, TypeWork, ContractType } from './enums';
-
-export interface StudentEntity
-  extends StudentInitialEntity,
-    StudentProfileEntity {}
-
-export type NewStudentEntity = Omit<StudentEntity, 'id' | 'status'>;
-
-export type ListOfStudentsResponse = StudentEntity[];
-
-export type GetOneStudentResponse = StudentEntity;
+import { StudentInitial } from '../../modules/student/entities/student-initial.entity';
 
 export interface StudentInitialEntity {
   email: string;
@@ -21,6 +12,7 @@ export interface StudentInitialEntity {
 
 export interface StudentProfileEntity {
   id: string;
+  initialData: StudentInitial;
   tel: string | null;
   firstName: string;
   lastName: string;

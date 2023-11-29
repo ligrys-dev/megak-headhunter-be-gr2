@@ -67,5 +67,5 @@ export class StudentProfile extends BaseEntity {
 
   @OneToOne(() => StudentInitial, (initial) => initial.email)
   @JoinColumn()
-  initial: StudentInitial;
+  initialData: StudentInitial;
 }

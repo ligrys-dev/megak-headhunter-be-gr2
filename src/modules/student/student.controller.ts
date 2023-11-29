@@ -9,30 +9,40 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Get()
-  findAll() {
-    return this.studentService.findAll();
+  findAllProfiles() {
+    return this.studentService.findAllProfiles();
+  }
+
+  @Get('/initial')
+  findAllInitialProfile() {
+    return this.studentService.findAllInitialProfile();
+  }
+
+  @Get('initial/:email')
+  findOneInitialProfile(@Param('email') email: string) {
+    return this.studentService.findOneInitialProfile(email);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.studentService.findOne(id);
+  findOneProfile(@Param('id') id: string) {
+    return this.studentService.findOneProfile(id);
   }
 
   @Post()
   createProfile(@Body() StudentDto: CreateStudentProfileDto) {
-    return this.studentService.createProfile(StudentDto);
+    return this.studentService.createStudentProfile(StudentDto);
   }
 
   @Post('/initial')
-  createInitialProfile(@Body() initialProfile: CreateStudentInitialDto) {
+  initiateProfile(@Body() initialProfile: CreateStudentInitialDto) {
     return this.studentService.createInitialProfile(initialProfile);
   }
 
   @Patch(':id')
-  update(
+  updateProfile(
     @Param('id') id: string,
     @Body() updateStudentDto: UpdateStudentProfileDto,
   ) {
-    return this.studentService.update(id, updateStudentDto);
+    return this.studentService.updateStudentProfile(id, updateStudentDto);
   }
 }
