@@ -6,7 +6,11 @@ import {
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { CreateStudentDto } from './dto/create-user.dto';
-import { Role, UserWithRandomPwd as UserWithRandomPwd } from 'src/types';
+import {
+  Role,
+  UserFromReq,
+  UserWithRandomPwd as UserWithRandomPwd,
+} from 'src/types';
 import { hashPwd } from 'src/utils/handle-pwd';
 import { generateRandomPwd } from 'src/utils/generate-random-pwd';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -15,7 +19,6 @@ import { MailService } from 'src/common/mail/mail.service';
 
 @Injectable()
 export class UserService {
-
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private mailService: MailService,
@@ -80,6 +83,8 @@ export class UserService {
         MegaK v3 gr2`,
       );
     }
+
+    return { ok: true };
   }
 
   async activateUser(id: string, activationToken: string) {
@@ -91,5 +96,34 @@ export class UserService {
     user.isActive = true;
     user.activationToken = null;
     return await user.save();
+  }
+
+  async resetPassword(email: string) {
+    const user = await this.findOneByEmail(email);
+    if (!user) throw new NotFoundException();
+
+    const password = generateRandomPwd();
+    user.pwdHash = await hashPwd(password);
+    await user.save();
+
+    await this.mailService.sendMail(
+      email,
+      'password reset',
+      `
+      <h3>Twoje hasło zostało zresetowane</h3>
+      <p>Nowe hasło: <strong>${password}</strong></p>
+      <p>Zalecamy zmianę hasła na nowe</p>
+    `,
+    );
+
+    return { ok: true };
+  }
+
+  async changePassword(newPwd: string, user: UserFromReq) {
+    const usr = await this.findOneById(user.userId);
+    usr.pwdHash = await hashPwd(newPwd);
+    await usr.save();
+
+    return { ok: true };
   }
 }
