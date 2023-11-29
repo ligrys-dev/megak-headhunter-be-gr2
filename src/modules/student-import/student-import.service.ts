@@ -1,16 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InvalidDataFormatException } from 'src/common/exceptions/invalid-data-format.exception';
 import * as Papa from 'papaparse';
 import { Observable, Observer, firstValueFrom } from 'rxjs';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class StudentImportService {
-  async parseFile(file: Express.Multer.File): Promise<any[]> {
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+
+  async parseFile(file: Express.Multer.File) {
     //TODO add type
     const uploadingFile = file.buffer.toString();
 
     if (file.mimetype === 'text/csv') {
-      return await firstValueFrom(
+      const students = await firstValueFrom(
         new Observable((observer: Observer<any>) => {
           //TODO add type
           Papa.parse(uploadingFile, {
@@ -25,8 +29,11 @@ export class StudentImportService {
           });
         }),
       );
+
+      await this.cacheManager.set('students', students);
     } else if (file.mimetype === 'application/json') {
-      return await JSON.parse(uploadingFile);
+      const students = await JSON.parse(uploadingFile);
+      await this.cacheManager.set('students', students);
     } else {
       throw new InvalidDataFormatException();
     }
