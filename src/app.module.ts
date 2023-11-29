@@ -7,6 +7,7 @@ import { DatabaseModule } from './common/database/database.module';
 import { MailModule } from './common/mail/mail.module';
 import { StudentImportModule } from './modules/student-import/student-import.module';
 import { UserModule } from './modules/user/user.module';
+import { StudentModule } from './modules/student/student.module';
 import { CoreModule } from './common/core/core.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
@@ -21,6 +22,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     MailModule,
     StudentImportModule,
     UserModule,
+    StudentModule,
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({ isGlobal: true }),
   ],

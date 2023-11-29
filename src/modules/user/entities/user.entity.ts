@@ -27,7 +27,7 @@ export class User extends BaseEntity {
   @Column({ default: () => 'uuid()' })
   activationToken: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   [key: string]: any;

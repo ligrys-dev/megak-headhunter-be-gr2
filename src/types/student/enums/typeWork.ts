@@ -1,7 +1,7 @@
 export enum TypeWork {
-  AtLocation,
-  ReadinessToMove,
-  RemotelyOnly,
-  Hybrid,
-  DoesNotMatter,
+  AT_LOCATION,
+  READINESS_TO_MOVE,
+  REMOTE_ONLY,
+  HYBRID,
+  DOES_NOT_MATTER,
 }
