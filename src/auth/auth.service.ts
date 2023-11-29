@@ -41,7 +41,7 @@ export class AuthService {
 
   async logout(res: Response) {
     try {
-      res.clearCookie('acceess_token', {
+      res.clearCookie('access_token', {
         secure: false,
         httpOnly: true,
       });
