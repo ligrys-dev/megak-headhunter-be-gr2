@@ -27,14 +27,8 @@ import { CacheModule } from '@nestjs/cache-manager';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-    // { //XXX uncomment to enable JwtAuthGuard globally
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    { provide: APP_GUARD, useClass: RolesGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}

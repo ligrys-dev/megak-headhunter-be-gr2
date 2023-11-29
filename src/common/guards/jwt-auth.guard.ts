@@ -14,10 +14,18 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   canActivate(context: ExecutionContext) {
+    const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) return true;
+
     const req = context.switchToHttp().getRequest();
     const access_token = req.cookies.access_token;
-    const user: UserJwtPayload = this.jwtService.decode(access_token);
+    if (!access_token) return false;
 
+    const user: UserJwtPayload = this.jwtService.decode(access_token);
     if (!user.isActive) return false;
 
     return super.canActivate(context);
