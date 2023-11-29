@@ -14,6 +14,7 @@ import { Cache } from 'cache-manager';
 import { CreateStudentDto } from './dto/create-user.dto';
 import { UserFromReq, UserWithRandomPwd } from 'src/types';
 import { UserService } from './user.service';
+import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { Request } from 'express';
 
 @Controller('user')
@@ -31,7 +32,14 @@ export class UserController {
     return this.userService.createStudents(createStudentDtos);
   }
 
-  @Get('/sendActivationMail')
+  @Post('/recruiter')
+  @Redirect('/user/sendActivationMail')
+  createRecruiterUser(@Body() createRecruiterDto: CreateHrRecruiterDto) {
+    return this.userService.createRecruiter(createRecruiterDto);
+  }
+
+  @Post('/sendActivationMail')
+
   async sendActivationMail() {
     const users: UserWithRandomPwd[] =
       await this.cacheManager.get('users-to-activate');
