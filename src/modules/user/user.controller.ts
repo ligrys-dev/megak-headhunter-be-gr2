@@ -1,18 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Param,
-  Post,
-  Redirect,
-} from '@nestjs/common';
+import { Controller, Get, Inject, Param, Post, Redirect } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CreateStudentDto } from './dto/create-user.dto';
 import { UserWithRandomPwd } from 'src/types';
 import { UserService } from './user.service';
-import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,12 +18,6 @@ export class UserController {
     const createStudentDtos: CreateStudentDto[] =
       await this.cacheManager.get('students');
     return this.userService.createStudents(createStudentDtos);
-  }
-
-  @Post('/recruiter')
-  @Redirect('/user/sendActivationMail')
-  createRecruiterUser(@Body() createRecruiterDto: CreateHrRecruiterDto) {
-    return this.userService.createRecruiter(createRecruiterDto);
   }
 
   @Post('/sendActivationMail')

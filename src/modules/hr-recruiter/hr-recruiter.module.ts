@@ -8,6 +8,5 @@ import { Recruiter } from './entities/hr-recruiter.entity';
   imports: [TypeOrmModule.forFeature([Recruiter])],
   controllers: [HrRecruiterController],
   providers: [HrRecruiterService],
-  exports: [HrRecruiterService],
 })
 export class HrRecruiterModule {}

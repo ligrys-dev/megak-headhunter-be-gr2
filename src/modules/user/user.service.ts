@@ -12,15 +12,13 @@ import { generateRandomPwd } from 'src/utils/generate-random-pwd';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { MailService } from 'src/common/mail/mail.service';
-import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
-import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
 
 @Injectable()
 export class UserService {
+
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private mailService: MailService,
-    private hrRecruiterService: HrRecruiterService,
   ) {}
 
   async findOneByEmail(email: string) {
@@ -59,23 +57,6 @@ export class UserService {
     } catch (e) {
       throw new Error(e);
     }
-  }
-
-  async createRecruiter(createRecruiterDto: CreateHrRecruiterDto) {
-    const createdUsers: UserWithRandomPwd[] = [];
-
-    const password = generateRandomPwd();
-
-    const newUser = new User();
-    newUser.email = createRecruiterDto.email;
-    newUser.role = Role.HR;
-    newUser.pwdHash = await hashPwd(password);
-    await newUser.save();
-
-    createdUsers.push({ newUser, password });
-    await this.cacheManager.set('users-to-activate', createdUsers);
-
-    return await this.hrRecruiterService.create(createRecruiterDto);
   }
 
   async sendActivationMail(users: UserWithRandomPwd[]) {
