@@ -12,7 +12,7 @@ export interface StudentInitialEntity {
   courseEngagement: number;
   projectDegree: number;
   teamProjectDegree: number;
-  bonusProjectUrls: number;
+  bonusProjectUrls: string[];
 }
 
 export interface StudentProfileEntity {
