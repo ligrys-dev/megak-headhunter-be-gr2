@@ -1,6 +1,0 @@
-export enum ContractType {
-  CONTRACT,
-  POSSIBLE_B2B,
-  MANDATE_CONTRACT,
-  NO_PREFERENCE,
-}
