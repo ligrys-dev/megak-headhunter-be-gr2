@@ -10,6 +10,7 @@ import { HrRecruiterModule } from '../hr-recruiter/hr-recruiter.module';
   imports: [
     MailModule,
     forwardRef(() => HrRecruiterModule),
+    forwardRef(() => StudentModule),
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [UserController],
