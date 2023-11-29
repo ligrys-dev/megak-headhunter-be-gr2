@@ -3,11 +3,10 @@ import {
   Column,
   Entity,
   PrimaryColumn,
-  // JoinColumn,
-  // OneToOne,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
-// import { StudentProfile } from './student-profile.entity';
-// todo relacja
+import { StudentProfile } from './student-profile.entity';
 
 @Entity()
 export class StudentInitial extends BaseEntity {
@@ -29,7 +28,7 @@ export class StudentInitial extends BaseEntity {
   @Column('simple-array')
   bonusProjectUrls: string[];
 
-  // @OneToOne(() => StudentProfile, (profile) => profile.id)
-  // @JoinColumn()
-  // profile: StudentProfile;
+  @OneToOne(() => StudentProfile, (profile) => profile.id)
+  @JoinColumn()
+  profile: StudentProfile;
 }

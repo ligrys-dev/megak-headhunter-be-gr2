@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentProfileDto } from './dto/create-studentProfile.dto';
 import { UpdateStudentProfileDto } from './dto/update-studentProfile.dto';
+import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
 
 @Controller('student')
 export class StudentController {
@@ -18,8 +19,13 @@ export class StudentController {
   }
 
   @Post()
-  create(@Body() createStudentDto: CreateStudentProfileDto) {
-    return this.studentService.create(createStudentDto);
+  createProfile(@Body() StudentDto: CreateStudentProfileDto) {
+    return this.studentService.createProfile(StudentDto);
+  }
+
+  @Post('/initial')
+  createInitialProfile(@Body() initialProfile: CreateStudentInitialDto) {
+    return this.studentService.createInitialProfile(initialProfile);
   }
 
   @Patch(':id')
