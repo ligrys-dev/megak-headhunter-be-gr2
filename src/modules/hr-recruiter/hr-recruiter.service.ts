@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateHrRecruiterDto } from './dto/create-hr-recruiter.dto';
 import { UpdateHrRecruiterDto } from './dto/update-hr-recruiter.dto';
+import { Recruiter } from './entities/hr-recruiter.entity';
 
 @Injectable()
 export class HrRecruiterService {
-  create(createHrRecruiterDto: CreateHrRecruiterDto) {
-    return 'This action adds a new hrRecruiter';
+  async create(createHrRecruiterDto: CreateHrRecruiterDto) {
+    const recruiter = new Recruiter();
+    for (const [key, value] of Object.entries(createHrRecruiterDto)) {
+      recruiter[key] = value;
+    }
+    return await recruiter.save();
   }
 
   findAll() {
@@ -17,6 +22,7 @@ export class HrRecruiterService {
   }
 
   update(id: number, updateHrRecruiterDto: UpdateHrRecruiterDto) {
+    console.log(updateHrRecruiterDto);
     return `This action updates a #${id} hrRecruiter`;
   }
 
