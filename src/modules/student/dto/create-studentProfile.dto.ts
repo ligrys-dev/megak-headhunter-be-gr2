@@ -1,9 +1,13 @@
-import { ContractType, StudentStatus, TypeWork } from 'src/types';
-import { StudentInitial } from '../entities/student-initial.entity';
+import {
+  ContractType,
+  StudentInitialEntity,
+  StudentStatus,
+  TypeWork,
+} from 'src/types';
 
 export class CreateStudentProfileDto {
   id: string;
-  initialData: StudentInitial;
+  initialData: StudentInitialEntity;
   tel: string | null;
   firstName: string;
   lastName: string;
