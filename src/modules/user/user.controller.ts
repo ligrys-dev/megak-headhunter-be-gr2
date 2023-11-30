@@ -11,11 +11,11 @@ import {
 } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { CreateStudentDto } from './dto/create-user.dto';
 import { UserFromReq, UserWithRandomPwd } from 'src/types';
 import { UserService } from './user.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { Request } from 'express';
+import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,7 +27,7 @@ export class UserController {
   @Get('/students')
   @Redirect('/user/sendActivationMail')
   async createStudentUsers() {
-    const createStudentDtos: CreateStudentDto[] =
+    const createStudentDtos: CreateStudentInitialDto[] =
       await this.cacheManager.get('students');
     return this.userService.createStudents(createStudentDtos);
   }
@@ -38,7 +38,7 @@ export class UserController {
     return this.userService.createRecruiter(createRecruiterDto);
   }
 
-  @Post('/sendActivationMail')
+  @Get('/sendActivationMail')
   async sendActivationMail() {
     const users: UserWithRandomPwd[] =
       await this.cacheManager.get('users-to-activate');
