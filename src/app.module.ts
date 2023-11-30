@@ -13,16 +13,18 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { CacheModule } from '@nestjs/cache-manager';
+import { HrRecruiterModule } from './modules/hr-recruiter/hr-recruiter.module';
 
 @Module({
   imports: [
+    UserModule,
+    StudentImportModule,
+    StudentModule,
+    HrRecruiterModule,
     CoreModule,
     AuthModule,
-    DatabaseModule,
     MailModule,
-    StudentImportModule,
-    UserModule,
-    StudentModule,
+    DatabaseModule,
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({ isGlobal: true }),
   ],

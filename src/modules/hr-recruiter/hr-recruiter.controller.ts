@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { HrRecruiterService } from './hr-recruiter.service';
 import { CreateHrRecruiterDto } from './dto/create-hr-recruiter.dto';
 import { UpdateHrRecruiterDto } from './dto/update-hr-recruiter.dto';
@@ -23,7 +31,10 @@ export class HrRecruiterController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHrRecruiterDto: UpdateHrRecruiterDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateHrRecruiterDto: UpdateHrRecruiterDto,
+  ) {
     return this.hrRecruiterService.update(+id, updateHrRecruiterDto);
   }
 

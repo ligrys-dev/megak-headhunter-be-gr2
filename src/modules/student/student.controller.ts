@@ -4,7 +4,7 @@ import { CreateStudentProfileDto } from './dto/create-studentProfile.dto';
 import { UpdateStudentProfileDto } from './dto/update-studentProfile.dto';
 import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
 
-@Controller('student')
+@Controller('/student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
@@ -18,12 +18,12 @@ export class StudentController {
     return this.studentService.findAllInitialProfile();
   }
 
-  @Get('initial/:email')
+  @Get('/initial/:email')
   findOneInitialProfile(@Param('email') email: string) {
     return this.studentService.findOneInitialProfile(email);
   }
 
-  @Get(':id')
+  @Get('/:id')
   findOneProfile(@Param('id') id: string) {
     return this.studentService.findOneProfile(id);
   }
@@ -38,7 +38,7 @@ export class StudentController {
     return this.studentService.createInitialProfile(initialProfile);
   }
 
-  @Patch(':id')
+  @Patch('/:id')
   updateProfile(
     @Param('id') id: string,
     @Body() updateStudentDto: UpdateStudentProfileDto,

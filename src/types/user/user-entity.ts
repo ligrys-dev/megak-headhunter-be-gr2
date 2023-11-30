@@ -11,7 +11,6 @@ export interface UserEntity {
   createdAt: Date;
 }
 
-
 export type SaveUserEntity = Omit<UserEntity, 'pwdHash' | 'activationToken'>;
 export type NewUserEntity = Pick<UserEntity, 'email'>;
 
