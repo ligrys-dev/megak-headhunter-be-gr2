@@ -9,7 +9,7 @@ export class Recruiter extends BaseEntity {
   email: string;
 
   @Column({ nullable: false, length: 55 })
-  fullname: string;
+  fullName: string;
 
   @Column({ nullable: false, length: 55 })
   company: string;
