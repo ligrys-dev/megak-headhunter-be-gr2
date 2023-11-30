@@ -1,4 +1,3 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { HrRecruiterService } from './hr-recruiter.service';
 import { CreateHrRecruiterDto } from './dto/create-hr-recruiter.dto';
 

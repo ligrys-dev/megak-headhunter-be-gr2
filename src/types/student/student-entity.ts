@@ -1,5 +1,4 @@
 import { StudentStatus, TypeWork, ContractType } from './enums';
-import { StudentInitial } from '../../modules/student/entities/student-initial.entity';
 
 export interface StudentInitialEntity {
   email: string;
@@ -12,7 +11,7 @@ export interface StudentInitialEntity {
 
 export interface StudentProfileEntity {
   id: string;
-  initialData: StudentInitial;
+  initialData: StudentInitialEntity | null;
   tel: string | null;
   firstName: string;
   lastName: string;

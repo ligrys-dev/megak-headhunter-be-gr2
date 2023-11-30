@@ -8,8 +8,8 @@ import {
   ListOfStudentProfilesResponse,
   StudentInitialEntity,
   StudentProfileEntity,
+  StudentStatus,
 } from 'src/types';
-import { v4 as uuid } from 'uuid';
 import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
 
 @Injectable()
@@ -41,11 +41,12 @@ export class StudentService {
     createStudentDto: CreateStudentProfileDto,
   ): Promise<StudentProfileEntity> {
     const newStudent: CreateStudentProfileDto = new StudentProfile();
-    newStudent.id = uuid();
+
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
     });
-    newStudent.status = 0;
+    newStudent.status = StudentStatus.AVAILABLE;
+
     await newStudent.save();
     return newStudent;
   }
@@ -54,9 +55,11 @@ export class StudentService {
     initialProfile: CreateStudentInitialDto,
   ): Promise<StudentInitialEntity> {
     const newInitialProfile: CreateStudentInitialDto = new StudentInitial();
+
     Object.keys(initialProfile).forEach((prop) => {
       newInitialProfile[prop] = initialProfile[prop];
     });
+
     await newInitialProfile.save();
     return newInitialProfile;
   }
@@ -67,9 +70,11 @@ export class StudentService {
   ): Promise<UpdateStudentProfileDto> {
     const updatingStudent: UpdateStudentProfileDto =
       await this.findOneProfile(id);
+
     Object.keys(updateStudentDto).forEach((prop) => {
       updatingStudent[prop] = updateStudentDto[prop];
     });
+
     await updatingStudent.save();
     return updatingStudent;
   }

@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import { CreateStudentDto } from './dto/create-user.dto';
 import {
   Role,
   UserFromReq,
@@ -18,6 +17,8 @@ import { Cache } from 'cache-manager';
 import { MailService } from 'src/common/mail/mail.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
+import { StudentService } from '../student/student.service';
+import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
 
 @Injectable()
 export class UserService {
@@ -36,18 +37,18 @@ export class UserService {
     return await User.findOneBy({ id });
   }
 
-  async createStudents(createStudentDtos: CreateStudentDto[]) {
+  async createStudents(createStudentDtos: CreateStudentInitialDto[]) {
     const createdUsers: UserWithRandomPwd[] = [];
 
     try {
       for (const createStudentDto of createStudentDtos) {
         const password = generateRandomPwd();
 
-        const user = new User();
-        user.email = createStudentDto.email;
-        user.role = Role.STUDENT;
-        user.pwdHash = await hashPwd(password);
-        const newUser = await user.save();
+        const newUser = new User();
+        newUser.email = createStudentDto.email;
+        newUser.role = Role.STUDENT;
+        newUser.pwdHash = await hashPwd(password);
+        await newUser.save();
 
         createdUsers.push({ newUser, password });
 
@@ -84,16 +85,11 @@ export class UserService {
         email,
         'headhunter-app account activation',
         `<p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
-
-       <a href="http://localhost:3001/user/activate/${id}/${activationToken}">
-       http://localhost:3001/user/activate/${id}/${activationToken}</a>
-        
+        <a href="http://localhost:3001/user/activate/${id}/${activationToken}">
+          http://localhost:3001/user/activate/${id}/${activationToken}</a>
         <p>Twoje tymczasowe haslo: <strong>${user.password}</strong></p>
-        
         <p>Po zalogowaniu sie po raz pierwszy, zalecamy zmiane hasla na bardziej bezpieczne.</p>
-        
         <p>Dziekujemy za korzystanie z naszej aplikacji!</p>
-        
         <p>Z powazaniem,</p>
         MegaK v3 gr2`,
       );
