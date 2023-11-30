@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateHrRecruiterDto } from './dto/create-hr-recruiter.dto';
-import { UpdateHrRecruiterDto } from './dto/update-hr-recruiter.dto';
 import { Recruiter } from './entities/hr-recruiter.entity';
 
 @Injectable()
@@ -13,20 +12,11 @@ export class HrRecruiterService {
     return await recruiter.save();
   }
 
-  findAll() {
-    return `This action returns all hrRecruiter`;
+  async findAll() {
+    return await Recruiter.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hrRecruiter`;
-  }
-
-  update(id: number, updateHrRecruiterDto: UpdateHrRecruiterDto) {
-    console.log(updateHrRecruiterDto);
-    return `This action updates a #${id} hrRecruiter`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} hrRecruiter`;
+  async findOne(id: string) {
+    return await Recruiter.findOneByOrFail({ id });
   }
 }
