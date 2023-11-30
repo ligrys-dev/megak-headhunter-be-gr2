@@ -12,7 +12,7 @@ export interface StudentInitialEntity {
 
 export interface StudentProfileEntity {
   id: string;
-  initialData: StudentInitial;
+  initialData: StudentInitial | null;
   tel: string | null;
   firstName: string;
   lastName: string;
