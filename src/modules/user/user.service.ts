@@ -52,8 +52,7 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        // await this.studentService.create(createStudentDto) // TODO to implement when student entitity will be implemented
-        console.log(createStudentDto);
+        await this.studentService.createInitialProfile(createStudentDto);
       }
       return await this.cacheManager.set('users-to-activate', createdUsers);
     } catch (e) {

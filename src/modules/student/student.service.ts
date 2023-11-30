@@ -11,6 +11,7 @@ import {
   StudentStatus,
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class StudentService {
@@ -54,6 +55,10 @@ export class StudentService {
   async createInitialProfile(
     initialProfile: CreateStudentInitialDto,
   ): Promise<StudentInitialEntity> {
+    const errors = await validate(initialProfile);
+
+    if (errors.length > 0) console.error('validation failed. errors: ', errors);
+
     const newInitialProfile: CreateStudentInitialDto = new StudentInitial();
 
     Object.keys(initialProfile).forEach((prop) => {
