@@ -11,7 +11,7 @@ import { StudentModule } from './modules/student/student.module';
 import { CoreModule } from './common/core/core.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
-// import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { CacheModule } from '@nestjs/cache-manager';
 import { HrRecruiterModule } from './modules/hr-recruiter/hr-recruiter.module';
 
@@ -32,7 +32,7 @@ import { HrRecruiterModule } from './modules/hr-recruiter/hr-recruiter.module';
   providers: [
     AppService,
     { provide: APP_GUARD, useClass: RolesGuard },
-    // { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}
