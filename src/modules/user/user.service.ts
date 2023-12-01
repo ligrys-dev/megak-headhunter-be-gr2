@@ -1,7 +1,6 @@
 import {
   ForbiddenException,
   HttpException,
-  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -43,15 +42,31 @@ export class UserService {
 
   async createStudents(createStudentDtos: CreateStudentInitialDto[]) {
     const createdUsers: UserWithRandomPwd[] = [];
+    const successfulEmails: string[] = [];
+    const failedEmails: { email: string; errorDetails: string[] }[] = [];
 
     try {
       for (const createStudentDto of createStudentDtos) {
-        await this.validateStudentInital(createStudentDto);
+        const validation = await this.validateStudentInital(createStudentDto);
 
-        const password = generateRandomPwd();
+        if (!validation.isValid) {
+          failedEmails.push({
+            email: createStudentDto.email,
+            errorDetails: validation.errorDetails,
+          });
+          continue;
+        }
 
         const isExisted = await this.findOneByEmail(createStudentDto.email);
-        if (isExisted) continue;
+        if (isExisted) {
+          failedEmails.push({
+            email: createStudentDto.email,
+            errorDetails: ['User already exists.'],
+          });
+          continue;
+        }
+
+        const password = generateRandomPwd();
 
         const newUser = new User();
         newUser.email = createStudentDto.email;
@@ -62,8 +77,17 @@ export class UserService {
         createdUsers.push({ newUser, password });
 
         await this.studentService.createInitialProfile(createStudentDto);
+
+        successfulEmails.push(createStudentDto.email);
       }
-      return await this.cacheManager.set('users-to-activate', createdUsers);
+      await this.cacheManager.set('users-to-activate', createdUsers);
+
+      console.error(failedEmails);
+
+      return {
+        successfulEmails,
+        failedEmails,
+      };
     } catch (e) {
       if (e instanceof HttpException) throw e;
       throw new Error(e);
@@ -158,16 +182,14 @@ export class UserService {
         return constraints;
       });
 
-      throw new HttpException(
-        {
-          message: errorDetails,
-          error: 'Bad Request',
-          statusCode: HttpStatus.BAD_REQUEST,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      return {
+        isValid: false,
+        errorDetails,
+      };
     }
 
-    return 'Validation successful';
+    return {
+      isValid: true,
+    };
   }
 }
