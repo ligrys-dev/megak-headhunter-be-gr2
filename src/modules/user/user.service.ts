@@ -1,5 +1,7 @@
 import {
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -19,6 +21,8 @@ import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dt
 import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
 import { StudentService } from '../student/student.service';
 import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
+import { validate } from 'class-validator';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -42,6 +46,8 @@ export class UserService {
 
     try {
       for (const createStudentDto of createStudentDtos) {
+        await this.validateStudentInital(createStudentDto);
+
         const password = generateRandomPwd();
 
         const newUser = new User();
@@ -56,6 +62,7 @@ export class UserService {
       }
       return await this.cacheManager.set('users-to-activate', createdUsers);
     } catch (e) {
+      if (e instanceof HttpException) throw e;
       throw new Error(e);
     }
   }
@@ -135,5 +142,29 @@ export class UserService {
     await usr.save();
 
     return { ok: true };
+  }
+
+  async validateStudentInital(createStudentDto: CreateStudentInitialDto) {
+    const student = plainToClass(CreateStudentInitialDto, createStudentDto);
+
+    const errors = await validate(student);
+
+    if (errors.length > 0) {
+      const errorDetails = errors.map((error) => {
+        const constraints = Object.values(error.constraints).join(', ');
+        return constraints;
+      });
+
+      throw new HttpException(
+        {
+          message: errorDetails,
+          error: 'Bad Request',
+          statusCode: HttpStatus.BAD_REQUEST,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return 'Validation successful';
   }
 }
