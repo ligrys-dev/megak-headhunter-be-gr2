@@ -4,6 +4,7 @@ import * as Papa from 'papaparse';
 import { Observable, Observer, firstValueFrom } from 'rxjs';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { StudentInitialEntity } from 'src/types';
 
 @Injectable()
 export class StudentImportService {
@@ -14,7 +15,7 @@ export class StudentImportService {
     const uploadingFile = file.buffer.toString();
 
     if (file.mimetype === 'text/csv') {
-      const students = await firstValueFrom(
+      const students: StudentInitialEntity[] = await firstValueFrom(
         new Observable((observer: Observer<any>) => {
           //TODO add type
           Papa.parse(uploadingFile, {
@@ -32,9 +33,16 @@ export class StudentImportService {
         }),
       );
 
-      console.log(students);
+      const transformedData = students.map((student) => {
+        const bonusProjectUrlsArray = (
+          student.bonusProjectUrls as unknown as string
+        )
+          .split(',')
+          .map((url: string) => url.trim());
+        return { ...student, bonusProjectUrls: bonusProjectUrlsArray };
+      });
 
-      await this.cacheManager.set('students', students);
+      await this.cacheManager.set('students', transformedData);
     } else if (file.mimetype === 'application/json') {
       const students = await JSON.parse(uploadingFile);
       await this.cacheManager.set('students', students);
