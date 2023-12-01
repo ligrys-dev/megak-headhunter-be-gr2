@@ -19,6 +19,8 @@ export class StudentImportService {
           //TODO add type
           Papa.parse(uploadingFile, {
             header: true,
+            skipEmptyLines: true,
+            dynamicTyping: true,
             complete: (result) => {
               observer.next(result.data);
               observer.complete();
@@ -29,6 +31,8 @@ export class StudentImportService {
           });
         }),
       );
+
+      console.log(students);
 
       await this.cacheManager.set('students', students);
     } else if (file.mimetype === 'application/json') {
