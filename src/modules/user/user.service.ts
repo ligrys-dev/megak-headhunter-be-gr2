@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import {
+  FailedEmails,
   Role,
   UserFromReq,
   UserWithRandomPwd as UserWithRandomPwd,
@@ -43,7 +44,7 @@ export class UserService {
   async createStudents(createStudentDtos: CreateStudentInitialDto[]) {
     const createdUsers: UserWithRandomPwd[] = [];
     const successfulEmails: string[] = [];
-    const failedEmails: { email: string; errorDetails: string[] }[] = [];
+    const failedEmails: FailedEmails = [];
 
     try {
       for (const createStudentDto of createStudentDtos) {
@@ -81,8 +82,7 @@ export class UserService {
         successfulEmails.push(createStudentDto.email);
       }
       await this.cacheManager.set('users-to-activate', createdUsers);
-
-      console.error(failedEmails);
+      await this.cacheManager.set('failed-emails', failedEmails);
 
       return {
         successfulEmails,
@@ -111,7 +111,10 @@ export class UserService {
     return await this.hrRecruiterService.create(createRecruiterDto);
   }
 
-  async sendActivationMail(users: UserWithRandomPwd[]) {
+  async sendActivationMail(
+    users: UserWithRandomPwd[],
+    failedEmails: FailedEmails,
+  ) {
     for await (const user of users) {
       const { email, id, activationToken } = user.newUser;
       await this.mailService.sendMail(
@@ -128,7 +131,9 @@ export class UserService {
       );
     }
 
-    return { ok: true };
+    console.error(failedEmails);
+
+    return failedEmails ? { message: failedEmails } : { ok: true };
   }
 
   async activateUser(id: string, activationToken: string) {
