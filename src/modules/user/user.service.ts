@@ -50,6 +50,9 @@ export class UserService {
 
         const password = generateRandomPwd();
 
+        const isExisted = await this.findOneByEmail(createStudentDto.email);
+        if (isExisted) continue;
+
         const newUser = new User();
         newUser.email = createStudentDto.email;
         newUser.role = Role.STUDENT;
