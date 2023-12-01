@@ -54,8 +54,16 @@ export class UserController {
   }
 
   @Patch('/change-pass')
-  changePassword(@Req() req: Request, @Body('newPwd') newPwd: string) {
-    return this.userService.changePassword(newPwd, req.user as UserFromReq);
+  changePassword(
+    @Req() req: Request,
+    @Body('oldPwd') oldPwd: string,
+    @Body('newPwd') newPwd: string,
+  ) {
+    return this.userService.changePassword(
+      oldPwd,
+      newPwd,
+      req.user as UserFromReq,
+    );
   }
 
   @Patch('/reset-pass')

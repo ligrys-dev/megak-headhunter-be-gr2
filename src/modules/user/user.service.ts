@@ -12,7 +12,7 @@ import {
   UserFromReq,
   UserWithRandomPwd as UserWithRandomPwd,
 } from 'src/types';
-import { hashPwd } from 'src/utils/handle-pwd';
+import { comparePwd, hashPwd } from 'src/utils/handle-pwd';
 import { generateRandomPwd } from 'src/utils/generate-random-pwd';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -139,8 +139,12 @@ export class UserService {
     return { ok: true };
   }
 
-  async changePassword(newPwd: string, user: UserFromReq) {
+  async changePassword(oldPwd: string, newPwd: string, user: UserFromReq) {
     const usr = await this.findOneById(user.userId);
+    const isPasswordValid = await comparePwd(oldPwd, usr.pwdHash);
+    if (!isPasswordValid)
+      throw new ForbiddenException('Old password is not valid');
+
     usr.pwdHash = await hashPwd(newPwd);
     await usr.save();
 
