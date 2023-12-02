@@ -1,7 +1,7 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsEmail,
-  IsNotEmpty,
   IsNumber,
   IsUrl,
   Max,
@@ -33,7 +33,7 @@ export class CreateStudentInitialDto {
   teamProjectDegree: number;
 
   @IsArray()
-  @IsNotEmpty()
+  @ArrayNotEmpty()
   @IsUrl({}, { each: true })
   bonusProjectUrls: string[];
 
