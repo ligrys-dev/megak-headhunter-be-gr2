@@ -23,6 +23,7 @@ import { StudentService } from '../student/student.service';
 import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,7 @@ export class UserService {
     private mailService: MailService,
     private hrRecruiterService: HrRecruiterService,
     private studentService: StudentService,
+    private configService: ConfigService,
   ) {}
 
   async findOneByEmail(email: string) {
@@ -115,14 +117,16 @@ export class UserService {
     users: UserWithRandomPwd[],
     failedEmails: FailedEmails,
   ) {
+    const apiPath = this.configService.get('API_PATH');
+
     for await (const user of users) {
       const { email, id, activationToken } = user.newUser;
       await this.mailService.sendMail(
         email,
         'headhunter-app account activation',
         `<p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
-        <a href="http://localhost:3001/user/activate/${id}/${activationToken}">
-          http://localhost:3001/user/activate/${id}/${activationToken}</a>
+        <a href="${apiPath}/user/activate/${id}/${activationToken}">
+          ${apiPath}/user/activate/${id}/${activationToken}</a>
         <p>Twoje tymczasowe haslo: <strong>${user.password}</strong></p>
         <p>Po zalogowaniu sie po raz pierwszy, zalecamy zmiane hasla na bardziej bezpieczne.</p>
         <p>Dziekujemy za korzystanie z naszej aplikacji!</p>
