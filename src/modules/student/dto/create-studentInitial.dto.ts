@@ -3,7 +3,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
-  IsString,
+  IsUrl,
   Max,
   Min,
 } from 'class-validator';
@@ -34,7 +34,7 @@ export class CreateStudentInitialDto {
 
   @IsArray()
   @IsNotEmpty()
-  @IsString({ each: true })
+  @IsUrl({}, { each: true })
   bonusProjectUrls: string[];
 
   [key: string]: any;

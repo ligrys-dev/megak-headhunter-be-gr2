@@ -1,13 +1,13 @@
 import {
   ForbiddenException,
   HttpException,
-  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import {
+  FailedEmails,
   Role,
   UserFromReq,
   UserWithRandomPwd as UserWithRandomPwd,
@@ -23,6 +23,7 @@ import { StudentService } from '../student/student.service';
 import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,7 @@ export class UserService {
     private mailService: MailService,
     private hrRecruiterService: HrRecruiterService,
     private studentService: StudentService,
+    private configService: ConfigService,
   ) {}
 
   async findOneByEmail(email: string) {
@@ -43,15 +45,31 @@ export class UserService {
 
   async createStudents(createStudentDtos: CreateStudentInitialDto[]) {
     const createdUsers: UserWithRandomPwd[] = [];
+    const successfulEmails: string[] = [];
+    const failedEmails: FailedEmails = [];
 
     try {
       for (const createStudentDto of createStudentDtos) {
-        await this.validateStudentInital(createStudentDto);
+        const validation = await this.validateStudentInital(createStudentDto);
 
-        const password = generateRandomPwd();
+        if (!validation.isValid) {
+          failedEmails.push({
+            email: createStudentDto.email,
+            errorDetails: validation.errorDetails,
+          });
+          continue;
+        }
 
         const isExisted = await this.findOneByEmail(createStudentDto.email);
-        if (isExisted) continue;
+        if (isExisted) {
+          failedEmails.push({
+            email: createStudentDto.email,
+            errorDetails: ['User already exists.'],
+          });
+          continue;
+        }
+
+        const password = generateRandomPwd();
 
         const newUser = new User();
         newUser.email = createStudentDto.email;
@@ -62,8 +80,16 @@ export class UserService {
         createdUsers.push({ newUser, password });
 
         await this.studentService.createInitialProfile(createStudentDto);
+
+        successfulEmails.push(createStudentDto.email);
       }
-      return await this.cacheManager.set('users-to-activate', createdUsers);
+      await this.cacheManager.set('users-to-activate', createdUsers);
+      await this.cacheManager.set('failed-emails', failedEmails);
+
+      return {
+        successfulEmails,
+        failedEmails,
+      };
     } catch (e) {
       if (e instanceof HttpException) throw e;
       throw new Error(e);
@@ -87,15 +113,20 @@ export class UserService {
     return await this.hrRecruiterService.create(createRecruiterDto);
   }
 
-  async sendActivationMail(users: UserWithRandomPwd[]) {
+  async sendActivationMail(
+    users: UserWithRandomPwd[],
+    failedEmails: FailedEmails,
+  ) {
+    const appPath = this.configService.get('APP_PATH');
+
     for await (const user of users) {
       const { email, id, activationToken } = user.newUser;
       await this.mailService.sendMail(
         email,
         'headhunter-app account activation',
         `<p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
-        <a href="http://localhost:3001/user/activate/${id}/${activationToken}">
-          http://localhost:3001/user/activate/${id}/${activationToken}</a>
+        <a href="${appPath}/user/activate/${id}/${activationToken}">
+          ${appPath}/user/activate/${id}/${activationToken}</a>
         <p>Twoje tymczasowe haslo: <strong>${user.password}</strong></p>
         <p>Po zalogowaniu sie po raz pierwszy, zalecamy zmiane hasla na bardziej bezpieczne.</p>
         <p>Dziekujemy za korzystanie z naszej aplikacji!</p>
@@ -104,7 +135,9 @@ export class UserService {
       );
     }
 
-    return { ok: true };
+    console.error(failedEmails);
+
+    return failedEmails ? { message: failedEmails } : { ok: true };
   }
 
   async activateUser(id: string, activationToken: string) {
@@ -162,16 +195,14 @@ export class UserService {
         return constraints;
       });
 
-      throw new HttpException(
-        {
-          message: errorDetails,
-          error: 'Bad Request',
-          statusCode: HttpStatus.BAD_REQUEST,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      return {
+        isValid: false,
+        errorDetails,
+      };
     }
 
-    return 'Validation successful';
+    return {
+      isValid: true,
+    };
   }
 }
