@@ -117,7 +117,7 @@ export class UserService {
     users: UserWithRandomPwd[],
     failedEmails: FailedEmails,
   ) {
-    const apiPath = this.configService.get('API_PATH');
+    const appPath = this.configService.get('APP_PATH');
 
     for await (const user of users) {
       const { email, id, activationToken } = user.newUser;
@@ -125,8 +125,8 @@ export class UserService {
         email,
         'headhunter-app account activation',
         `<p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
-        <a href="${apiPath}/user/activate/${id}/${activationToken}">
-          ${apiPath}/user/activate/${id}/${activationToken}</a>
+        <a href="${appPath}/user/activate/${id}/${activationToken}">
+          ${appPath}/user/activate/${id}/${activationToken}</a>
         <p>Twoje tymczasowe haslo: <strong>${user.password}</strong></p>
         <p>Po zalogowaniu sie po raz pierwszy, zalecamy zmiane hasla na bardziej bezpieczne.</p>
         <p>Dziekujemy za korzystanie z naszej aplikacji!</p>
