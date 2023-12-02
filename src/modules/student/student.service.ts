@@ -4,22 +4,24 @@ import { UpdateStudentProfileDto } from './dto/update-studentProfile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
 import { StudentInitial } from './entities/student-initial.entity';
 import {
-  GetOneStudentProfileResponse,
-  ListOfStudentProfilesResponse,
-  StudentInitialEntity,
-  StudentProfileEntity,
   StudentStatus,
+  ListOfStudentInitialResponse,
+  OneStudentInitialResponse,
+  ListOfStudentProfilesResponse,
+  OneStudentProfileResponse,
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
 
 @Injectable()
 export class StudentService {
-  async findAllInitialProfile() {
+  async findAllInitialProfile(): Promise<ListOfStudentInitialResponse> {
     return StudentInitial.find();
   }
 
-  async findOneInitialProfile(email: string) {
+  async findOneInitialProfile(
+    email: string,
+  ): Promise<OneStudentInitialResponse> {
     return StudentInitial.findOneOrFail({
       where: { email },
     });
@@ -31,7 +33,7 @@ export class StudentService {
     });
   }
 
-  async findOneProfile(id: string): Promise<GetOneStudentProfileResponse> {
+  async findOneProfile(id: string): Promise<OneStudentProfileResponse> {
     return StudentProfile.findOneOrFail({
       where: { id },
       relations: ['initialData'],
@@ -40,7 +42,7 @@ export class StudentService {
 
   async createStudentProfile(
     createStudentDto: CreateStudentProfileDto,
-  ): Promise<StudentProfileEntity> {
+  ): Promise<OneStudentProfileResponse> {
     const newStudent: CreateStudentProfileDto = new StudentProfile();
 
     Object.keys(createStudentDto).forEach((prop) => {
@@ -61,7 +63,10 @@ export class StudentService {
       newStudent.githubUsername,
     );
 
-    if (githubUsernameAlreadyUsed.length > 0) {
+    if (
+      githubUsernameAlreadyUsed.length > 0 &&
+      newStudent.githubUsername !== ''
+    ) {
       throw new InvalidDataFormatException(
         'GitHub username already used on this website',
       );
@@ -73,7 +78,7 @@ export class StudentService {
 
   async createInitialProfile(
     initialProfile: CreateStudentInitialDto,
-  ): Promise<StudentInitialEntity> {
+  ): Promise<OneStudentInitialResponse> {
     const newInitialProfile: CreateStudentInitialDto = new StudentInitial();
 
     Object.keys(initialProfile).forEach((prop) => {
@@ -87,7 +92,7 @@ export class StudentService {
   async updateStudentProfile(
     id: string,
     updateStudentDto: UpdateStudentProfileDto,
-  ): Promise<UpdateStudentProfileDto> {
+  ): Promise<OneStudentProfileResponse> {
     const updatingStudent: UpdateStudentProfileDto =
       await this.findOneProfile(id);
 
@@ -96,10 +101,16 @@ export class StudentService {
     });
 
     await updatingStudent.save();
-    return updatingStudent;
+    return StudentProfile.findOneOrFail({
+      where: {
+        id: updatingStudent.id,
+      },
+    });
   }
 
-  async findByGithubUsername(githubUsername: string) {
+  async findByGithubUsername(
+    githubUsername: string,
+  ): Promise<ListOfStudentProfilesResponse> {
     return StudentProfile.find({
       where: {
         githubUsername,
