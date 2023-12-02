@@ -15,7 +15,7 @@ import { FailedEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
 import { UserService } from './user.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { Request } from 'express';
-import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
+import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
 
 @Controller('user')
 export class UserController {

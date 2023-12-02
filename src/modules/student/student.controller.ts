@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { StudentService } from './student.service';
-import { CreateStudentProfileDto } from './dto/create-studentProfile.dto';
-import { UpdateStudentProfileDto } from './dto/update-studentProfile.dto';
-import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
+import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
+import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
+import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 
 @Controller('/student')
 export class StudentController {
