@@ -7,8 +7,9 @@ import {
 import {
   // IsArray,
   IsNotEmpty,
+  IsOptional,
   // IsNumber,
-  // IsUrl,
+  IsUrl,
   Length,
   // Max,
   // Min,
@@ -33,6 +34,8 @@ export class CreateStudentProfileDto {
   @MaxLength(39)
   githubUsername: string;
 
+  @IsOptional()
+  @IsUrl({}, { each: true })
   portfolioUrls: string[] | null;
   projectUrls: string[];
   bio: string;

@@ -57,6 +57,16 @@ export class StudentService {
       throw new InvalidDataFormatException('GitHub username does not exist');
     }
 
+    const githubUsernameAlreadyUsed = await this.findByGithubUsername(
+      newStudent.githubUsername,
+    );
+
+    if (githubUsernameAlreadyUsed.length > 0) {
+      throw new InvalidDataFormatException(
+        'GitHub username already used on this website',
+      );
+    }
+
     await newStudent.save();
     return newStudent;
   }
@@ -87,5 +97,13 @@ export class StudentService {
 
     await updatingStudent.save();
     return updatingStudent;
+  }
+
+  async findByGithubUsername(githubUsername: string) {
+    return StudentProfile.find({
+      where: {
+        githubUsername,
+      },
+    });
   }
 }
