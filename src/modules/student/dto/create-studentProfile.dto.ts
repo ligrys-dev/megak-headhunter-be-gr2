@@ -4,14 +4,35 @@ import {
   StudentStatus,
   TypeWork,
 } from 'src/types';
+import {
+  // IsArray,
+  IsNotEmpty,
+  // IsNumber,
+  // IsUrl,
+  Length,
+  // Max,
+  // Min,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateStudentProfileDto {
   id: string;
   initialData: StudentInitialEntity;
+
+  @Length(9, 20)
   tel: string | null;
+
+  @IsNotEmpty()
+  @MaxLength(50)
   firstName: string;
+
+  @IsNotEmpty()
+  @MaxLength(50)
   lastName: string;
+
+  @MaxLength(39)
   githubUsername: string;
+
   portfolioUrls: string[] | null;
   projectUrls: string[];
   bio: string;

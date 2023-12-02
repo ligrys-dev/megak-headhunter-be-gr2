@@ -11,6 +11,7 @@ import {
   StudentStatus,
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
+import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
 
 @Injectable()
 export class StudentService {
@@ -46,6 +47,15 @@ export class StudentService {
       newStudent[prop] = createStudentDto[prop];
     });
     newStudent.status = StudentStatus.AVAILABLE;
+
+    const checkGitHubUsername = await fetch(
+      `https://api.github.com/users/${newStudent.githubUsername}`,
+    );
+    const res = await checkGitHubUsername.json();
+
+    if (res.message === 'Not Found' && newStudent.githubUsername !== '') {
+      throw new InvalidDataFormatException('GitGub user does not exist');
+    }
 
     await newStudent.save();
     return newStudent;
