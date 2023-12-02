@@ -1,0 +1,63 @@
+1. import studentów:
+
+- /student-import/upload POST
+- plik csv lub json - interface StudentInitialEntity[]
+- wysyłane są maile aktywacyjne i hasło pierwszego logowania
+- nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json:
+  {message: [
+  {email<email, który nie przeszedł walidacji>: errorDetails<tablica stringów z błędami waliacji>},
+  ]}
+- res: json {ok: true} jeżeli przeszło bez błędów | patrz wyżej
+
+2. dodawanie hr:
+
+- /user/recruiter POST
+- body: interface NewRecruiterEntity
+- w przypadku błędu w walidacji zwracany jest wyjątek Bad Request:
+  {
+  "message": <tablica stringów z błędami walidacji>,
+  "error": "Bad Request",
+  "statusCode": 400
+  }
+- res - json: {ok: true} | patrz wyżej
+
+3. logowanie:
+
+- /login POST
+- body: {email: string, password: string}
+- do ciasteczka httpOnly jest dodawany token jwt, który przechowuje dane - interface UserFromReq
+- dostępny publicznie
+- jeżeli błędne dane logowania zwracany wyjątek Forbidden exception
+- res - json: {id: string} jeżeli poprawne dane
+
+4. wylogowywanie:
+
+- /logout POST
+- następuje czyszczenie ciasteczka z tokenem
+- res - json: {ok: true}
+
+5. token jwt:
+
+- przechowuje informacje o id usera i jego roli
+- na podstawie tokenu następuje identyfikacja usera w aplikacji
+- można pobrać dane - interface UserFromReq - z req.user
+
+6. mail aktywacyjny:
+
+- podczas dodawania studenta/hr zostaje wysłany mail aktywacyjny
+- /user/activate/id/activationToken GET
+- podczas aktywacji ustawiany jest isActive na true i activationToken na null
+
+7. zmiana hasła:
+
+- /user/change-pass PATCH
+- body: {oldPwd: string; newPwd: string}
+- sprawdza czy stare hasło jest prawidłowe i jeżeli tak to zmienia w bazie danych
+- res - json: {ok: true}
+
+8. resetowanie hasła:
+
+- /user/reset-pass PATCH
+- body: {email: string}
+- metoda szuka usera z podanym mailem i jeżeli znajduje to zmienia hasło na nowe, wygenerowane automatycznie i wysyła maila z tym hasłem a jeżeli nie to wyrzuca wyjątek Forbidden exception
+- res - json: {ok: true}
