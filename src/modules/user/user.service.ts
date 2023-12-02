@@ -6,12 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import {
-  FailedEmails,
-  Role,
-  UserFromReq,
-  UserWithRandomPwd as UserWithRandomPwd,
-} from 'src/types';
+import { FailedEmails, Role, UserFromReq, UserWithRandomPwd } from 'src/types';
 import { comparePwd, hashPwd } from 'src/utils/handle-pwd';
 import { generateRandomPwd } from 'src/utils/generate-random-pwd';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -110,7 +105,8 @@ export class UserService {
     createdUsers.push({ newUser, password });
     await this.cacheManager.set('users-to-activate', createdUsers);
 
-    return await this.hrRecruiterService.create(createRecruiterDto);
+    const recruiter = await this.hrRecruiterService.create(createRecruiterDto);
+    return { id: recruiter.id };
   }
 
   async sendActivationMail(
