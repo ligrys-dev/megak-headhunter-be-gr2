@@ -54,7 +54,7 @@ export class StudentService {
     const res = await checkGitHubUsername.json();
 
     if (res.message === 'Not Found' && newStudent.githubUsername !== '') {
-      throw new InvalidDataFormatException('GitGub user does not exist');
+      throw new InvalidDataFormatException('GitHub username does not exist');
     }
 
     await newStudent.save();
