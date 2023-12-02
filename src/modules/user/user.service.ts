@@ -1,5 +1,7 @@
 import {
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -10,7 +12,7 @@ import {
   UserFromReq,
   UserWithRandomPwd as UserWithRandomPwd,
 } from 'src/types';
-import { hashPwd } from 'src/utils/handle-pwd';
+import { comparePwd, hashPwd } from 'src/utils/handle-pwd';
 import { generateRandomPwd } from 'src/utils/generate-random-pwd';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -19,6 +21,8 @@ import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dt
 import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
 import { StudentService } from '../student/student.service';
 import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
+import { validate } from 'class-validator';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -42,7 +46,12 @@ export class UserService {
 
     try {
       for (const createStudentDto of createStudentDtos) {
+        await this.validateStudentInital(createStudentDto);
+
         const password = generateRandomPwd();
+
+        const isExisted = await this.findOneByEmail(createStudentDto.email);
+        if (isExisted) continue;
 
         const newUser = new User();
         newUser.email = createStudentDto.email;
@@ -52,11 +61,11 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        // await this.studentService.create(createStudentDto) // TODO to implement when student entitity will be implemented
-        console.log(createStudentDto);
+        await this.studentService.createInitialProfile(createStudentDto);
       }
       return await this.cacheManager.set('users-to-activate', createdUsers);
     } catch (e) {
+      if (e instanceof HttpException) throw e;
       throw new Error(e);
     }
   }
@@ -130,11 +139,39 @@ export class UserService {
     return { ok: true };
   }
 
-  async changePassword(newPwd: string, user: UserFromReq) {
+  async changePassword(oldPwd: string, newPwd: string, user: UserFromReq) {
     const usr = await this.findOneById(user.userId);
+    const isPasswordValid = await comparePwd(oldPwd, usr.pwdHash);
+    if (!isPasswordValid)
+      throw new ForbiddenException('Old password is not valid');
+
     usr.pwdHash = await hashPwd(newPwd);
     await usr.save();
 
     return { ok: true };
+  }
+
+  async validateStudentInital(createStudentDto: CreateStudentInitialDto) {
+    const student = plainToClass(CreateStudentInitialDto, createStudentDto);
+
+    const errors = await validate(student);
+
+    if (errors.length > 0) {
+      const errorDetails = errors.map((error) => {
+        const constraints = Object.values(error.constraints).join(', ');
+        return constraints;
+      });
+
+      throw new HttpException(
+        {
+          message: errorDetails,
+          error: 'Bad Request',
+          statusCode: HttpStatus.BAD_REQUEST,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return 'Validation successful';
   }
 }
