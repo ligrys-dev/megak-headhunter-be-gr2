@@ -47,10 +47,10 @@ export class StudentProfile extends BaseEntity {
   @Column({ type: 'numeric', precision: 10, scale: 2, default: null })
   expectedSalary: number | null;
 
-  @Column({ default: false, nullable: false })
+  @Column({ type: 'boolean', default: false, nullable: false })
   canTakeApprenticeship: boolean;
 
-  @Column({ type: 'numeric', precision: 2, default: 0 })
+  @Column({ type: 'int', precision: 3, default: 0 })
   monthsOfCommercialExp: number;
 
   @Column({ type: 'text', nullable: true })

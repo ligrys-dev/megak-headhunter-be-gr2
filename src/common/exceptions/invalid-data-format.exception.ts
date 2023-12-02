@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class InvalidDataFormatException extends HttpException {
-  constructor() {
-    super('Invalid data format', HttpStatus.BAD_REQUEST);
+  constructor(message?: string) {
+    super(message || 'Invalid data format', HttpStatus.BAD_REQUEST);
   }
 }
