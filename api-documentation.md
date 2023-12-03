@@ -17,7 +17,7 @@
 
 - `/import/students` POST
 - plik csv lub json - interface `StudentInitialInterface[]`,<br/> a więc tablica obiektów:<br/>
-  StudentInitialInterface {<br/>
+  `StudentInitialInterface` {<br/>
   email: string;<br/>
   courseCompletion: number;<br/>
   courseEngagement: number;<br/>
@@ -93,12 +93,13 @@
 
 ## 9. Moduł kursanta (profil i dane inicjacyjne)
 
-### Pobieranie wszystkich profilów studentów:
+### Pobieranie wszystkich profilów kursantów:
 
-- adres `/student` metoda: GET, zwraca tablicę obiektów z danymi studentów:<br/>
+- adres `/student` metoda: GET,
+- zwraca tablicę obiektów z danymi studentów:<br/>
 StudentProfileInterface {<br/>
   id: string;<br/>
-  initialData: StudentInitialInterface | null;<br/>
+  initialData: StudentInitialInterface;<br/>
   tel: string | null;<br/>
   firstName: string;<br/>
   lastName: string;<br/>
@@ -117,10 +118,22 @@ StudentProfileInterface {<br/>
   courses: string | null;<br/>
   status: StudentStatus;<br/>
   }
-- adres `/student/:id` metoda: GET, zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
-- adres `/student` metoda: POST, przyjmuje w body obiekt `StudentProfileInterface`, dodaje nowy profil kursanta, zwraca nowy obiekt.
-- adres `/student/:id` metoda: PATCH, przyjmuje w body obiekt `StudentProfileInterface`, aktualizuje profil kursanta, zwraca zaktualizowany obiekt.
-- adres `/student/initial` metoda: GET, zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
+### Pobieranie pojedynczego kursanta
+- adres `/student/:id` metoda: GET,
+- zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
+### Tworzenie nowego profilu kursanta
+- adres `/student` metoda: POST,
+- przyjmuje w body obiekt `StudentProfileInterface`,
+- dodaje nowy profil kursanta, 
+- wraca tenże nowy obiekt.
+### Aktualizowanie profilu kursanta
+- adres `/student/:id` metoda: PATCH,
+- przyjmuje w body obiekt `StudentProfileInterface`,
+- aktualizuje profil kursanta,
+- zwraca zaktualizowany obiekt.
+### Lista z danymi inicjacyjnymi dla profili
+- adres `/student/initial` metoda: GET,
+- zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
 `StudentInitialInterface` {<br/>
   email: string;<br/>
   courseCompletion: number;<br/>
@@ -129,9 +142,11 @@ StudentProfileInterface {<br/>
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
   }
-- adres `/student/initial/:email` metoda: GET, zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
+### Dane dla pojedynczego konkretnego profilu
+- adres `/student/initial/:email` metoda: GET,
+- zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
 
-## 10. Moduł hr
+## 10. Moduł HR
 
-- adres `/hr/` metoda: GET
+- adres `/hr` metoda: GET
 - adres `/hr/:id` metoda: GET
