@@ -34,5 +34,7 @@ export interface StudentProfileInterface {
   status: StudentStatus;
 }
 
+export type NewStudentProfileInterface = Omit<StudentProfileInterface, 'id'>;
+
 export type ListOfStudentProfilesResponse = StudentProfileInterface[];
 export type OneStudentProfileResponse = StudentProfileInterface;

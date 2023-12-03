@@ -1,5 +1,6 @@
 import {
   ContractType,
+  NewStudentProfileInterface,
   StudentInitialInterface,
   StudentStatus,
   TypeWork,
@@ -19,7 +20,7 @@ import {
   IsEmail,
 } from 'class-validator';
 
-export class CreateStudentProfileDto {
+export class CreateStudentProfileDto implements NewStudentProfileInterface {
   id: string;
 
   @IsNotEmpty()

@@ -7,8 +7,9 @@ import {
   Max,
   Min,
 } from 'class-validator';
+import { StudentInitialInterface } from '../../../types';
 
-export class CreateStudentInitialDto {
+export class CreateStudentInitialDto implements StudentInitialInterface {
   @IsEmail()
   email: string;
 
