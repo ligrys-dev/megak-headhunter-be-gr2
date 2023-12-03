@@ -16,6 +16,7 @@ import { UserService } from './user.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { Request } from 'express';
 import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('user')
 export class UserController {
@@ -69,6 +70,7 @@ export class UserController {
     );
   }
 
+  @Public()
   @Patch('/reset-pass')
   resetPassword(@Body('email') email: string) {
     return this.userService.resetPassword(email);

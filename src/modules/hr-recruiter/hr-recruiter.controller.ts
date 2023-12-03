@@ -1,15 +1,9 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { HrRecruiterService } from './hr-recruiter.service';
-import { CreateHrRecruiterDto } from './dto/create-hr-recruiter.dto';
 
 @Controller('hr')
 export class HrRecruiterController {
   constructor(private readonly hrRecruiterService: HrRecruiterService) {}
-
-  @Post()
-  create(@Body() createHrRecruiterDto: CreateHrRecruiterDto) {
-    return this.hrRecruiterService.create(createHrRecruiterDto);
-  }
 
   @Get()
   findAll() {
