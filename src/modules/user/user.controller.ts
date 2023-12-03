@@ -75,4 +75,10 @@ export class UserController {
   resetPassword(@Body('email') email: string) {
     return this.userService.resetPassword(email);
   }
+
+  @Public()
+  @Post('/admin')
+  addAdmin() {
+    return this.userService.addAdmin();
+  }
 }
