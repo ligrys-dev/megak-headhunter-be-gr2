@@ -1,7 +1,7 @@
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from './enums';
 
-export interface UserEntity {
+export interface UserInterface {
   id: string;
   email: string;
   role: Role;
@@ -11,8 +11,8 @@ export interface UserEntity {
   createdAt: Date;
 }
 
-export type SaveUserEntity = Omit<UserEntity, 'pwdHash' | 'activationToken'>;
-export type NewUserEntity = Pick<UserEntity, 'email'>;
+export type SaveUserEntity = Omit<UserInterface, 'pwdHash' | 'activationToken'>;
+export type NewUserEntity = Pick<UserInterface, 'email'>;
 
 export interface UserWithRandomPwd {
   newUser: User;
