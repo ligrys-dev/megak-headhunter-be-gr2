@@ -1,4 +1,11 @@
-import { IsEmail, IsInt, IsNotEmpty, Max, Min } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 import { NewRecruiterEntity } from 'src/types';
 
 export class CreateHrRecruiterDto implements NewRecruiterEntity {
@@ -6,9 +13,11 @@ export class CreateHrRecruiterDto implements NewRecruiterEntity {
   email: string;
 
   @IsNotEmpty()
+  @IsString()
   fullName: string;
 
   @IsNotEmpty()
+  @IsString()
   company: string;
 
   @IsInt()

@@ -15,7 +15,7 @@ import { MailService } from 'src/common/mail/mail.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
 import { StudentService } from '../student/student.service';
-import { CreateStudentInitialDto } from '../student/dto/create-studentInitial.dto';
+import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { ConfigService } from '@nestjs/config';

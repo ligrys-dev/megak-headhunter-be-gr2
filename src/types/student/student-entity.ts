@@ -9,6 +9,9 @@ export interface StudentInitialEntity {
   bonusProjectUrls: string[];
 }
 
+export type ListOfStudentInitialResponse = StudentInitialEntity[];
+export type OneStudentInitialResponse = StudentInitialEntity;
+
 export interface StudentProfileEntity {
   id: string;
   initialData: StudentInitialEntity | null;
@@ -32,5 +35,4 @@ export interface StudentProfileEntity {
 }
 
 export type ListOfStudentProfilesResponse = StudentProfileEntity[];
-
-export type GetOneStudentProfileResponse = StudentProfileEntity;
+export type OneStudentProfileResponse = StudentProfileEntity;
