@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStudentProfileDto } from './dto/create-studentProfile.dto';
-import { UpdateStudentProfileDto } from './dto/update-studentProfile.dto';
+import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
+import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
 import { StudentInitial } from './entities/student-initial.entity';
 import {
@@ -10,7 +10,7 @@ import {
   ListOfStudentProfilesResponse,
   OneStudentProfileResponse,
 } from 'src/types';
-import { CreateStudentInitialDto } from './dto/create-studentInitial.dto';
+import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
 
 @Injectable()

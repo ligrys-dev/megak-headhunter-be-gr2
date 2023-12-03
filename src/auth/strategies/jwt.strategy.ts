@@ -2,8 +2,9 @@ import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { UserFromReq, UserJwtPayload } from 'src/types';
+import { Request } from 'express';
 
-function cookieExtractor(req: any): null | string {
+function cookieExtractor(req: Request): null | string {
   return req && req.cookies ? req.cookies?.access_token ?? null : null;
 }
 
