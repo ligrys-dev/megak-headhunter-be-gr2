@@ -6,9 +6,9 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { NewRecruiterEntity } from 'src/types';
+import { NewRecruiterInterface } from 'src/types';
 
-export class CreateHrRecruiterDto implements NewRecruiterEntity {
+export class CreateHrRecruiterDto implements NewRecruiterInterface {
   @IsEmail()
   email: string;
 

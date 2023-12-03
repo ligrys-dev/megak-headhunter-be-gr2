@@ -4,7 +4,7 @@ import * as Papa from 'papaparse';
 import { Observable, Observer, firstValueFrom } from 'rxjs';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { StudentInitialEntity } from 'src/types';
+import { StudentInitialInterface } from 'src/types';
 
 @Injectable()
 export class StudentImportService {
@@ -15,7 +15,7 @@ export class StudentImportService {
     const uploadingFile = file.buffer.toString();
 
     if (file.mimetype === 'text/csv') {
-      const students: StudentInitialEntity[] = await firstValueFrom(
+      const students: StudentInitialInterface[] = await firstValueFrom(
         new Observable((observer: Observer<any>) => {
           //TODO add type
           Papa.parse(uploadingFile, {

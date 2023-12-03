@@ -1,6 +1,6 @@
 import { StudentStatus, TypeWork, ContractType } from './enums';
 
-export interface StudentInitialEntity {
+export interface StudentInitialInterface {
   email: string;
   courseCompletion: number;
   courseEngagement: number;
@@ -9,12 +9,12 @@ export interface StudentInitialEntity {
   bonusProjectUrls: string[];
 }
 
-export type ListOfStudentInitialResponse = StudentInitialEntity[];
-export type OneStudentInitialResponse = StudentInitialEntity;
+export type ListOfStudentInitialResponse = StudentInitialInterface[];
+export type OneStudentInitialResponse = StudentInitialInterface;
 
-export interface StudentProfileEntity {
+export interface StudentProfileInterface {
   id: string;
-  initialData: StudentInitialEntity | null;
+  initialData: StudentInitialInterface | null;
   tel: string | null;
   firstName: string;
   lastName: string;
@@ -34,5 +34,5 @@ export interface StudentProfileEntity {
   status: StudentStatus;
 }
 
-export type ListOfStudentProfilesResponse = StudentProfileEntity[];
-export type OneStudentProfileResponse = StudentProfileEntity;
+export type ListOfStudentProfilesResponse = StudentProfileInterface[];
+export type OneStudentProfileResponse = StudentProfileInterface;
