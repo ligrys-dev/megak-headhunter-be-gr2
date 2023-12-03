@@ -16,7 +16,15 @@
 ## 1. Import studentów:
 
 - `/import/students` POST
-- plik csv lub json - interface StudentInitialEntity[]
+- plik csv lub json - interface `StudentInitialInterface[]`,<br/> a więc tablica obiektów:<br/>
+  StudentInitialInterface {<br/>
+  email: string;<br/>
+  courseCompletion: number;<br/>
+  courseEngagement: number;<br/>
+  projectDegree: number;<br/>
+  teamProjectDegree: number;<br/>
+  bonusProjectUrls: string[];<br/>
+  }
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json:
   <br/> {message: [<br/>
@@ -27,7 +35,13 @@
 ## 2. Dodawanie HR:
 
 - `/user/recruiter` POST
-- body: interface NewRecruiterEntity
+- body: `RecruiterInterface`<br/> {
+  id: string;<br/>
+  email: string;<br/>
+  fullName: string;<br/>
+  company: string;<br/>
+  maxReservedStudents: number;<br/>
+  }
 - w przypadku błędu w walidacji zwracany jest wyjątek Bad Request:<br/>
   {<br/>
   "message": <tablica stringów z błędami walidacji>,<br/>
@@ -81,12 +95,41 @@
 
 ### Pobieranie wszystkich profilów studentów:
 
-- adres `/student` metoda: GET, zwraca tablicę z danymi studentów: / todo opis zwracanego obiektu /
-- adres `/student` metoda: POST,
-- adres `/student/:id` metoda: GET,
-- adres `/student/:id` metoda: PATCH,
-- adres `/student/initial` metoda: GET,
-- adres `/student/initial/:email` metoda: GET,
+- adres `/student` metoda: GET, zwraca tablicę obiektów z danymi studentów:<br/>
+StudentProfileInterface {<br/>
+  id: string;<br/>
+  initialData: StudentInitialInterface | null;<br/>
+  tel: string | null;<br/>
+  firstName: string;<br/>
+  lastName: string;<br/>
+  githubUsername: string;<br/>
+  portfolioUrls: string[] | null;<br/>
+  projectUrls: string[];<br/>
+  bio: string;<br/>
+  expectedTypeWork: TypeWork;<br/>
+  targetWorkCity: string;<br/>
+  expectedContractType: ContractType;<br/>
+  expectedSalary: number | null;<br/>
+  canTakeApprenticeship: boolean;<br/>
+  monthsOfCommercialExp: number;<br/>
+  education: string | null;<br/>
+  workExperience: string | null;<br/>
+  courses: string | null;<br/>
+  status: StudentStatus;<br/>
+  }
+- adres `/student/:id` metoda: GET, zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
+- adres `/student` metoda: POST, przyjmuje w body obiekt `StudentProfileInterface`, dodaje nowy profil kursanta, zwraca nowy obiekt.
+- adres `/student/:id` metoda: PATCH, przyjmuje w body obiekt `StudentProfileInterface`, aktualizuje profil kursanta, zwraca zaktualizowany obiekt.
+- adres `/student/initial` metoda: GET, zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
+`StudentInitialInterface` {<br/>
+  email: string;<br/>
+  courseCompletion: number;<br/>
+  courseEngagement: number;<br/>
+  projectDegree: number;<br/>
+  teamProjectDegree: number;<br/>
+  bonusProjectUrls: string[];<br/>
+  }
+- adres `/student/initial/:email` metoda: GET, zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
 
 ## 10. Moduł hr
 
