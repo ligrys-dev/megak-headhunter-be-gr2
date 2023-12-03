@@ -19,8 +19,8 @@
 - plik csv lub json - interface StudentInitialEntity[]
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json:
-  {message: [
-  {email<email, który nie przeszedł walidacji>: errorDetails<tablica stringów z błędami waliacji>},
+  <br/> {message: [<br/>
+  {email (email, który nie przeszedł walidacji): errorDetails (tablica stringów z błędami walidacji)},<br/>
   ]}
 - res: json {ok: true} jeżeli przeszło bez błędów | patrz wyżej
 
@@ -28,12 +28,12 @@
 
 - `/user/recruiter` POST
 - body: interface NewRecruiterEntity
-- w przypadku błędu w walidacji zwracany jest wyjątek Bad Request:
-  {
-  "message": <tablica stringów z błędami walidacji>,
-  "error": "Bad Request",
-  "statusCode": 400
-  }
+- w przypadku błędu w walidacji zwracany jest wyjątek Bad Request:<br/>
+  {<br/>
+  "message": <tablica stringów z błędami walidacji>,<br/>
+  "error": "Bad Request",<br/>
+  "statusCode": 400<br/>
+  }<br/>
 - res - json: {ok: true} | patrz wyżej
 
 ## 3. Logowanie:
