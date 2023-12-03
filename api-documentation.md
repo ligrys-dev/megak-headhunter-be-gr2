@@ -1,6 +1,7 @@
 ### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta. Przy pracy developerskiej jest to 'http://localhost:3001'. W kodzie powinno to być zapisane w zmiennej, aby można było to łatwo zmienić przy wrzucaniu na serwer.
 
 #### Spis treści:
+
 1. [Import studentów](#1-import-studentów)
 2. [Dodawanie HR](#2-dodawanie-hr)
 3. [Logowanie](#3-logowanie)
@@ -10,6 +11,7 @@
 7. [Zmiana hasła](#7-zmiana-hasła)
 8. [Resetowanie hasła](#8-resetowanie-hasła)
 9. [Moduł Kursanta (profil i dane inicjacyjne)](#9-moduł-kursanta-profil-i-dane-inicjacyjne)
+10. [Moduł hr](#10-moduł-hr)
 
 ## 1. Import studentów:
 
@@ -78,13 +80,15 @@
 ## 9. Moduł kursanta (profil i dane inicjacyjne)
 
 ### Pobieranie wszystkich profilów studentów:
-- adres `/student` metoda: GET, zwraca tablicę z danymi studentów: / todo opis zwracanego obiektu / 
+
+- adres `/student` metoda: GET, zwraca tablicę z danymi studentów: / todo opis zwracanego obiektu /
 - adres `/student` metoda: POST,
 - adres `/student/:id` metoda: GET,
 - adres `/student/:id` metoda: PATCH,
-- adres `/student/initial` metoda: GET, 
-- adres `/student/initial` metoda: POST
+- adres `/student/initial` metoda: GET,
 - adres `/student/initial/:email` metoda: GET,
 
+## 10. Moduł hr
 
-
+- adres `/hr/` metoda: GET
+- adres `/hr/:id` metoda: GET
