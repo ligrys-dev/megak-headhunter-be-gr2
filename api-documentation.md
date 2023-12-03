@@ -16,7 +16,7 @@
 ## 1. Import studentów:
 
 - `/import/students` POST
-- plik csv lub json - interface StudentInitialEntity[]
+- plik csv lub json - interface StudentInitialInterface[]
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json:
   {message: [
@@ -27,7 +27,7 @@
 ## 2. Dodawanie HR:
 
 - `/user/recruiter` POST
-- body: interface NewRecruiterEntity
+- body: interface NewRecruiterInterface
 - w przypadku błędu w walidacji zwracany jest wyjątek Bad Request:
   {
   "message": <tablica stringów z błędami walidacji>,
@@ -43,7 +43,7 @@
 - do ciasteczka httpOnly jest dodawany token jwt, który przechowuje dane - interface UserFromReq
 - dostępny publicznie
 - jeżeli błędne dane logowania zwracany wyjątek Forbidden exception
-- res - json: {id: string} jeżeli poprawne dane
+- res - json: {id: string, role: Role} jeżeli poprawne dane
 
 ## 4. Wylogowywanie:
 
