@@ -36,7 +36,7 @@ export class AuthService {
       maxAge: 1000 * 60 * 60, // 1h
     });
 
-    return { id: usr.id };
+    return { id: usr.id, role: usr.role };
   }
 
   async logout(res: Response) {

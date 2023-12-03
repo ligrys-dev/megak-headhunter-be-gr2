@@ -201,4 +201,14 @@ export class UserService {
       isValid: true,
     };
   }
+
+  async addAdmin() {
+    const admin = new User();
+    admin.email = 'admin@admin.com';
+    admin.pwdHash = await hashPwd('admin1');
+    admin.role = Role.ADMIN;
+    admin.isActive = true;
+    admin.activationToken = null;
+    return await admin.save();
+  }
 }
