@@ -23,10 +23,11 @@ export class StudentController {
     return this.studentService.findAllInitialProfile();
   }
 
-  @Get('/initial/:email')
-  findOneInitialProfile(@Param('email') email: string) {
-    return this.studentService.findOneInitialProfile(email);
-  }
+  // ten endpoint nie będzie chyba potrzebny, ale na razie może tu zostać
+  // @Get('/initial/:email')
+  // findOneInitialProfile(@Param('email') email: string) {
+  //   return this.studentService.findOneInitialProfile(email);
+  // }
 
   @Get('/:id')
   findOneProfile(@Param('id') id: string) {
