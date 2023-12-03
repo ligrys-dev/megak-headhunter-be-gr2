@@ -1,4 +1,4 @@
-export interface RecruiterEntity {
+export interface RecruiterInterface {
   id: string;
   email: string;
   fullName: string;
@@ -6,4 +6,4 @@ export interface RecruiterEntity {
   maxReservedStudents: number;
 }
 
-export type NewRecruiterEntity = Omit<RecruiterEntity, 'id'>;
+export type NewRecruiterInterface = Omit<RecruiterInterface, 'id'>;
