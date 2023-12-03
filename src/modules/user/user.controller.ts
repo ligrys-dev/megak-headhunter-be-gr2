@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { FailedEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
+import { StudentEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
 import { UserService } from './user.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { Request } from 'express';
@@ -43,10 +43,9 @@ export class UserController {
   async sendActivationMail() {
     const users: UserWithRandomPwd[] =
       await this.cacheManager.get('users-to-activate');
-    const failedEmails: FailedEmails =
-      await this.cacheManager.get('failed-emails');
+    const studentEmails: StudentEmails = await this.cacheManager.get('emails');
 
-    return this.userService.sendActivationMail(users, failedEmails);
+    return this.userService.sendActivationMail(users, studentEmails);
   }
 
   @Get('/activate/:id/:activationToken')

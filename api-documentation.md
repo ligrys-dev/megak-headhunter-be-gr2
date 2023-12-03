@@ -26,11 +26,8 @@
   bonusProjectUrls: string[];<br/>
   }
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania
-- nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json:
-  <br/> {message: [<br/>
-  {email (email, który nie przeszedł walidacji): errorDetails (tablica stringów z błędami walidacji)},<br/>
-  ]}
-- res: json {ok: true} jeżeli przeszło bez błędów | patrz wyżej
+- nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json: <br/>
+  {type `FailedEmails`, type `SuccesfulEmails`}
 
 ## 2. Dodawanie HR:
 
@@ -97,7 +94,7 @@
 
 - adres `/student` metoda: GET,
 - zwraca tablicę obiektów z danymi studentów:<br/>
-StudentProfileInterface {<br/>
+  StudentProfileInterface {<br/>
   id: string;<br/>
   initialData: StudentInitialInterface;<br/>
   tel: string | null;<br/>
@@ -118,23 +115,31 @@ StudentProfileInterface {<br/>
   courses: string | null;<br/>
   status: StudentStatus;<br/>
   }
+
 ### Pobieranie pojedynczego kursanta
+
 - adres `/student/:id` metoda: GET,
 - zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
+
 ### Tworzenie nowego profilu kursanta
+
 - adres `/student` metoda: POST,
 - przyjmuje w body obiekt `StudentProfileInterface`,
-- dodaje nowy profil kursanta, 
+- dodaje nowy profil kursanta,
 - wraca tenże nowy obiekt.
+
 ### Aktualizowanie profilu kursanta
+
 - adres `/student/:id` metoda: PATCH,
 - przyjmuje w body obiekt `StudentProfileInterface`,
 - aktualizuje profil kursanta,
 - zwraca zaktualizowany obiekt.
+
 ### Lista z danymi inicjacyjnymi dla profili
+
 - adres `/student/initial` metoda: GET,
 - zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
-`StudentInitialInterface` {<br/>
+  `StudentInitialInterface` {<br/>
   email: string;<br/>
   courseCompletion: number;<br/>
   courseEngagement: number;<br/>
@@ -142,7 +147,9 @@ StudentProfileInterface {<br/>
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
   }
+
 ### Dane inicjacyjne dla pojedynczego konkretnego profilu (metoda zakomentowana, ukryta)
+
 - adres `/student/initial/:email` metoda: GET,
 - zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
 
