@@ -8,11 +8,11 @@ import {
 import { StudentImportService } from './student-import.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('/student-import')
+@Controller('/import')
 export class StudentImportController {
   constructor(private readonly studentImportService: StudentImportService) {}
 
-  @Post('/upload/')
+  @Post('/students/')
   @Redirect('/user/students')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
