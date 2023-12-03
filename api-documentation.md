@@ -142,7 +142,7 @@ StudentProfileInterface {<br/>
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
   }
-### Dane dla pojedynczego konkretnego profilu
+### Dane dla pojedynczego konkretnego profilu (metoda zakomentowana, ukryta)
 - adres `/student/initial/:email` metoda: GET,
 - zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
 
