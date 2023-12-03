@@ -1,4 +1,4 @@
-### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta przy pracy developerskiej jest to 'http://localhost:3001'.
+### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta. Przy pracy developerskiej jest to 'http://localhost:3001'. W kodzie powinno to być zapisane w zmiennej, aby można było to łatwo zmienić przy wrzucaniu na serwer.
 
 #### Spis treści:
 1. [Import studentów](#1-import-studentów)
