@@ -1,6 +1,6 @@
 # 1. import studentów:
 
-- `/student-import/upload` POST
+- `/import/students` POST
 - plik csv lub json - interface StudentInitialEntity[]
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json:
