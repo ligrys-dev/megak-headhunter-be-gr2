@@ -1,4 +1,9 @@
-# 1. import studentów:
+### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta przy pracy developerskiej jest to 'http://localhost:3001'.
+
+#### Spis treści:
+1. []
+
+## 1. Import studentów:
 
 - `/import/students` POST
 - plik csv lub json - interface StudentInitialEntity[]
@@ -9,7 +14,7 @@
   ]}
 - res: json {ok: true} jeżeli przeszło bez błędów | patrz wyżej
 
-# 2. dodawanie hr:
+## 2. dodawanie hr:
 
 - `/user/recruiter` POST
 - body: interface NewRecruiterEntity
@@ -21,7 +26,7 @@
   }
 - res - json: {ok: true} | patrz wyżej
 
-# 3. logowanie:
+## 3. logowanie:
 
 - `/login` POST
 - body: {email: string, password: string}
@@ -30,34 +35,48 @@
 - jeżeli błędne dane logowania zwracany wyjątek Forbidden exception
 - res - json: {id: string} jeżeli poprawne dane
 
-# 4. wylogowywanie:
+## 4. wylogowywanie:
 
 - `/logout` POST
 - następuje czyszczenie ciasteczka z tokenem
 - res - json: {ok: true}
 
-# 5. token jwt:
+## 5. token jwt:
 
 - przechowuje informacje o id usera i jego roli
 - na podstawie tokenu następuje identyfikacja usera w aplikacji
 - można pobrać dane - interface UserFromReq - z req.user
 
-# 6. mail aktywacyjny:
+## 6. mail aktywacyjny:
 
 - podczas dodawania studenta/hr zostaje wysłany mail aktywacyjny
 - `/user/activate/id/activationToken` GET
 - podczas aktywacji ustawiany jest isActive na true i activationToken na null
 
-# 7. zmiana hasła:
+## 7. zmiana hasła:
 
 - `/user/change-pass` PATCH
 - body: {oldPwd: string; newPwd: string}
 - sprawdza czy stare hasło jest prawidłowe i jeżeli tak to zmienia w bazie danych
 - res - json: {ok: true}
 
-# 8. resetowanie hasła:
+## 8. resetowanie hasła:
 
 - `/user/reset-pass` PATCH
 - body: {email: string}
 - metoda szuka usera z podanym mailem i jeżeli znajduje to zmienia hasło na nowe, wygenerowane automatycznie i wysyła maila z tym hasłem a jeżeli nie to wyrzuca wyjątek Forbidden exception
 - res - json: {ok: true}
+
+## 9. Moduł kursanta
+
+### Pobieranie wszystkich profilów studentów:
+- adres `/student` metoda: GET, zwraca tablicę z danymi studentów: / todo opis zwracanego obiektu / 
+- adres `/student` metoda: POST,
+- adres `/student/:id` metoda: GET,
+- adres `/student/:id` metoda: PATCH,
+- adres `/student/initial` metoda: GET, 
+- adres `/student/initial` metoda: POST
+- adres `/student/initial/:email` metoda: GET,
+
+
+
