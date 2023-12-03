@@ -2,11 +2,13 @@ import { Module } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { StudentController } from './student.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StudentProfile } from './entities/student-profile.entity';
-import { StudentInitial } from './entities/student-initial.entity';
+import { StudentProfileEntity } from './entities/student-profile.entity';
+import { StudentInitialEntity } from './entities/student-initial.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([StudentProfile, StudentInitial])],
+  imports: [
+    TypeOrmModule.forFeature([StudentProfileEntity, StudentInitialEntity]),
+  ],
   controllers: [StudentController],
   providers: [StudentService],
   exports: [StudentService],

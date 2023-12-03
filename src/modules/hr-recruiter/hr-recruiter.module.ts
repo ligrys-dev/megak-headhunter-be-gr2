@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { HrRecruiterService } from './hr-recruiter.service';
 import { HrRecruiterController } from './hr-recruiter.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Recruiter } from './entities/hr-recruiter.entity';
+import { RecruiterEntity } from './entities/hr-recruiter.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Recruiter])],
+  imports: [TypeOrmModule.forFeature([RecruiterEntity])],
   controllers: [HrRecruiterController],
   providers: [HrRecruiterService],
   exports: [HrRecruiterService],
