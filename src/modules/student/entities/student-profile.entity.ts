@@ -7,10 +7,10 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { StudentInitialEntity } from './student-initial.entity';
+import { StudentInitial } from './student-initial.entity';
 
 @Entity()
-export class StudentProfileEntity extends BaseEntity {
+export class StudentProfile extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -65,7 +65,7 @@ export class StudentProfileEntity extends BaseEntity {
   @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;
 
-  @OneToOne(() => StudentInitialEntity, (initial) => initial.email)
+  @OneToOne(() => StudentInitial, (initial) => initial.email)
   @JoinColumn()
-  initialData: StudentInitialEntity;
+  initialData: StudentInitial;
 }

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateHrRecruiterDto } from './dto/create-hr-recruiter.dto';
-import { RecruiterEntity } from './entities/hr-recruiter.entity';
+import { Recruiter } from './entities/hr-recruiter.entity';
 
 @Injectable()
 export class HrRecruiterService {
   async create(createHrRecruiterDto: CreateHrRecruiterDto) {
-    const recruiter = new RecruiterEntity();
+    const recruiter = new Recruiter();
     for (const [key, value] of Object.entries(createHrRecruiterDto)) {
       recruiter[key] = value;
     }
@@ -13,10 +13,10 @@ export class HrRecruiterService {
   }
 
   async findAll() {
-    return await RecruiterEntity.find();
+    return await Recruiter.find();
   }
 
   async findOne(id: string) {
-    return await RecruiterEntity.findOneByOrFail({ id });
+    return await Recruiter.findOneByOrFail({ id });
   }
 }
