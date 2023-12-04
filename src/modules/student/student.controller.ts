@@ -35,8 +35,8 @@ export class StudentController {
   }
 
   @Post()
-  createProfile(@Body() StudentDto: CreateStudentProfileDto) {
-    return this.studentService.createStudentProfile(StudentDto);
+  createProfile(@Body() studentDto: CreateStudentProfileDto) {
+    return this.studentService.createStudentProfile(studentDto);
   }
 
   @Patch('/:id')
