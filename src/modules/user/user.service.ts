@@ -6,7 +6,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import { FailedEmails, Role, UserFromReq, UserWithRandomPwd } from 'src/types';
+import {
+  StudentEmails,
+  Role,
+  UserFromReq,
+  UserWithRandomPwd,
+  FailedEmails,
+  SuccessfulEmails,
+} from 'src/types';
 import { comparePwd, hashPwd } from 'src/utils/handle-pwd';
 import { generateRandomPwd } from 'src/utils/generate-random-pwd';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -40,7 +47,7 @@ export class UserService {
 
   async createStudents(createStudentDtos: CreateStudentInitialDto[]) {
     const createdUsers: UserWithRandomPwd[] = [];
-    const successfulEmails: string[] = [];
+    const successfulEmails: SuccessfulEmails = [];
     const failedEmails: FailedEmails = [];
 
     try {
@@ -79,7 +86,10 @@ export class UserService {
         successfulEmails.push(createStudentDto.email);
       }
       await this.cacheManager.set('users-to-activate', createdUsers);
-      await this.cacheManager.set('failed-emails', failedEmails);
+      await this.cacheManager.set('emails', [
+        failedEmails,
+        successfulEmails,
+      ] as StudentEmails);
 
       return {
         successfulEmails,
@@ -111,7 +121,7 @@ export class UserService {
 
   async sendActivationMail(
     users: UserWithRandomPwd[],
-    failedEmails: FailedEmails,
+    studentEmails: StudentEmails,
   ) {
     const appPath = this.configService.get('APP_PATH');
 
@@ -131,9 +141,11 @@ export class UserService {
       );
     }
 
+    const [failedEmails, successfulEmails] = studentEmails;
+
     console.error(failedEmails);
 
-    return failedEmails ? { message: failedEmails } : { ok: true };
+    return { failedEmails, successfulEmails };
   }
 
   async activateUser(id: string, activationToken: string) {
