@@ -117,4 +117,18 @@ export class StudentService {
       },
     });
   }
+
+  async filterStudents(skip: number = 1, take: number = 10, orderBy: string) {
+    const [students, studentsCount] = await StudentInitial.createQueryBuilder()
+      .innerJoinAndSelect('StudentInitial.profile', 'profile')
+      .where('1') // dodać wyszukiwanie
+      .orderBy(orderBy ?? null, 'DESC')
+      .skip((skip - 1) * take)
+      .take(take)
+      .getManyAndCount();
+
+    const numberOfPages = Math.ceil(studentsCount / take);
+
+    return { students, studentsCount, numberOfPages };
+  }
 }
