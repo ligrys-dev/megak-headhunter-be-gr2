@@ -1,4 +1,4 @@
-import { ContractType, StudentStatus, TypeWork } from 'src/types';
+import { ContractType, TypeWork } from 'src/types';
 import {
   BaseEntity,
   Column,
@@ -61,9 +61,6 @@ export class StudentProfile extends BaseEntity {
 
   @Column({ type: 'text', nullable: true })
   courses: string | null;
-
-  @Column({ type: 'enum', enum: StudentStatus, default: 0 })
-  status: StudentStatus;
 
   @OneToOne(() => StudentInitial, (initial) => initial.email)
   @JoinColumn()
