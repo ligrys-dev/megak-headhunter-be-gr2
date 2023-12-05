@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
+import { StudentOrderByAndFilterOptions } from 'src/types/student/enums/studentOrderByAndFilterOptions';
 // import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 
 @Controller('/student')
@@ -29,10 +38,10 @@ export class StudentController {
   //   return this.studentService.findOneInitialProfile(email);
   // }
 
-  @Get('/:id')
-  findOneProfile(@Param('id') id: string) {
-    return this.studentService.findOneProfile(id);
-  }
+  // @Get('/:id')
+  // findOneProfile(@Param('id') id: string) {
+  //   return this.studentService.findOneProfile(id);
+  // }
 
   @Post()
   createProfile(@Body() studentDto: CreateStudentProfileDto) {
@@ -45,5 +54,18 @@ export class StudentController {
     @Body() updateStudentDto: UpdateStudentProfileDto,
   ) {
     return this.studentService.updateStudentProfile(id, updateStudentDto);
+  }
+
+  @Get('/filter/:skip?/:take?')
+  filterStudents(
+    @Param('skip') skip: unknown,
+    @Param('take') take: unknown,
+    @Query('orderBy') orderBy: StudentOrderByAndFilterOptions,
+  ) {
+    return this.studentService.filterStudents(
+      skip as number,
+      take as number,
+      orderBy,
+    );
   }
 }
