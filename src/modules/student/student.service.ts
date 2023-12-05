@@ -9,11 +9,11 @@ import {
   OneStudentInitialResponse,
   ListOfStudentProfilesResponse,
   OneStudentProfileResponse,
+  StudentFilters,
+  StudentOrderByOptions,
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
-import { StudentOrderByOptions } from 'src/types/student/enums/studentOrderByOptions';
-import { StudentFilterOptions } from 'src/types/student/enums/studentFilterOptions';
 
 @Injectable()
 export class StudentService {
@@ -126,7 +126,7 @@ export class StudentService {
     skip: number = 1,
     take: number = 10,
     orderBy: StudentOrderByOptions,
-    filters: { [key in StudentFilterOptions]: number },
+    filters: StudentFilters,
   ) {
     const queryBuilder = StudentInitial.createQueryBuilder('student')
       .innerJoinAndSelect('student.profile', 'profile')
