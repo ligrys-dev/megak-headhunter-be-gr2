@@ -132,7 +132,7 @@ export class StudentService {
       .where(`status = "${StudentStatus.AVAILABLE}"`);
 
     Object.keys(filters).forEach((filterKey) => {
-      const value = filters[filterKey];
+      const value = `"${filters[filterKey]}"`;
       queryBuilder.andWhere(`${filterKey} = ${value}`);
     });
 
