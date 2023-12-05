@@ -12,6 +12,7 @@ import {
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
+import { StudentOrderByOptions } from 'src/types/student/enums/studentOrderByOptions';
 
 @Injectable()
 export class StudentService {
@@ -85,6 +86,8 @@ export class StudentService {
       newInitialProfile[prop] = initialProfile[prop];
     });
 
+    newInitialProfile.status = StudentStatus.AVAILABLE;
+
     await newInitialProfile.save();
     return newInitialProfile;
   }
@@ -118,10 +121,22 @@ export class StudentService {
     });
   }
 
-  async filterStudents(skip: number = 1, take: number = 10, orderBy: string) {
-    const [students, studentsCount] = await StudentInitial.createQueryBuilder()
-      .innerJoinAndSelect('StudentInitial.profile', 'profile')
-      .where('1') // dodać wyszukiwanie
+  async filterStudents(
+    skip: number = 1,
+    take: number = 10,
+    orderBy: StudentOrderByOptions,
+    filters: any,
+  ) {
+    const queryBuilder = StudentInitial.createQueryBuilder('student')
+      .innerJoinAndSelect('student.profile', 'profile')
+      .where(`status = "${StudentStatus.AVAILABLE}"`);
+
+    Object.keys(filters).forEach((filterKey) => {
+      const value = filters[filterKey];
+      queryBuilder.andWhere(`${filterKey} = ${value}`);
+    });
+
+    const [students, studentsCount] = await queryBuilder
       .orderBy(orderBy ?? null, 'DESC')
       .skip((skip - 1) * take)
       .take(take)
