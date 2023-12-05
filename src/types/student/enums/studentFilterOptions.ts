@@ -1,8 +1,8 @@
-export enum StudentOrderByAndFilterOptions {
-  COURSE_COMPLETION = 'StudentInitial.courseCompletion',
-  COURSE_ENGAGEMENT = 'StudentInitial.courseEngagement',
-  PROJECT_DEGREE = 'StudentInitial.projectDegree',
-  TEAM_PROJECT_DEGREE = 'StudentInitial.teamProjectDegree',
+export enum StudentFilterOptions {
+  COURSE_COMPLETION = 'courseCompletion',
+  COURSE_ENGAGEMENT = 'courseEngagement',
+  PROJECT_DEGREE = 'projectDegree',
+  TEAM_PROJECT_DEGREE = 'teamProjectDegree',
   EXPECTED_CONTRACT_TYPE = 'profile.expectedContractType',
   EXPECTED_TYPE_WORK = 'profile.expectedTypeWork',
   EXPECTED_SALARY = 'profile.expectedSalary',
