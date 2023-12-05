@@ -13,6 +13,7 @@ import {
 import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
 import { StudentOrderByOptions } from 'src/types/student/enums/studentOrderByOptions';
+import { StudentFilterOptions } from 'src/types/student/enums/studentFilterOptions';
 
 @Injectable()
 export class StudentService {
@@ -125,16 +126,18 @@ export class StudentService {
     skip: number = 1,
     take: number = 10,
     orderBy: StudentOrderByOptions,
-    filters: any,
+    filters: { [key in StudentFilterOptions]: number },
   ) {
     const queryBuilder = StudentInitial.createQueryBuilder('student')
       .innerJoinAndSelect('student.profile', 'profile')
       .where(`status = "${StudentStatus.AVAILABLE}"`);
 
-    Object.keys(filters).forEach((filterKey) => {
-      const value = `"${filters[filterKey]}"`;
-      queryBuilder.andWhere(`${filterKey} = ${value}`);
-    });
+    if (filters) {
+      Object.keys(filters).forEach((filterKey) => {
+        const value = `"${filters[filterKey]}"`;
+        queryBuilder.andWhere(`${filterKey} = ${value}`);
+      });
+    }
 
     const [students, studentsCount] = await queryBuilder
       .orderBy(orderBy ?? null, 'DESC')
