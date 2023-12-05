@@ -10,7 +10,8 @@ import {
 import { StudentService } from './student.service';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
-import { StudentOrderByAndFilterOptions } from 'src/types/student/enums/studentOrderByAndFilterOptions';
+import { StudentOrderByOptions } from 'src/types/student/enums/studentOrderByOptions';
+import { StudentFilterOptions } from 'src/types/student/enums/studentFilterOptions';
 // import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 
 @Controller('/student')
@@ -56,16 +57,25 @@ export class StudentController {
     return this.studentService.updateStudentProfile(id, updateStudentDto);
   }
 
-  @Get('/filter/:skip?/:take?')
+  @Get('/avaliable/:skip?/:take?')
   filterStudents(
     @Param('skip') skip: unknown,
     @Param('take') take: unknown,
-    @Query('orderBy') orderBy: StudentOrderByAndFilterOptions,
+    @Query('orderBy') orderBy: StudentOrderByOptions,
+    @Query('filters') filters: { [key in StudentFilterOptions]: number },
   ) {
+    // const filters = {
+    //   courseCompletion: 2,
+    //   projectDegree: 5,
+    //   'profile.expectedContractType': ContractType.CONTRACT,
+    //   githubUsername: 'foobar',
+    // };
+
     return this.studentService.filterStudents(
       skip as number,
       take as number,
       orderBy,
+      filters,
     );
   }
 }
