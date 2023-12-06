@@ -83,8 +83,6 @@ export class StudentService {
       newInitialProfile[prop] = initialProfile[prop];
     });
 
-    newInitialProfile.user = initialProfile.user;
-
     await newInitialProfile.save();
     return newInitialProfile;
   }

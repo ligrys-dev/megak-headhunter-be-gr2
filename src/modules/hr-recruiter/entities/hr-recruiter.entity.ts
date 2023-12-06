@@ -3,7 +3,6 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -26,7 +25,6 @@ export class Recruiter extends BaseEntity {
   maxReservedStudents: number;
 
   @OneToOne(() => User, (user) => user.id)
-  @JoinColumn()
   user: User;
 
   [key: string]: unknown;

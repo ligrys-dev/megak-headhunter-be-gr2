@@ -9,7 +9,6 @@ export class HrRecruiterService {
     for (const [key, value] of Object.entries(createHrRecruiterDto)) {
       recruiter[key] = value;
     }
-    recruiter.user = createHrRecruiterDto.user;
 
     return await recruiter.save();
   }
