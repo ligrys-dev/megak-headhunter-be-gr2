@@ -10,8 +10,7 @@ import {
 import { StudentService } from './student.service';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
-import { StudentOrderByOptions } from 'src/types/student/enums/studentOrderByOptions';
-import { StudentFilterOptions } from 'src/types/student/enums/studentFilterOptions';
+import { StudentFilters, StudentOrderByOptions } from 'src/types/';
 // import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 
 @Controller('/student')
@@ -39,11 +38,6 @@ export class StudentController {
   //   return this.studentService.findOneInitialProfile(email);
   // }
 
-  // @Get('/:id')
-  // findOneProfile(@Param('id') id: string) {
-  //   return this.studentService.findOneProfile(id);
-  // }
-
   @Post()
   createProfile(@Body() studentDto: CreateStudentProfileDto) {
     return this.studentService.createStudentProfile(studentDto);
@@ -57,25 +51,27 @@ export class StudentController {
     return this.studentService.updateStudentProfile(id, updateStudentDto);
   }
 
-  @Get('/avaliable/:skip?/:take?')
+  @Get('/avaliable/:page?/:take?')
   filterStudents(
-    @Param('skip') skip: unknown,
+    @Param('page') page: unknown,
     @Param('take') take: unknown,
     @Query('orderBy') orderBy: StudentOrderByOptions,
-    @Query('filters') filters: { [key in StudentFilterOptions]: number },
+    @Query('filters') filters: string,
   ) {
-    // const filters = {
-    //   courseCompletion: 2,
-    //   projectDegree: 5,
-    //   'profile.expectedContractType': ContractType.CONTRACT,
-    //   githubUsername: 'foobar',
-    // };
+    const decodedFilters: StudentFilters = JSON.parse(
+      decodeURIComponent(filters),
+    );
 
-    return this.studentService.filterStudents(
-      skip as number,
+    return this.studentService.filterAndSortAvaliableStudents(
+      page as number,
       take as number,
       orderBy,
-      filters,
+      decodedFilters,
     );
+  }
+
+  @Get('/:id')
+  findOneProfile(@Param('id') id: string) {
+    return this.studentService.findOneProfile(id);
   }
 }

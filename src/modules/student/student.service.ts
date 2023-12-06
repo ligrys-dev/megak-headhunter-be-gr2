@@ -122,8 +122,8 @@ export class StudentService {
     });
   }
 
-  async filterStudents(
-    skip: number = 1,
+  async filterAndSortAvaliableStudents(
+    page: number = 1,
     take: number = 10,
     orderBy: StudentOrderByOptions,
     filters: StudentFilters,
@@ -141,7 +141,7 @@ export class StudentService {
 
     const [students, studentsCount] = await queryBuilder
       .orderBy(orderBy ?? null, 'DESC')
-      .skip((skip - 1) * take)
+      .skip((page - 1) * take)
       .take(take)
       .getManyAndCount();
 
