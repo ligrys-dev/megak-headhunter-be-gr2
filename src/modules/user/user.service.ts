@@ -37,6 +37,25 @@ export class UserService {
     private configService: ConfigService,
   ) {}
 
+  async getSelf(id: string) {
+    const user = await User.findOneOrFail({
+      where: { id },
+      relations: ['recruiter', 'student', 'student.profile'],
+    });
+
+    if (!user.recruiter) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { recruiter, ...result } = user;
+      return result;
+    }
+
+    if (!user.student) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { student, ...result } = user;
+      return result;
+    }
+  }
+
   async findOneByEmail(email: string) {
     return await User.findOneBy({ email });
   }
@@ -81,7 +100,13 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        await this.studentService.createInitialProfile(createStudentDto);
+        const student = await this.studentService.createInitialProfile({
+          ...createStudentDto,
+          user: newUser,
+        });
+
+        newUser.student = student;
+        await newUser.save();
 
         successfulEmails.push(createStudentDto.email);
       }
@@ -115,7 +140,14 @@ export class UserService {
     createdUsers.push({ newUser, password });
     await this.cacheManager.set('users-to-activate', createdUsers);
 
-    const recruiter = await this.hrRecruiterService.create(createRecruiterDto);
+    const recruiter = await this.hrRecruiterService.create({
+      ...createRecruiterDto,
+      user: newUser,
+    });
+
+    newUser.recruiter = recruiter;
+    await newUser.save();
+
     return { id: recruiter.id };
   }
 
