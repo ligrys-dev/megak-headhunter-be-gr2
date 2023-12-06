@@ -1,7 +1,7 @@
 import {
   ContractType,
-  NewStudentProfileInterface,
   StudentInitialInterface,
+  StudentProfileInterface,
   StudentStatus,
   TypeWork,
 } from 'src/types';
@@ -20,7 +20,8 @@ import {
   IsEmail,
 } from 'class-validator';
 
-export class CreateStudentProfileDto implements NewStudentProfileInterface {
+export class CreateStudentProfileDto implements StudentProfileInterface {
+  @IsString()
   id: string;
 
   @IsNotEmpty()
@@ -29,7 +30,7 @@ export class CreateStudentProfileDto implements NewStudentProfileInterface {
 
   @IsOptional()
   @Length(9, 20)
-  tel: string | null;
+  tel?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -48,7 +49,7 @@ export class CreateStudentProfileDto implements NewStudentProfileInterface {
   @IsOptional()
   @IsUrl({}, { each: true })
   @IsArray()
-  portfolioUrls: string[] | null;
+  portfolioUrls?: string[];
 
   @ArrayNotEmpty()
   @IsUrl({}, { each: true })
@@ -76,7 +77,7 @@ export class CreateStudentProfileDto implements NewStudentProfileInterface {
   @IsOptional()
   @IsNumber()
   @Max(99999999.99)
-  expectedSalary: number | null;
+  expectedSalary?: number;
 
   @IsBoolean()
   canTakeApprenticeship: boolean;
@@ -87,15 +88,15 @@ export class CreateStudentProfileDto implements NewStudentProfileInterface {
 
   @IsOptional()
   @IsString()
-  education: string | null;
+  education?: string;
 
   @IsOptional()
   @IsString()
-  workExperience: string | null;
+  workExperience?: string;
 
   @IsOptional()
   @IsString()
-  courses: string | null;
+  courses?: string;
 
   @IsOptional()
   @IsNumber()

@@ -14,23 +14,23 @@ export type OneStudentInitialResponse = StudentInitialInterface;
 
 export interface StudentProfileInterface {
   id: string;
-  initialData: StudentInitialInterface | null;
-  tel: string | null;
+  initialData: StudentInitialInterface;
+  tel?: string;
   firstName: string;
   lastName: string;
   githubUsername: string;
-  portfolioUrls: string[] | null;
+  portfolioUrls?: string[];
   projectUrls: string[];
   bio: string;
   expectedTypeWork: TypeWork;
   targetWorkCity: string;
   expectedContractType: ContractType;
-  expectedSalary: number | null;
+  expectedSalary?: number;
   canTakeApprenticeship: boolean;
   monthsOfCommercialExp: number;
-  education: string | null;
-  workExperience: string | null;
-  courses: string | null;
+  education?: string;
+  workExperience?: string;
+  courses?: string;
   status: StudentStatus;
 }
 
