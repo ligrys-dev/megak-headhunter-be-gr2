@@ -160,7 +160,7 @@
 
 ## 11. Filtrowanie, sortowanie i paginacja dostępnych studentów
 
-- adres `student/avaliable/:page/:take?orderBy=&filters=`
+- adres `student/avaliable/:page/:take?orderBy=&filters=` metoda GET
 - parametry page i take są opcjonalne. Domyślnie page przyjmuje wartość 1 a take 10
 - parametry query również są opcjonalne, jeżeli nic się nie przekaże lista nie zostanie przefiltrowana ani posortowana
 - query `orderBy` - odpowiedzialne za sortowanie - przyjmuje wartość z enuma `StudentOrderByOptions`
