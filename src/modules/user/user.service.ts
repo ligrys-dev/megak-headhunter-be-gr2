@@ -100,10 +100,8 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        const student = await this.studentService.createInitialProfile({
-          ...createStudentDto,
-          user: newUser,
-        });
+        const student =
+          await this.studentService.createInitialProfile(createStudentDto);
 
         newUser.student = student;
         await newUser.save();
@@ -140,10 +138,7 @@ export class UserService {
     createdUsers.push({ newUser, password });
     await this.cacheManager.set('users-to-activate', createdUsers);
 
-    const recruiter = await this.hrRecruiterService.create({
-      ...createRecruiterDto,
-      user: newUser,
-    });
+    const recruiter = await this.hrRecruiterService.create(createRecruiterDto);
 
     newUser.recruiter = recruiter;
     await newUser.save();
@@ -173,11 +168,11 @@ export class UserService {
       );
     }
 
-    const [failedEmails, successfulEmails] = studentEmails;
-
-    console.error(failedEmails);
-
-    return { failedEmails, successfulEmails };
+    if (studentEmails) {
+      const [failedEmails, successfulEmails] = studentEmails;
+      console.error(failedEmails);
+      return { failedEmails, successfulEmails };
+    }
   }
 
   async activateUser(id: string, activationToken: string) {
