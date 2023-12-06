@@ -1,4 +1,14 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { User } from 'src/modules/user/entities/user.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
+import { StudentProfile } from './student-profile.entity';
+import { Profile } from 'passport';
 
 @Entity()
 export class StudentInitial extends BaseEntity {
@@ -19,4 +29,14 @@ export class StudentInitial extends BaseEntity {
 
   @Column('simple-array')
   bonusProjectUrls: string[];
+
+  @OneToOne(() => StudentProfile, (profile) => profile.id)
+  @JoinColumn()
+  profile: Profile;
+
+  @OneToOne(() => User, (user) => user.id)
+  @JoinColumn()
+  user: User;
+
+  [key: string]: any;
 }
