@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 
 export const getMailerConfig = (configService: ConfigService) => {
-  const isSmtpMock: boolean = Boolean(+configService.get('USE_SMTP_MOCK'));
+  const isSmtpMock: boolean = !!+configService.get('USE_SMTP_MOCK');
 
   const transportConfig = !isSmtpMock
     ? {
@@ -15,7 +15,7 @@ export const getMailerConfig = (configService: ConfigService) => {
         },
       }
     : {
-        transport: `smtp://admin:admin1@localhost:2500`, // XXX Mailsluper
+        transport: `smtp://admin:admin1@127.0.0.1:2500`, // XXX Mailsluper
       };
 
   return {
