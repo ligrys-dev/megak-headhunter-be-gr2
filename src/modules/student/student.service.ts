@@ -122,15 +122,16 @@ export class StudentService {
     });
   }
 
-  async filterAndSortAvaliableStudents(
+  async filterAndSortStudents(
     page: number = 1,
     take: number = 10,
     orderBy: StudentOrderByOptions,
     filters: StudentFilters,
+    status: StudentStatus,
   ) {
     const queryBuilder = StudentInitial.createQueryBuilder('student')
       .innerJoinAndSelect('student.profile', 'profile')
-      .where(`status = "${StudentStatus.AVAILABLE}"`);
+      .where(`status = "${status}"`);
 
     if (filters) {
       Object.keys(filters).forEach((filterKey) => {

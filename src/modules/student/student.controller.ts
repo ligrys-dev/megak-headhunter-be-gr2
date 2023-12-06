@@ -10,7 +10,11 @@ import {
 import { StudentService } from './student.service';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
-import { StudentFilters, StudentOrderByOptions } from 'src/types/';
+import {
+  StudentFilters,
+  StudentOrderByOptions,
+  StudentStatus,
+} from 'src/types/';
 // import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 
 @Controller('/student')
@@ -62,11 +66,12 @@ export class StudentController {
       decodeURIComponent(filters),
     );
 
-    return this.studentService.filterAndSortAvaliableStudents(
+    return this.studentService.filterAndSortStudents(
       page as number,
       take as number,
       orderBy,
       decodedFilters,
+      StudentStatus.AVAILABLE,
     );
   }
 
