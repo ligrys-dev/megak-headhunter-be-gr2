@@ -26,15 +26,15 @@
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
   }<br/>
-Przykładowa zawartość pliku .csv :
-`email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
+  Przykładowa zawartość pliku .csv :
+  `email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
   asd@asdghjghjghj.com;4;4;3;5;https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2, https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2
   ok@okrj6jfghjghj.com;2;2;2;2;www.cos.com,www.asd.com,www.aha.it
   ssd@example.io;3;3;5;5;urlexample.asd,wp.pl,https://megak.pl
   aaa@test.pl;3.5;2;5;1;https://megak.pl`
-Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
+  Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania<br/>
-(można to sprawdzić przez mailsluprer na http://localhost:8080)
+  (można to sprawdzić przez mailsluprer na http://localhost:8080)
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json: <br/>
   {type `FailedEmails`, type `SuccesfulEmails`}
 
@@ -166,3 +166,8 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
 
 - adres `/hr` metoda: GET
 - adres `/hr/:id` metoda: GET
+
+## 12. Pobieranie siebie
+
+- adres `/user` metoda GET
+- pobiera swoją encję za pomocą id usera z requestu
