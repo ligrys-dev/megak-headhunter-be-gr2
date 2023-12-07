@@ -1,4 +1,3 @@
-import { User } from 'src/modules/user/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -33,9 +32,6 @@ export class StudentInitial extends BaseEntity {
   @OneToOne(() => StudentProfile, (profile) => profile.id)
   @JoinColumn()
   profile: Profile;
-
-  @OneToOne(() => User, (user) => user.id)
-  user: User;
 
   [key: string]: any;
 }

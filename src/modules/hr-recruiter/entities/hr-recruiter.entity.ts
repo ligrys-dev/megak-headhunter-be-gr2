@@ -1,11 +1,4 @@
-import { User } from 'src/modules/user/entities/user.entity';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Recruiter extends BaseEntity {
@@ -23,9 +16,6 @@ export class Recruiter extends BaseEntity {
 
   @Column({ type: 'smallint' })
   maxReservedStudents: number;
-
-  @OneToOne(() => User, (user) => user.id)
-  user: User;
 
   [key: string]: unknown;
 }
