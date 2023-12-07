@@ -63,7 +63,7 @@ export class StudentController {
     @Query('filters') filters: string,
   ) {
     const decodedFilters: StudentFilters = JSON.parse(
-      decodeURIComponent(filters),
+      decodeURIComponent(filters ?? null),
     );
 
     return this.studentService.filterAndSortStudents(
