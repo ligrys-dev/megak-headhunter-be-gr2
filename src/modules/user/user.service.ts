@@ -189,6 +189,10 @@ export class UserService {
       const [failedEmails, successfulEmails] = studentEmails;
       console.error(failedEmails);
       return { failedEmails, successfulEmails };
+    } else {
+      const failedEmails: FailedEmails = [];
+      const successfulEmails: SuccessfulEmails = [users[0].newUser.email];
+      return { failedEmails, successfulEmails };
     }
   }
 
