@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ForbiddenException,
   HttpException,
@@ -43,15 +44,31 @@ export class UserService {
       relations: ['recruiter', 'student', 'student.profile'],
     });
 
+    if (user.role === Role.ADMIN) {
+      return { id: user.id, email: user.email, role: user.role };
+    }
+
     if (!user.recruiter) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { recruiter, ...result } = user;
+      const {
+        recruiter,
+        activationToken,
+        createdAt,
+        isActive,
+        pwdHash,
+        ...result
+      } = user;
       return result;
     }
 
     if (!user.student) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { student, ...result } = user;
+      const {
+        student,
+        activationToken,
+        createdAt,
+        isActive,
+        pwdHash,
+        ...result
+      } = user;
       return result;
     }
   }
