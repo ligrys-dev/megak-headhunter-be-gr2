@@ -26,15 +26,15 @@
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
   }<br/>
-Przykładowa zawartość pliku .csv :
-`email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
-  asd@asdghjghjghj.com;4;4;3;5;https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2, https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2
-  ok@okrj6jfghjghj.com;2;2;2;2;www.cos.com,www.asd.com,www.aha.it
-  ssd@example.io;3;3;5;5;urlexample.asd,wp.pl,https://megak.pl
-  aaa@test.pl;3.5;2;5;1;https://megak.pl`
-Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
+  Przykładowa zawartość pliku .csv :
+  `email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
+asd@asdghjghjghj.com;4;4;3;5;https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2, https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2
+ok@okrj6jfghjghj.com;2;2;2;2;www.cos.com,www.asd.com,www.aha.it
+ssd@example.io;3;3;5;5;urlexample.asd,wp.pl,https://megak.pl
+aaa@test.pl;3.5;2;5;1;https://megak.pl`
+  Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania<br/>
-(można to sprawdzić przez mailsluprer na http://localhost:8080)
+  (można to sprawdzić przez mailsluprer na http://localhost:8080)
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json: <br/>
   {type `FailedEmails`, type `SuccesfulEmails`}
 
@@ -177,3 +177,10 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
 - filters w adresie url musi zostać przekształcone do stringa i componentu url: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
 - zwracany jest json: {students(tablica ze studentami), studentsCount(liczba pobranych studenów), numberOfPages(liczba stron)}
 - przykładowy endpoint: `http://localhost:3001/student/avaliable/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
+
+## 12. Pobieranie siebie
+
+- adres `/user` metoda GET
+- pobiera swoją encję za pomocą id usera z requestu
+- zwracany jest json zawierający id, email, rolę i encję studenta(wraz z profilem) lub hr - w zależności od roli.
+- 

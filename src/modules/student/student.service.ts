@@ -77,10 +77,8 @@ export class StudentService {
     return newStudent;
   }
 
-  async createInitialProfile(
-    initialProfile: CreateStudentInitialDto,
-  ): Promise<OneStudentInitialResponse> {
-    const newInitialProfile: CreateStudentInitialDto = new StudentInitial();
+  async createInitialProfile(initialProfile: CreateStudentInitialDto) {
+    const newInitialProfile = new StudentInitial();
 
     Object.keys(initialProfile).forEach((prop) => {
       newInitialProfile[prop] = initialProfile[prop];
