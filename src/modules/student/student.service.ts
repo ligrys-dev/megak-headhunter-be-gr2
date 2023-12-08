@@ -168,4 +168,13 @@ export class StudentService {
 
     return { students, studentsCount, numberOfPages };
   }
+
+  async markEmployed(studentUserId: string) {
+    const { student } = (await this.userService.getSelf(
+      studentUserId,
+    )) as UserType;
+
+    student.status = StudentStatus.HIRED;
+    return await student.save();
+  }
 }

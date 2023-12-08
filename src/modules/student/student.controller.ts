@@ -50,14 +50,6 @@ export class StudentController {
     return this.studentService.createStudentProfile(studentDto);
   }
 
-  @Patch('/:id')
-  updateProfile(
-    @Param('id') id: string,
-    @Body() updateStudentDto: UpdateStudentProfileDto,
-  ) {
-    return this.studentService.updateStudentProfile(id, updateStudentDto);
-  }
-
   @Get('/list/:status?/:page?/:take?/')
   filterStudents(
     @Req() req: Request,
@@ -84,5 +76,18 @@ export class StudentController {
   @Get('/:id')
   findOneProfile(@Param('id') id: string) {
     return this.studentService.findOneProfile(id);
+  }
+
+  @Patch('/hired')
+  markEmplyed(@Req() req: Request) {
+    return this.studentService.markEmployed((req.user as UserFromReq).userId);
+  }
+
+  @Patch('/:id')
+  updateProfile(
+    @Param('id') id: string,
+    @Body() updateStudentDto: UpdateStudentProfileDto,
+  ) {
+    return this.studentService.updateStudentProfile(id, updateStudentDto);
   }
 }
