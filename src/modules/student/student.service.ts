@@ -9,6 +9,8 @@ import {
   OneStudentInitialResponse,
   ListOfStudentProfilesResponse,
   OneStudentProfileResponse,
+  StudentFilters,
+  StudentOrderByOptions,
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
@@ -83,6 +85,8 @@ export class StudentService {
       newInitialProfile[prop] = initialProfile[prop];
     });
 
+    newInitialProfile.status = StudentStatus.AVAILABLE;
+
     await newInitialProfile.save();
     return newInitialProfile;
   }
@@ -114,5 +118,34 @@ export class StudentService {
         githubUsername,
       },
     });
+  }
+
+  async filterAndSortStudents(
+    page: number = 1,
+    take: number = 10,
+    orderBy: StudentOrderByOptions,
+    filters: StudentFilters,
+    status: StudentStatus,
+  ) {
+    const queryBuilder = StudentInitial.createQueryBuilder('student')
+      .innerJoinAndSelect('student.profile', 'profile')
+      .where(`status = "${status}"`);
+
+    if (filters) {
+      Object.keys(filters).forEach((filterKey) => {
+        const value = `"${filters[filterKey]}"`;
+        queryBuilder.andWhere(`${filterKey} = ${value}`);
+      });
+    }
+
+    const [students, studentsCount] = await queryBuilder
+      .orderBy(orderBy ?? null, 'DESC')
+      .skip((page - 1) * take)
+      .take(take)
+      .getManyAndCount();
+
+    const numberOfPages = Math.ceil(studentsCount / take);
+
+    return { students, studentsCount, numberOfPages };
   }
 }

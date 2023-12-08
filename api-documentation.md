@@ -167,6 +167,17 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - adres `/hr` metoda: GET
 - adres `/hr/:id` metoda: GET
 
+## 11. Filtrowanie, sortowanie i paginacja dostępnych studentów
+
+- adres `student/avaliable/:page/:take?orderBy=&filters=` metoda GET
+- parametry page i take są opcjonalne. Domyślnie page przyjmuje wartość 1 a take 10
+- parametry query również są opcjonalne, jeżeli nic się nie przekaże lista nie zostanie przefiltrowana ani posortowana
+- query `orderBy` - odpowiedzialne za sortowanie - przyjmuje wartość z enuma `StudentOrderByOptions`
+- query `filters` - odpowiedzialne za filtrowanie - przyjmuje obiekt filters, który implementuje interface `StudentFilters`, każde z pól jest opcjonalne
+- filters w adresie url musi zostać przekształcone do stringa i componentu url: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
+- zwracany jest json: {students(tablica ze studentami), studentsCount(liczba pobranych studenów), numberOfPages(liczba stron)}
+- przykładowy endpoint: `http://localhost:3001/student/avaliable/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
+
 ## 12. Pobieranie siebie
 
 - adres `/user` metoda GET
