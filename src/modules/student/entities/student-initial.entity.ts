@@ -3,11 +3,13 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 import { StudentStatus } from 'src/types';
 import { StudentProfile } from './student-profile.entity';
+import { Recruiter } from 'src/modules/hr-recruiter/entities/hr-recruiter.entity';
 
 @Entity()
 export class StudentInitial extends BaseEntity {
@@ -35,6 +37,9 @@ export class StudentInitial extends BaseEntity {
   @OneToOne(() => StudentProfile, (profile) => profile.id)
   @JoinColumn()
   profile: StudentProfile;
+
+  @ManyToOne(() => Recruiter, (recruiter) => recruiter.reservedStudents)
+  recruiter: Recruiter;
 
   [key: string]: any;
 }
