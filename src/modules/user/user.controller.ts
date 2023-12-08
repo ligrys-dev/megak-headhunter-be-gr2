@@ -17,6 +17,8 @@ import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dt
 import { Request } from 'express';
 import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { config } from 'dotenv';
+config();
 
 @Controller('user')
 export class UserController {
@@ -54,6 +56,7 @@ export class UserController {
   }
 
   @Public()
+  @Redirect(process.env.CORS_ORIGIN)
   @Get('/activate/:id/:activationToken')
   activateUser(
     @Param('id') id: string,
