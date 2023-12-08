@@ -2,7 +2,6 @@ import {
   ContractType,
   NewStudentProfileInterface,
   StudentInitialInterface,
-  StudentStatus,
   TypeWork,
 } from 'src/types';
 import {
@@ -96,11 +95,6 @@ export class CreateStudentProfileDto implements NewStudentProfileInterface {
   @IsOptional()
   @IsString()
   courses: string | null;
-
-  @IsOptional()
-  @IsNumber()
-  @Max(2)
-  status: StudentStatus;
 
   [key: string]: any;
 }

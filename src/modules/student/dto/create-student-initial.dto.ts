@@ -3,11 +3,12 @@ import {
   IsArray,
   IsEmail,
   IsNumber,
+  IsOptional,
   IsUrl,
   Max,
   Min,
 } from 'class-validator';
-import { StudentInitialInterface } from 'src/types';
+import { StudentInitialInterface, StudentStatus } from 'src/types';
 
 export class CreateStudentInitialDto implements StudentInitialInterface {
   @IsEmail()
@@ -32,6 +33,11 @@ export class CreateStudentInitialDto implements StudentInitialInterface {
   @Min(0)
   @Max(5)
   teamProjectDegree: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Max(2)
+  status: StudentStatus;
 
   @IsArray()
   @ArrayNotEmpty()
