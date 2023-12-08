@@ -205,3 +205,4 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - adres `/student/hired` metoda PATCH
 - zmienia status studenta na zatrudniony
 - student jest pobierany z zalogowanego usera, nie trzeba nigdze przekazywać id ani emaila
+

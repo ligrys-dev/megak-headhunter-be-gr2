@@ -52,7 +52,6 @@ export class StudentService {
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
     });
-    newStudent.status = StudentStatus.AVAILABLE;
 
     const checkGitHubUsername = await fetch(
       `https://api.github.com/users/${newStudent.githubUsername}`,

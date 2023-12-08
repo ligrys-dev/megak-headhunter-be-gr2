@@ -30,7 +30,7 @@ export class StudentInitial extends BaseEntity {
 
   @Column('simple-array')
   bonusProjectUrls: string[];
-
+  
   @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;
 
