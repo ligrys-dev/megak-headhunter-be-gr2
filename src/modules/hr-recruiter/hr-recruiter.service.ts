@@ -30,7 +30,7 @@ export class HrRecruiterService {
     return await Recruiter.findOneByOrFail({ id });
   }
 
-  async reseveStudent(studentEmail: string, recruiterUserId: string) {
+  async reserveStudent(studentEmail: string, recruiterUserId: string) {
     const student =
       await this.studentService.findOneInitialProfile(studentEmail);
 
