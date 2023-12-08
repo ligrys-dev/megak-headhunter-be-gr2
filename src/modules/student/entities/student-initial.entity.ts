@@ -7,7 +7,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { StudentProfile } from './student-profile.entity';
-import { Profile } from 'passport';
+import { StudentStatus } from 'src/types';
 
 @Entity()
 export class StudentInitial extends BaseEntity {
@@ -28,10 +28,13 @@ export class StudentInitial extends BaseEntity {
 
   @Column('simple-array')
   bonusProjectUrls: string[];
+  
+  @Column({ type: 'enum', enum: StudentStatus, default: 0 })
+  status: StudentStatus;
 
   @OneToOne(() => StudentProfile, (profile) => profile.id)
   @JoinColumn()
-  profile: Profile;
+  profile: StudentProfile;
 
   [key: string]: any;
 }
