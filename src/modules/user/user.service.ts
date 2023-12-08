@@ -5,6 +5,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  forwardRef,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import {
@@ -31,10 +32,11 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class UserService {
   constructor(
+    @Inject(forwardRef(() => StudentService))
+    private studentService: StudentService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private mailService: MailService,
     private hrRecruiterService: HrRecruiterService,
-    private studentService: StudentService,
     private configService: ConfigService,
   ) {}
 
