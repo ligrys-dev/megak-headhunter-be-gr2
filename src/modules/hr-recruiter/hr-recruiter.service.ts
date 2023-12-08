@@ -38,6 +38,12 @@ export class HrRecruiterService {
       recruiterUserId,
     )) as UserType;
 
+    if (student.status === StudentStatus.CONVERSATION)
+      throw new Error('This student is not avaliable!');
+
+    if (student.status === StudentStatus.HIRED)
+      throw new Error('This student is already hired!');
+
     student.recruiter = recruiter;
     student.status = StudentStatus.CONVERSATION;
     student.reservationExpirationDate = new Date(
