@@ -32,12 +32,13 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class UserService {
   constructor(
+    private configService: ConfigService,
+    private mailService: MailService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(forwardRef(() => StudentService))
     private studentService: StudentService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private mailService: MailService,
+    @Inject(forwardRef(() => HrRecruiterService))
     private hrRecruiterService: HrRecruiterService,
-    private configService: ConfigService,
   ) {}
 
   async getSelf(id: string) {
