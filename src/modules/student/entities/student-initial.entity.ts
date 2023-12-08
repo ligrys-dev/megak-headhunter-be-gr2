@@ -34,6 +34,9 @@ export class StudentInitial extends BaseEntity {
   @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;
 
+  @Column({ type: 'date', nullable: true })
+  reservationExpirationDate: Date;
+
   @OneToOne(() => StudentProfile, (profile) => profile.id)
   @JoinColumn()
   profile: StudentProfile;
