@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Req } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Req } from '@nestjs/common';
 import { HrRecruiterService } from './hr-recruiter.service';
 import { Request } from 'express';
 import { UserFromReq } from 'src/types';
@@ -12,16 +12,16 @@ export class HrRecruiterController {
     return this.hrRecruiterService.findAll();
   }
 
-  @Get('/reserve/:email')
+  @Get('/:id')
+  findOne(@Param('id') id: string) {
+    return this.hrRecruiterService.findOne(id);
+  }
+
+  @Patch('/reserve/:email')
   reserveStudent(@Req() req: Request, @Param('email') email: string) {
     return this.hrRecruiterService.reseveStudent(
       email,
       (req.user as UserFromReq).userId,
     );
-  }
-
-  @Get('/:id')
-  findOne(@Param('id') id: string) {
-    return this.hrRecruiterService.findOne(id);
   }
 }
