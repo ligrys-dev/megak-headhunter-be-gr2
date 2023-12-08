@@ -33,16 +33,16 @@ export class StudentInitial extends BaseEntity {
   
   @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;
-
+  
   @Column({ type: 'datetime', nullable: true })
-  reservationExpirationDate: Date;
+  reservationExpirationDate: Date | null;
 
   @OneToOne(() => StudentProfile, (profile) => profile.id)
   @JoinColumn()
-  profile: StudentProfile;
+  profile: StudentProfile | null;
 
   @ManyToOne(() => Recruiter, (recruiter) => recruiter.reservedStudents)
-  recruiter: Recruiter;
+  recruiter: Recruiter | null;
 
   [key: string]: any;
 }
