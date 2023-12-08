@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ForbiddenException,
   HttpException,
@@ -36,6 +37,41 @@ export class UserService {
     private studentService: StudentService,
     private configService: ConfigService,
   ) {}
+
+  async getSelf(id: string) {
+    const user = await User.findOneOrFail({
+      where: { id },
+      relations: ['recruiter', 'student', 'student.profile'],
+    });
+
+    if (user.role === Role.ADMIN) {
+      return { id: user.id, email: user.email, role: user.role };
+    }
+
+    if (!user.recruiter) {
+      const {
+        recruiter,
+        activationToken,
+        createdAt,
+        isActive,
+        pwdHash,
+        ...result
+      } = user;
+      return result;
+    }
+
+    if (!user.student) {
+      const {
+        student,
+        activationToken,
+        createdAt,
+        isActive,
+        pwdHash,
+        ...result
+      } = user;
+      return result;
+    }
+  }
 
   async findOneByEmail(email: string) {
     return await User.findOneBy({ email });
@@ -81,7 +117,11 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        await this.studentService.createInitialProfile(createStudentDto);
+        const student =
+          await this.studentService.createInitialProfile(createStudentDto);
+
+        newUser.student = student;
+        await newUser.save();
 
         successfulEmails.push(createStudentDto.email);
       }
@@ -116,6 +156,10 @@ export class UserService {
     await this.cacheManager.set('users-to-activate', createdUsers);
 
     const recruiter = await this.hrRecruiterService.create(createRecruiterDto);
+
+    newUser.recruiter = recruiter;
+    await newUser.save();
+
     return { id: recruiter.id };
   }
 
@@ -141,11 +185,15 @@ export class UserService {
       );
     }
 
-    const [failedEmails, successfulEmails] = studentEmails;
-
-    console.error(failedEmails);
-
-    return { failedEmails, successfulEmails };
+    if (studentEmails) {
+      const [failedEmails, successfulEmails] = studentEmails;
+      console.error(failedEmails);
+      return { failedEmails, successfulEmails };
+    } else {
+      const failedEmails: FailedEmails = [];
+      const successfulEmails: SuccessfulEmails = [users[0].newUser.email];
+      return { failedEmails, successfulEmails };
+    }
   }
 
   async activateUser(id: string, activationToken: string) {

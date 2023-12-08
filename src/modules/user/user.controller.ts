@@ -25,6 +25,11 @@ export class UserController {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
+  @Get('/')
+  getSelf(@Req() req: Request) {
+    return this.userService.getSelf((req.user as UserFromReq).userId);
+  }
+
   @Get('/students')
   @Redirect('/user/sendActivationMail')
   async createStudentUsers() {
@@ -48,6 +53,7 @@ export class UserController {
     return this.userService.sendActivationMail(users, studentEmails);
   }
 
+  @Public()
   @Get('/activate/:id/:activationToken')
   activateUser(
     @Param('id') id: string,

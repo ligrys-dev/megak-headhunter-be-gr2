@@ -3,7 +3,6 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -66,6 +65,5 @@ export class StudentProfile extends BaseEntity {
   status: StudentStatus;
 
   @OneToOne(() => StudentInitial, (initial) => initial.email)
-  @JoinColumn()
   initialData: StudentInitial;
 }

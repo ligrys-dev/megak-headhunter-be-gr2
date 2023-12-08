@@ -3,10 +3,12 @@ import {
   IsArray,
   IsEmail,
   IsNumber,
+  IsOptional,
   IsUrl,
   Max,
   Min,
 } from 'class-validator';
+import { User } from 'src/modules/user/entities/user.entity';
 import { StudentInitialInterface } from 'src/types';
 
 export class CreateStudentInitialDto implements StudentInitialInterface {
@@ -37,6 +39,9 @@ export class CreateStudentInitialDto implements StudentInitialInterface {
   @ArrayNotEmpty()
   @IsUrl({}, { each: true })
   bonusProjectUrls: string[];
+
+  @IsOptional()
+  user: User;
 
   [key: string]: any;
 }

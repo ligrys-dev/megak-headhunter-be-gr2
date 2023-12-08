@@ -1,9 +1,13 @@
+import { Recruiter } from 'src/modules/hr-recruiter/entities/hr-recruiter.entity';
+import { StudentInitial } from 'src/modules/student/entities/student-initial.entity';
 import { Role } from 'src/types';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -29,6 +33,14 @@ export class User extends BaseEntity {
 
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @OneToOne(() => Recruiter, (recruiter) => recruiter.id)
+  @JoinColumn()
+  recruiter: Recruiter;
+
+  @OneToOne(() => StudentInitial, (student) => student.email)
+  @JoinColumn()
+  student: StudentInitial;
 
   [key: string]: any;
 }
