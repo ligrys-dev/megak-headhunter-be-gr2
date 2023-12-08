@@ -19,7 +19,7 @@ export class HrRecruiterController {
 
   @Patch('/reserve/:email')
   reserveStudent(@Req() req: Request, @Param('email') email: string) {
-    return this.hrRecruiterService.reseveStudent(
+    return this.hrRecruiterService.reserveStudent(
       email,
       (req.user as UserFromReq).userId,
     );
