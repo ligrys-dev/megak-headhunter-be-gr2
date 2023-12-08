@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Query,
+  Req,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
@@ -14,7 +15,9 @@ import {
   StudentFilters,
   StudentOrderByOptions,
   StudentStatus,
+  UserFromReq,
 } from 'src/types/';
+import { Request } from 'express';
 // import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 
 @Controller('/student')
@@ -55,8 +58,10 @@ export class StudentController {
     return this.studentService.updateStudentProfile(id, updateStudentDto);
   }
 
-  @Get('/avaliable/:page?/:take?')
+  @Get('/list/:status?/:page?/:take?/')
   filterStudents(
+    @Req() req: Request,
+    @Param('status') status: unknown,
     @Param('page') page: unknown,
     @Param('take') take: unknown,
     @Query('orderBy') orderBy: StudentOrderByOptions,
@@ -69,9 +74,10 @@ export class StudentController {
     return this.studentService.filterAndSortStudents(
       page as number,
       take as number,
+      status as StudentStatus,
       orderBy,
       decodedFilters,
-      StudentStatus.AVAILABLE,
+      (req.user as UserFromReq).userId,
     );
   }
 

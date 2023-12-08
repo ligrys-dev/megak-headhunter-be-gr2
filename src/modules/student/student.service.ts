@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
@@ -6,7 +6,6 @@ import { StudentInitial } from './entities/student-initial.entity';
 import {
   StudentStatus,
   ListOfStudentInitialResponse,
-  OneStudentInitialResponse,
   ListOfStudentProfilesResponse,
   OneStudentProfileResponse,
   StudentFilters,
@@ -14,16 +13,19 @@ import {
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
+import { UserService } from '../user/user.service';
+import { UserType } from 'src/types/user/user';
 
 @Injectable()
 export class StudentService {
+  constructor(
+    @Inject(forwardRef(() => UserService)) private userService: UserService,
+  ) {}
   async findAllInitialProfile(): Promise<ListOfStudentInitialResponse> {
     return StudentInitial.find();
   }
 
-  async findOneInitialProfile(
-    email: string,
-  ): Promise<OneStudentInitialResponse> {
+  async findOneInitialProfile(email: string) {
     return StudentInitial.findOneOrFail({
       where: { email },
     });
@@ -120,16 +122,34 @@ export class StudentService {
     });
   }
 
+  async findAllReservedStudents(recruiterId: string) {
+    return await StudentInitial.find({
+      where: {
+        recruiter: { recruiterId },
+      },
+      relations: ['profile'],
+    });
+  }
+
   async filterAndSortStudents(
     page: number = 1,
     take: number = 10,
+    status: StudentStatus = StudentStatus.AVAILABLE,
     orderBy: StudentOrderByOptions,
     filters: StudentFilters,
-    status: StudentStatus,
+    recruiterUserId: string,
   ) {
+    const { recruiter } = (await this.userService.getSelf(
+      recruiterUserId,
+    )) as UserType;
+
     const queryBuilder = StudentInitial.createQueryBuilder('student')
       .innerJoinAndSelect('student.profile', 'profile')
       .where(`status = "${status}"`);
+
+    if (status === StudentStatus.CONVERSATION) {
+      queryBuilder.andWhere(`recruiter = "${recruiter.id}"`);
+    }
 
     if (filters) {
       Object.keys(filters).forEach((filterKey) => {
