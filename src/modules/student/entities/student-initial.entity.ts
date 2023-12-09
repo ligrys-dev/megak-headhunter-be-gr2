@@ -2,7 +2,6 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryColumn,
@@ -30,15 +29,16 @@ export class StudentInitial extends BaseEntity {
 
   @Column('simple-array')
   bonusProjectUrls: string[];
-  
+
   @Column({ type: 'enum', enum: StudentStatus, default: 0 })
   status: StudentStatus;
-  
+
   @Column({ type: 'datetime', nullable: true })
   reservationExpirationDate: Date | null;
 
-  @OneToOne(() => StudentProfile, (profile) => profile.id)
-  @JoinColumn()
+  @OneToOne(() => StudentProfile, (profile) => profile.initialData, {
+    eager: true,
+  })
   profile: StudentProfile | null;
 
   @ManyToOne(() => Recruiter, (recruiter) => recruiter.reservedStudents)
