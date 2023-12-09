@@ -39,11 +39,11 @@ export class StudentController {
     return this.studentService.findAllInitialProfile();
   }
 
-  // ten endpoint nie będzie chyba potrzebny, ale na razie może tu zostać
-  // @Get('/initial/:email')
-  // findOneInitialProfile(@Param('email') email: string) {
-  //   return this.studentService.findOneInitialProfile(email);
-  // }
+  // po ustanowieniu relacji w bazach danych ten endpoint będzie chyba najważniejszy przy pobieraniu wszystkich danych pojedynczego studenta, trzeba się zastanowić czy nie zamienić adresu tego endpointu z adresem '/:id', który teraz służy do pobrania tylko danych profilowych.
+  @Get('/initial/:email')
+  findOneInitialProfile(@Param('email') email: string) {
+    return this.studentService.findOneInitialProfile(email);
+  }
 
   @Post()
   createProfile(@Body() studentDto: CreateStudentProfileDto) {
