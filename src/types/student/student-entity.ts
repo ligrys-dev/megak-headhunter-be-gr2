@@ -8,6 +8,7 @@ export interface StudentInitialInterface {
   teamProjectDegree: number;
   status: StudentStatus;
   bonusProjectUrls: string[];
+  profile?: StudentProfileInterface;
 }
 
 export type ListOfStudentInitialResponse = StudentInitialInterface[];

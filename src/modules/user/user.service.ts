@@ -5,6 +5,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  forwardRef,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import {
@@ -31,11 +32,13 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private mailService: MailService,
-    private hrRecruiterService: HrRecruiterService,
-    private studentService: StudentService,
     private configService: ConfigService,
+    private mailService: MailService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @Inject(forwardRef(() => StudentService))
+    private studentService: StudentService,
+    @Inject(forwardRef(() => HrRecruiterService))
+    private hrRecruiterService: HrRecruiterService,
   ) {}
 
   async getSelf(id: string) {
@@ -88,7 +91,7 @@ export class UserService {
 
     try {
       for (const createStudentDto of createStudentDtos) {
-        const validation = await this.validateStudentInital(createStudentDto);
+        const validation = await this.validateStudentInitial(createStudentDto);
 
         if (!validation.isValid) {
           failedEmails.push({
@@ -117,10 +120,8 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        const student =
+        newUser.student =
           await this.studentService.createInitialProfile(createStudentDto);
-
-        newUser.student = student;
         await newUser.save();
 
         successfulEmails.push(createStudentDto.email);
@@ -174,14 +175,14 @@ export class UserService {
       await this.mailService.sendMail(
         email,
         'headhunter-app account activation',
-        `<p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
+        `<div><p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
         <a href="${appPath}/user/activate/${id}/${activationToken}">
           ${appPath}/user/activate/${id}/${activationToken}</a>
-        <p>Twoje tymczasowe haslo: <strong>${user.password}</strong></p>
-        <p>Po zalogowaniu sie po raz pierwszy, zalecamy zmiane hasla na bardziej bezpieczne.</p>
-        <p>Dziekujemy za korzystanie z naszej aplikacji!</p>
-        <p>Z powazaniem,</p>
-        MegaK v3 gr2`,
+        <p>Twoje tymczasowe hasło: <strong>${user.password}</strong></p>
+        <p>Po zalogowaniu się po raz pierwszy zalecamy zmianę hasła na bardziej bezpieczne.</p>
+        <p>Dziękujemy za korzystanie z naszej aplikacji!</p>
+        <p>Z poważaniem,</p>
+        MegaK v3 gr2</div>`, // naprawić problem z polskimi znakami oraz linkiem
       );
     }
 
@@ -240,15 +241,14 @@ export class UserService {
     return { ok: true };
   }
 
-  async validateStudentInital(createStudentDto: CreateStudentInitialDto) {
+  async validateStudentInitial(createStudentDto: CreateStudentInitialDto) {
     const student = plainToClass(CreateStudentInitialDto, createStudentDto);
 
     const errors = await validate(student);
 
     if (errors.length > 0) {
       const errorDetails = errors.map((error) => {
-        const constraints = Object.values(error.constraints).join(', ');
-        return constraints;
+        return Object.values(error.constraints).join(', ');
       });
 
       return {
