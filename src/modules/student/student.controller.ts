@@ -79,7 +79,7 @@ export class StudentController {
   }
 
   @Patch('/hired')
-  markEmplyed(@Req() req: Request) {
+  markEmployed(@Req() req: Request) {
     return this.studentService.markEmployed((req.user as UserFromReq).userId);
   }
 

@@ -20,6 +20,7 @@ import {
 } from 'class-validator';
 
 export class CreateStudentProfileDto implements NewStudentProfileInterface {
+  @IsString()
   id: string;
 
   @IsNotEmpty()
