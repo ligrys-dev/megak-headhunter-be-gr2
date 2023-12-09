@@ -148,7 +148,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - aktualizuje profil kursanta,
 - zwraca zaktualizowany obiekt.
 
-### Lista z danymi inicjacyjnymi dla profili
+### Lista z danymi inicjacyjnymi dla profili (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
 
 - adres `/student/initial` metoda: GET,
 - zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
