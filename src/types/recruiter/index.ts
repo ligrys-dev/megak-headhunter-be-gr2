@@ -1,1 +1,1 @@
-export * from './recruiter-entity';
+export * from './recruiter-entity.interface';
