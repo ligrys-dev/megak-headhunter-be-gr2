@@ -1,4 +1,5 @@
 import { StudentStatus, TypeWork, ContractType } from './enums';
+import { RecruiterInterface } from 'src/types';
 
 export interface StudentInitialInterface {
   email: string;
@@ -9,6 +10,8 @@ export interface StudentInitialInterface {
   status: StudentStatus;
   bonusProjectUrls: string[];
   profile?: StudentProfileInterface;
+  recruiter?: RecruiterInterface;
+  reservationExpirationDate?: Date;
 }
 
 export type OneStudentInitialResponse = StudentInitialInterface;
