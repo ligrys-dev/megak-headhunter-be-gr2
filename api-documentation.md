@@ -1,5 +1,6 @@
 ### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta. Przy pracy developerskiej jest to 'http://localhost:3001'. W kodzie powinno to być zapisane w zmiennej, aby można było to łatwo zmienić przy wrzucaniu na serwer.
 
+
 #### Spis treści:
 
 1. [Import studentów](#1-import-studentów)
@@ -12,6 +13,11 @@
 8. [Resetowanie hasła](#8-resetowanie-hasła)
 9. [Moduł Kursanta (profil i dane inicjacyjne)](#9-moduł-kursanta-profil-i-dane-inicjacyjne)
 10. [Moduł hr](#10-moduł-hr)
+11. [Filtrowanie, sortowanie i paginacja dostępnych studentów](#11-filtrowanie-sortowanie-i-paginacja-dostępnych-studentów)
+12. [Pobieranie siebie](#12-pobieranie-siebie)
+13. [Rezerwacja Studenta](#13-rezerwacja-studenta)
+14. [Zaznaczenie przez studenta, że został zatrudniony](#14-zaznaczenie-przez-studenta-że-został-zatrudniony)
+15. [Widok tabel w bazie danych oraz relacji](#15-widok-tabel-w-bazie-danych-oraz-relacji)
 
 ## 1. Import studentów:
 
@@ -25,16 +31,17 @@
   projectDegree: number;<br/>
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
+  profile?: StudentProfileInterface; `<< TEGO OCZYWIŚCIE NIE DODAJEMY PRZY TORZENIU, to będzie automatycznie przypisane przy stworzeniu swojego profilu przez kursanta`<br/>
   }<br/>
-Przykładowa zawartość pliku .csv :
-`email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
-  asd@asdghjghjghj.com;4;4;3;5;https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2, https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2
-  ok@okrj6jfghjghj.com;2;2;2;2;www.cos.com,www.asd.com,www.aha.it
-  ssd@example.io;3;3;5;5;urlexample.asd,wp.pl,https://megak.pl
-  aaa@test.pl;3.5;2;5;1;https://megak.pl`
-Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
+  Przykładowa zawartość pliku .csv :
+  `email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
+asd@asdghjghjghj.com;4;4;3;5;https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2, https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2
+ok@okrj6jfghjghj.com;2;2;2;2;www.cos.com,www.asd.com,www.aha.it
+ssd@example.io;3;3;5;5;urlexample.asd,wp.pl,https://megak.pl
+aaa@test.pl;3.5;2;5;1;https://megak.pl`
+  Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
 - wysyłane są maile aktywacyjne i hasło pierwszego logowania<br/>
-(można to sprawdzić przez mailsluprer na http://localhost:8080)
+  (można to sprawdzić przez mailsluprer na http://localhost:8080)
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json: <br/>
   {type `FailedEmails`, type `SuccesfulEmails`}
 
@@ -54,7 +61,7 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
   "error": "Bad Request",<br/>
   "statusCode": 400<br/>
   }<br/>
-- res - json: {ok: true} | patrz wyżej
+- res — json: {ok: true} | patrz wyżej
 
 ## 3. Logowanie:
 
@@ -105,7 +112,7 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
 - zwraca tablicę obiektów z danymi studentów:<br/>
   `StudentProfileInterface` {<br/>
   id: string;<br/>
-  initialData: StudentInitialInterface;<br/>
+  initialData: `StudentInitialInterface`;<br/>
   tel: string | null;<br/>
   firstName: string;<br/>
   lastName: string;<br/>
@@ -122,7 +129,6 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
   education: string | null;<br/>
   workExperience: string | null;<br/>
   courses: string | null;<br/>
-  status: StudentStatus;<br/>
   }
 
 ### Pobieranie pojedynczego kursanta
@@ -144,7 +150,7 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
 - aktualizuje profil kursanta,
 - zwraca zaktualizowany obiekt.
 
-### Lista z danymi inicjacyjnymi dla profili
+### Lista z danymi inicjacyjnymi dla profili (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
 
 - adres `/student/initial` metoda: GET,
 - zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
@@ -157,7 +163,7 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
   bonusProjectUrls: string[];<br/>
   }
 
-### Dane inicjacyjne dla pojedynczego konkretnego profilu (metoda zakomentowana, ukryta)
+### Dane inicjacyjne dla pojedynczego konkretnego profilu (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
 
 - adres `/student/initial/:email` metoda: GET,
 - zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
@@ -166,3 +172,41 @@ Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpo
 
 - adres `/hr` metoda: GET
 - adres `/hr/:id` metoda: GET
+
+## 11. Filtrowanie, sortowanie i paginacja dostępnych studentów
+
+- adres `student/list/:status/:page/:take?orderBy=&filters=` metoda GET
+- parametr status jest opcjonalny — domyślnie przyjmuje 0
+- status: 0 - dostępni studenci (domyślnie), 1 - w trakcie rozmowy, 2 - zatrudnieni
+- parametry page i take są opcjonalne. Domyślnie page przyjmuje wartość 1 a take 10
+- parametry query również są opcjonalne, jeżeli nic się nie przekaże, lista nie zostanie przefiltrowana ani posortowana
+- jeżeli chcemy zmienić jakiś parametr, trzeba przekazać wszyskie wcześniejsze, np: jeżeli chcemy zmienić tylko nr strony to musimy podać także status
+- id hr pobierane jest z zalogowanego usera, także nie trzeba, bo przekazywać
+- query `orderBy` - odpowiedzialne za sortowanie — przyjmuje wartość z enuma `StudentOrderByOptions`
+- query `filters` - odpowiedzialne za filtrowanie — przyjmuje obiekt filters, który implementuje interface `StudentFilters`, każde z pól jest opcjonalne
+- filters w adresie url musi zostać przekształcone do stringa i componentu url: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
+- zwracany jest json: {students(tablica ze studentami), studentsCount(liczba pobranych studenów), numberOfPages(liczba stron)}
+- przykładowy endpoint: `http://localhost:3001/student/list/0/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
+
+## 12. Pobieranie siebie
+
+- adres `/user` metoda GET
+- pobiera swoją encję za pomocą id usera z requestu
+- zwracany jest json zawierający id, email, rolę i encję studenta(wraz z profilem) lub hr — w zależności od roli.
+
+## 13. Rezerwacja studenta
+
+- adres `/hr/reserve/:email` metoda PATCH
+- parametr email — email studenta, którego chcemy zarezerwować
+- zmienia status studenta na do rozmowy
+- przypisuje studenta do rekrutera
+- dodaje datę wygaśnięcia rezerwacji na za 10 dni
+
+## 14. Zaznaczenie przez studenta, że został zatrudniony
+
+- adres `/student/hired` metoda PATCH
+- zmienia status studenta na zatrudniony
+- student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
+
+## 15. Widok tabel w bazie danych oraz relacji:
+![database](./database-relations.jpg)

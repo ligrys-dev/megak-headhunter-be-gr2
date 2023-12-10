@@ -2,7 +2,6 @@ import {
   ContractType,
   NewStudentProfileInterface,
   StudentInitialInterface,
-  StudentStatus,
   TypeWork,
 } from 'src/types';
 import {
@@ -21,6 +20,7 @@ import {
 } from 'class-validator';
 
 export class CreateStudentProfileDto implements NewStudentProfileInterface {
+  @IsString()
   id: string;
 
   @IsNotEmpty()
@@ -96,11 +96,6 @@ export class CreateStudentProfileDto implements NewStudentProfileInterface {
   @IsOptional()
   @IsString()
   courses: string | null;
-
-  @IsOptional()
-  @IsNumber()
-  @Max(2)
-  status: StudentStatus;
 
   [key: string]: any;
 }

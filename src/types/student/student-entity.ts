@@ -6,7 +6,9 @@ export interface StudentInitialInterface {
   courseEngagement: number;
   projectDegree: number;
   teamProjectDegree: number;
+  status: StudentStatus;
   bonusProjectUrls: string[];
+  profile?: StudentProfileInterface;
 }
 
 export type ListOfStudentInitialResponse = StudentInitialInterface[];
@@ -31,7 +33,6 @@ export interface StudentProfileInterface {
   education: string | null;
   workExperience: string | null;
   courses: string | null;
-  status: StudentStatus;
 }
 
 export type NewStudentProfileInterface = Omit<StudentProfileInterface, 'id'>;

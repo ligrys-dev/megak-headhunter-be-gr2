@@ -17,6 +17,8 @@ import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dt
 import { Request } from 'express';
 import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { config } from 'dotenv';
+config();
 
 @Controller('user')
 export class UserController {
@@ -24,6 +26,11 @@ export class UserController {
     private readonly userService: UserService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
+
+  @Get('/')
+  getSelf(@Req() req: Request) {
+    return this.userService.getSelf((req.user as UserFromReq).userId);
+  }
 
   @Get('/students')
   @Redirect('/user/sendActivationMail')
@@ -48,6 +55,8 @@ export class UserController {
     return this.userService.sendActivationMail(users, studentEmails);
   }
 
+  @Public()
+  @Redirect(process.env.CORS_ORIGIN)
   @Get('/activate/:id/:activationToken')
   activateUser(
     @Param('id') id: string,

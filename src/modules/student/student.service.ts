@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
@@ -6,22 +6,26 @@ import { StudentInitial } from './entities/student-initial.entity';
 import {
   StudentStatus,
   ListOfStudentInitialResponse,
-  OneStudentInitialResponse,
   ListOfStudentProfilesResponse,
   OneStudentProfileResponse,
+  StudentFilters,
+  StudentOrderByOptions,
 } from 'src/types';
 import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
+import { UserService } from '../user/user.service';
+import { UserType } from 'src/types/user/user';
 
 @Injectable()
 export class StudentService {
+  constructor(
+    @Inject(forwardRef(() => UserService)) private userService: UserService,
+  ) {}
   async findAllInitialProfile(): Promise<ListOfStudentInitialResponse> {
     return StudentInitial.find();
   }
 
-  async findOneInitialProfile(
-    email: string,
-  ): Promise<OneStudentInitialResponse> {
+  async findOneInitialProfile(email: string) {
     return StudentInitial.findOneOrFail({
       where: { email },
     });
@@ -48,7 +52,6 @@ export class StudentService {
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
     });
-    newStudent.status = StudentStatus.AVAILABLE;
 
     const checkGitHubUsername = await fetch(
       `https://api.github.com/users/${newStudent.githubUsername}`,
@@ -76,14 +79,14 @@ export class StudentService {
     return newStudent;
   }
 
-  async createInitialProfile(
-    initialProfile: CreateStudentInitialDto,
-  ): Promise<OneStudentInitialResponse> {
-    const newInitialProfile: CreateStudentInitialDto = new StudentInitial();
+  async createInitialProfile(initialProfile: CreateStudentInitialDto) {
+    const newInitialProfile = new StudentInitial();
 
     Object.keys(initialProfile).forEach((prop) => {
       newInitialProfile[prop] = initialProfile[prop];
     });
+
+    newInitialProfile.status = StudentStatus.AVAILABLE;
 
     await newInitialProfile.save();
     return newInitialProfile;
@@ -116,5 +119,61 @@ export class StudentService {
         githubUsername,
       },
     });
+  }
+
+  async findAllReservedStudents(recruiterId: string) {
+    return await StudentInitial.find({
+      where: {
+        recruiter: { recruiterId },
+      },
+      relations: ['profile'],
+    });
+  }
+
+  async filterAndSortStudents(
+    page: number = 1,
+    take: number = 10,
+    status: StudentStatus = StudentStatus.AVAILABLE,
+    orderBy: StudentOrderByOptions,
+    filters: StudentFilters,
+    recruiterUserId: string,
+  ) {
+    const { recruiter } = (await this.userService.getSelf(
+      recruiterUserId,
+    )) as UserType;
+
+    const queryBuilder = StudentInitial.createQueryBuilder('student')
+      .innerJoinAndSelect('student.profile', 'profile')
+      .where(`status = "${status}"`);
+
+    if (status === StudentStatus.CONVERSATION) {
+      queryBuilder.andWhere(`recruiter = "${recruiter.id}"`);
+    }
+
+    if (filters) {
+      Object.keys(filters).forEach((filterKey) => {
+        const value = `"${filters[filterKey]}"`;
+        queryBuilder.andWhere(`${filterKey} = ${value}`);
+      });
+    }
+
+    const [students, studentsCount] = await queryBuilder
+      .orderBy(orderBy ?? null, 'DESC')
+      .skip((page - 1) * take)
+      .take(take)
+      .getManyAndCount();
+
+    const numberOfPages = Math.ceil(studentsCount / take);
+
+    return { students, studentsCount, numberOfPages };
+  }
+
+  async markEmployed(studentUserId: string) {
+    const { student } = (await this.userService.getSelf(
+      studentUserId,
+    )) as UserType;
+
+    student.status = StudentStatus.HIRED;
+    return await student.save();
   }
 }

@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ForbiddenException,
   HttpException,
   Inject,
   Injectable,
   NotFoundException,
+  forwardRef,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import {
@@ -30,12 +32,49 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private mailService: MailService,
-    private hrRecruiterService: HrRecruiterService,
-    private studentService: StudentService,
     private configService: ConfigService,
+    private mailService: MailService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @Inject(forwardRef(() => StudentService))
+    private studentService: StudentService,
+    @Inject(forwardRef(() => HrRecruiterService))
+    private hrRecruiterService: HrRecruiterService,
   ) {}
+
+  async getSelf(id: string) {
+    const user = await User.findOneOrFail({
+      where: { id },
+      relations: ['recruiter', 'student', 'student.profile'],
+    });
+
+    if (user.role === Role.ADMIN) {
+      return { id: user.id, email: user.email, role: user.role };
+    }
+
+    if (!user.recruiter) {
+      const {
+        recruiter,
+        activationToken,
+        createdAt,
+        isActive,
+        pwdHash,
+        ...result
+      } = user;
+      return result;
+    }
+
+    if (!user.student) {
+      const {
+        student,
+        activationToken,
+        createdAt,
+        isActive,
+        pwdHash,
+        ...result
+      } = user;
+      return result;
+    }
+  }
 
   async findOneByEmail(email: string) {
     return await User.findOneBy({ email });
@@ -52,7 +91,7 @@ export class UserService {
 
     try {
       for (const createStudentDto of createStudentDtos) {
-        const validation = await this.validateStudentInital(createStudentDto);
+        const validation = await this.validateStudentInitial(createStudentDto);
 
         if (!validation.isValid) {
           failedEmails.push({
@@ -81,7 +120,9 @@ export class UserService {
 
         createdUsers.push({ newUser, password });
 
-        await this.studentService.createInitialProfile(createStudentDto);
+        newUser.student =
+          await this.studentService.createInitialProfile(createStudentDto);
+        await newUser.save();
 
         successfulEmails.push(createStudentDto.email);
       }
@@ -116,6 +157,10 @@ export class UserService {
     await this.cacheManager.set('users-to-activate', createdUsers);
 
     const recruiter = await this.hrRecruiterService.create(createRecruiterDto);
+
+    newUser.recruiter = recruiter;
+    await newUser.save();
+
     return { id: recruiter.id };
   }
 
@@ -130,22 +175,26 @@ export class UserService {
       await this.mailService.sendMail(
         email,
         'headhunter-app account activation',
-        `<p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
+        `<div><p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
         <a href="${appPath}/user/activate/${id}/${activationToken}">
           ${appPath}/user/activate/${id}/${activationToken}</a>
-        <p>Twoje tymczasowe haslo: <strong>${user.password}</strong></p>
-        <p>Po zalogowaniu sie po raz pierwszy, zalecamy zmiane hasla na bardziej bezpieczne.</p>
-        <p>Dziekujemy za korzystanie z naszej aplikacji!</p>
-        <p>Z powazaniem,</p>
-        MegaK v3 gr2`,
+        <p>Twoje tymczasowe hasło: <strong>${user.password}</strong></p>
+        <p>Po zalogowaniu się po raz pierwszy zalecamy zmianę hasła na bardziej bezpieczne.</p>
+        <p>Dziękujemy za korzystanie z naszej aplikacji!</p>
+        <p>Z poważaniem,</p>
+        MegaK v3 gr2</div>`, // naprawić problem z polskimi znakami oraz linkiem
       );
     }
 
-    const [failedEmails, successfulEmails] = studentEmails;
-
-    console.error(failedEmails);
-
-    return { failedEmails, successfulEmails };
+    if (studentEmails) {
+      const [failedEmails, successfulEmails] = studentEmails;
+      console.error(failedEmails);
+      return { failedEmails, successfulEmails };
+    } else {
+      const failedEmails: FailedEmails = [];
+      const successfulEmails: SuccessfulEmails = [users[0].newUser.email];
+      return { failedEmails, successfulEmails };
+    }
   }
 
   async activateUser(id: string, activationToken: string) {
@@ -192,15 +241,14 @@ export class UserService {
     return { ok: true };
   }
 
-  async validateStudentInital(createStudentDto: CreateStudentInitialDto) {
+  async validateStudentInitial(createStudentDto: CreateStudentInitialDto) {
     const student = plainToClass(CreateStudentInitialDto, createStudentDto);
 
     const errors = await validate(student);
 
     if (errors.length > 0) {
       const errorDetails = errors.map((error) => {
-        const constraints = Object.values(error.constraints).join(', ');
-        return constraints;
+        return Object.values(error.constraints).join(', ');
       });
 
       return {
