@@ -11,8 +11,13 @@ export interface StudentInitialInterface {
   profile?: StudentProfileInterface;
 }
 
-export type ListOfStudentInitialResponse = StudentInitialInterface[];
 export type OneStudentInitialResponse = StudentInitialInterface;
+export type ListOfStudentInitialResponse = StudentInitialInterface[];
+export interface FilteredStudents {
+  students: ListOfStudentInitialResponse;
+  studentsCount: number;
+  numberOfPages: number;
+}
 
 export interface StudentProfileInterface {
   id: string;
@@ -37,5 +42,5 @@ export interface StudentProfileInterface {
 
 export type NewStudentProfileInterface = Omit<StudentProfileInterface, 'id'>;
 
-export type ListOfStudentProfilesResponse = StudentProfileInterface[];
 export type OneStudentProfileResponse = StudentProfileInterface;
+export type ListOfStudentProfilesResponse = StudentProfileInterface[];
