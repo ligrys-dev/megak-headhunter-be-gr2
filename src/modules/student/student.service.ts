@@ -121,12 +121,20 @@ export class StudentService {
     });
   }
 
-  async findAllReservedStudents(recruiterId: string) {
+  async findAllReservedStudentsForRecruiter(recruiterId: string) {
     return await StudentInitial.find({
       where: {
         recruiter: { recruiterId },
       },
       relations: ['profile'],
+    });
+  }
+
+  async findAllReservedStudents() {
+    return await StudentInitial.find({
+      where: {
+        status: `${StudentStatus.CONVERSATION}` as unknown as number,
+      },
     });
   }
 
