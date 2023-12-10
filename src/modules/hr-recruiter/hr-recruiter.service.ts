@@ -5,6 +5,7 @@ import { StudentService } from '../student/student.service';
 import { UserService } from '../user/user.service';
 import { UserType } from 'src/types/user/user';
 import { StudentStatus } from 'src/types';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class HrRecruiterService {
@@ -53,6 +54,27 @@ export class HrRecruiterService {
   }
 
   async getAllReservedStudents(recruiterId: string) {
-    return await this.studentService.findAllReservedStudents(recruiterId);
+    return await this.studentService.findAllReservedStudentsForRecruiter(
+      recruiterId,
+    );
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async changeStudentStatusWhenExpired() {
+    const students = await this.studentService.findAllReservedStudents();
+
+    for (const student of students) {
+      if (student.reservationExpirationDate <= new Date(Date.now())) {
+        student.status = StudentStatus.AVAILABLE;
+        student.reservationExpirationDate = null;
+        await student.save();
+      } else {
+        continue;
+      }
+    }
+
+    console.log(
+      'Changing the status of students whose interview time has expired...',
+    );
   }
 }
