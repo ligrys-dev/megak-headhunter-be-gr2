@@ -11,6 +11,9 @@ import {
   StudentFilters,
   StudentOrderByOptions,
   UserType,
+  StudentInitialInterface,
+  StudentProfileInterface,
+  FilteredStudents,
 } from 'src/types';
 
 @Injectable()
@@ -19,27 +22,29 @@ export class StudentService {
     @Inject(forwardRef(() => UserService)) private userService: UserService,
   ) {}
 
-  async findOneInitialProfile(email: string) {
+  async findOneInitialProfile(email: string): Promise<StudentInitial> {
     return StudentInitial.findOneOrFail({
       where: { email },
     });
   }
 
-  async findOneProfile(id: string) {
+  async findOneProfile(id: string): Promise<StudentProfile> {
     return StudentProfile.findOneOrFail({
       where: { id },
       relations: ['initialData'],
     });
   }
 
-  async createStudentProfile(createStudentDto: CreateStudentProfileDto) {
+  async createStudentProfile(
+    createStudentDto: CreateStudentProfileDto,
+  ): Promise<StudentProfileInterface> {
     const newStudent: CreateStudentProfileDto = new StudentProfile();
 
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
     });
 
-    const checkGitHubUsername = await fetch(
+    const checkGitHubUsername: Response = await fetch(
       `https://api.github.com/users/${newStudent.githubUsername}`,
     );
     const res = await checkGitHubUsername.json();
@@ -65,7 +70,9 @@ export class StudentService {
     return newStudent;
   }
 
-  async createInitialProfile(initialProfile: CreateStudentInitialDto) {
+  async createInitialProfile(
+    initialProfile: CreateStudentInitialDto,
+  ): Promise<StudentInitial> {
     const newInitialProfile = new StudentInitial();
 
     Object.keys(initialProfile).forEach((prop) => {
@@ -81,7 +88,7 @@ export class StudentService {
   async updateStudentProfile(
     id: string,
     updateStudentDto: UpdateStudentProfileDto,
-  ) {
+  ): Promise<StudentProfileInterface> {
     const updatingStudent: UpdateStudentProfileDto =
       await this.findOneProfile(id);
 
@@ -97,7 +104,9 @@ export class StudentService {
     });
   }
 
-  async findByGithubUsername(githubUsername: string) {
+  async findByGithubUsername(
+    githubUsername: string,
+  ): Promise<StudentProfile[]> {
     return StudentProfile.find({
       where: {
         githubUsername,
@@ -105,7 +114,9 @@ export class StudentService {
     });
   }
 
-  async findAllReservedStudentsForRecruiter(recruiterId: string) {
+  async findAllReservedStudentsForRecruiter(
+    recruiterId: string,
+  ): Promise<StudentInitial[]> {
     return await StudentInitial.find({
       where: {
         recruiter: { recruiterId },
@@ -114,7 +125,7 @@ export class StudentService {
     });
   }
 
-  async findAllReservedStudents() {
+  async findAllReservedStudents(): Promise<StudentInitial[]> {
     return await StudentInitial.find({
       where: {
         status: `${StudentStatus.CONVERSATION}` as unknown as number,
@@ -129,7 +140,7 @@ export class StudentService {
     orderBy: StudentOrderByOptions,
     filters: StudentFilters,
     recruiterUserId: string,
-  ) {
+  ): Promise<FilteredStudents> {
     const { recruiter } = (await this.userService.getSelf(
       recruiterUserId,
     )) as UserType;
@@ -160,7 +171,7 @@ export class StudentService {
     return { students, studentsCount, numberOfPages };
   }
 
-  async markEmployed(studentUserId: string) {
+  async markEmployed(studentUserId: string): Promise<StudentInitialInterface> {
     const { student } = (await this.userService.getSelf(
       studentUserId,
     )) as UserType;

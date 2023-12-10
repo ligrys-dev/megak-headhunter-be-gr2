@@ -14,6 +14,9 @@ import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import {
   Role,
+  FilteredStudents,
+  OneStudentInitialResponse,
+  OneStudentProfileResponse,
   StudentFilters,
   StudentOrderByOptions,
   StudentStatus,
@@ -25,10 +28,11 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  // po ustanowieniu relacji w bazach danych ten endpoint będzie chyba najważniejszy przy pobieraniu wszystkich danych pojedynczego studenta, trzeba się zastanowić czy nie zamienić adresu tego endpointu z adresem '/:id', który teraz służy do pobrania tylko danych profilowych.
   @Roles(Role.HR)
   @Get('/initial/:email')
-  findOneInitialProfile(@Param('email') email: string) {
+  findOneInitialProfile(
+    @Param('email') email: string,
+  ): Promise<OneStudentInitialResponse> {
     return this.studentService.findOneInitialProfile(email);
   }
 
@@ -41,7 +45,7 @@ export class StudentController {
     @Param('take') take: unknown,
     @Query('orderBy') orderBy: StudentOrderByOptions,
     @Query('filters') filters: string,
-  ) {
+  ): Promise<FilteredStudents> {
     const decodedFilters: StudentFilters = JSON.parse(
       decodeURIComponent(filters ?? null),
     );
@@ -58,19 +62,21 @@ export class StudentController {
 
   @Roles(Role.HR)
   @Get('/:id')
-  findOneProfile(@Param('id') id: string) {
+  findOneProfile(@Param('id') id: string): Promise<OneStudentProfileResponse> {
     return this.studentService.findOneProfile(id);
   }
 
   @Roles(Role.STUDENT)
   @Patch('/hired')
-  markEmployed(@Req() req: Request) {
+  markEmployed(@Req() req: Request): Promise<OneStudentInitialResponse> {
     return this.studentService.markEmployed((req.user as UserFromReq).userId);
   }
 
   @Roles(Role.ADMIN)
   @Post()
-  createProfile(@Body() studentDto: CreateStudentProfileDto) {
+  createProfile(
+    @Body() studentDto: CreateStudentProfileDto,
+  ): Promise<OneStudentProfileResponse> {
     return this.studentService.createStudentProfile(studentDto);
   }
 
@@ -79,7 +85,7 @@ export class StudentController {
   updateProfile(
     @Param('id') id: string,
     @Body() updateStudentDto: UpdateStudentProfileDto,
-  ) {
+  ): Promise<OneStudentProfileResponse> {
     return this.studentService.updateStudentProfile(id, updateStudentDto);
   }
 }
