@@ -13,9 +13,7 @@ import {
   UserType,
   StudentInitialInterface,
   StudentProfileInterface,
-  ListOfStudentProfilesResponse,
   FilteredStudents,
-  ListOfStudentInitialResponse,
 } from 'src/types';
 
 @Injectable()
@@ -108,7 +106,7 @@ export class StudentService {
 
   async findByGithubUsername(
     githubUsername: string,
-  ): Promise<ListOfStudentProfilesResponse> {
+  ): Promise<StudentProfile[]> {
     return StudentProfile.find({
       where: {
         githubUsername,
@@ -118,7 +116,7 @@ export class StudentService {
 
   async findAllReservedStudentsForRecruiter(
     recruiterId: string,
-  ): Promise<ListOfStudentInitialResponse> {
+  ): Promise<StudentInitial[]> {
     return await StudentInitial.find({
       where: {
         recruiter: { recruiterId },
