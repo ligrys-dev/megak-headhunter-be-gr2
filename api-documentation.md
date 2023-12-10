@@ -1,5 +1,6 @@
 ### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta. Przy pracy developerskiej jest to 'http://localhost:3001'. W kodzie powinno to być zapisane w zmiennej, aby można było to łatwo zmienić przy wrzucaniu na serwer.
 
+
 #### Spis treści:
 
 1. [Import studentów](#1-import-studentów)
@@ -16,6 +17,7 @@
 12. [Pobieranie siebie](#12-pobieranie-siebie)
 13. [Rezerwacja Studenta](#13-rezerwacja-studenta)
 14. [Zaznaczenie przez studenta, że został zatrudniony](#14-zaznaczenie-przez-studenta-że-został-zatrudniony)
+15. [Widok tabel w bazie danych oraz relacji](#15-widok-tabel-w-bazie-danych-oraz-relacji)
 
 ## 1. Import studentów:
 
@@ -148,7 +150,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - aktualizuje profil kursanta,
 - zwraca zaktualizowany obiekt.
 
-### Lista z danymi inicjacyjnymi dla profili
+### Lista z danymi inicjacyjnymi dla profili (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
 
 - adres `/student/initial` metoda: GET,
 - zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
@@ -161,7 +163,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
   bonusProjectUrls: string[];<br/>
   }
 
-### Dane inicjacyjne dla pojedynczego konkretnego profilu (metoda zakomentowana, ukryta, potrzebna była tylko do testowania)
+### Dane inicjacyjne dla pojedynczego konkretnego profilu (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
 
 - adres `/student/initial/:email` metoda: GET,
 - zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
@@ -206,3 +208,5 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - zmienia status studenta na zatrudniony
 - student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
 
+## 15. Widok tabel w bazie danych oraz relacji:
+![database](./database-relations.jpg)
