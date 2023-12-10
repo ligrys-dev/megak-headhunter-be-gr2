@@ -1,4 +1,3 @@
-import { ContractType, TypeWork } from 'src/types';
 import {
   BaseEntity,
   Column,
@@ -8,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StudentInitial } from './student-initial.entity';
+import { ContractType, TypeWork } from 'src/types';
 
 @Entity()
 export class StudentProfile extends BaseEntity {

@@ -1,29 +1,23 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { UserService } from '../user/user.service';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
+import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
 import { StudentInitial } from './entities/student-initial.entity';
+import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
 import {
   StudentStatus,
-  ListOfStudentInitialResponse,
-  ListOfStudentProfilesResponse,
-  OneStudentProfileResponse,
   StudentFilters,
   StudentOrderByOptions,
+  UserType,
 } from 'src/types';
-import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
-import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
-import { UserService } from '../user/user.service';
-import { UserType } from 'src/types/user/user';
 
 @Injectable()
 export class StudentService {
   constructor(
     @Inject(forwardRef(() => UserService)) private userService: UserService,
   ) {}
-  async findAllInitialProfile(): Promise<ListOfStudentInitialResponse> {
-    return StudentInitial.find();
-  }
 
   async findOneInitialProfile(email: string) {
     return StudentInitial.findOneOrFail({
@@ -31,22 +25,14 @@ export class StudentService {
     });
   }
 
-  async findAllProfiles(): Promise<ListOfStudentProfilesResponse> {
-    return StudentProfile.find({
-      relations: ['initialData'],
-    });
-  }
-
-  async findOneProfile(id: string): Promise<OneStudentProfileResponse> {
+  async findOneProfile(id: string) {
     return StudentProfile.findOneOrFail({
       where: { id },
       relations: ['initialData'],
     });
   }
 
-  async createStudentProfile(
-    createStudentDto: CreateStudentProfileDto,
-  ): Promise<OneStudentProfileResponse> {
+  async createStudentProfile(createStudentDto: CreateStudentProfileDto) {
     const newStudent: CreateStudentProfileDto = new StudentProfile();
 
     Object.keys(createStudentDto).forEach((prop) => {
@@ -95,7 +81,7 @@ export class StudentService {
   async updateStudentProfile(
     id: string,
     updateStudentDto: UpdateStudentProfileDto,
-  ): Promise<OneStudentProfileResponse> {
+  ) {
     const updatingStudent: UpdateStudentProfileDto =
       await this.findOneProfile(id);
 
@@ -111,9 +97,7 @@ export class StudentService {
     });
   }
 
-  async findByGithubUsername(
-    githubUsername: string,
-  ): Promise<ListOfStudentProfilesResponse> {
+  async findByGithubUsername(githubUsername: string) {
     return StudentProfile.find({
       where: {
         githubUsername,
