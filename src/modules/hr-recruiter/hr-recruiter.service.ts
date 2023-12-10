@@ -3,7 +3,7 @@ import { CreateHrRecruiterDto } from './dto/create-hr-recruiter.dto';
 import { Recruiter } from './entities/hr-recruiter.entity';
 import { StudentService } from '../student/student.service';
 import { UserService } from '../user/user.service';
-import { UserType } from 'src/types/user/user';
+import { UserType } from 'src/types/user/user.type';
 import { StudentStatus } from 'src/types';
 
 @Injectable()
@@ -20,14 +20,6 @@ export class HrRecruiterService {
     }
 
     return await recruiter.save();
-  }
-
-  async findAll() {
-    return await Recruiter.find();
-  }
-
-  async findOne(id: string) {
-    return await Recruiter.findOneByOrFail({ id });
   }
 
   async reserveStudent(studentEmail: string, recruiterUserId: string) {

@@ -1,11 +1,9 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Request, Response } from 'express';
 import { LocalAuthGuard } from 'src/common/guards/local-auth.guard';
-import { Role, SaveUserEntity } from 'src/types';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
+import { SaveUserEntity } from 'src/types';
 
 @Controller('/')
 export class AuthController {
@@ -23,16 +21,10 @@ export class AuthController {
     return this.authService.logout(res);
   }
 
-  @UseGuards(JwtAuthGuard) //test
-  @Get('/test')
-  getUserFromReq(@Req() req: Request) {
-    return req.user;
-  }
-
-  @UseGuards(JwtAuthGuard) //test
-  @Roles(Role.ADMIN)
-  @Get('/role')
-  testRole(@Req() req: Request) {
-    return req.user;
-  }
+  // @UseGuards(JwtAuthGuard) //test
+  // @Roles(Role.ADMIN)
+  // @Get('/role')
+  // testRole(@Req() req: Request) {
+  //   return req.user;
+  // }
 }

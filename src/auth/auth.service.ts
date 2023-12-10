@@ -4,10 +4,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from 'src/modules/user/user.service';
+import { Response } from 'express';
 import { comparePwd } from 'src/utils/handle-pwd';
 import { JwtService } from '@nestjs/jwt';
 import { SaveUserEntity, UserJwtPayload } from 'src/types';
-import { Response } from 'express';
 
 @Injectable()
 export class AuthService {

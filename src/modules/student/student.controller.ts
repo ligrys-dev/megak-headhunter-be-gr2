@@ -9,6 +9,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
+import { Request } from 'express';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import {
@@ -17,37 +18,15 @@ import {
   StudentStatus,
   UserFromReq,
 } from 'src/types/';
-import { Request } from 'express';
-// import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 
 @Controller('/student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
-  // zostawmy tą metodę zakomentowaną tutaj na razie do testowania
-  // @Post('/initial')
-  // initiateProfile(@Body() initialProfile: CreateStudentInitialDto) {
-  //   return this.studentService.createInitialProfile(initialProfile);
-  // }
-
-  @Get()
-  findAllProfiles() {
-    return this.studentService.findAllProfiles();
-  }
-
-  @Get('/initial')
-  findAllInitialProfile() {
-    return this.studentService.findAllInitialProfile();
-  }
 
   // po ustanowieniu relacji w bazach danych ten endpoint będzie chyba najważniejszy przy pobieraniu wszystkich danych pojedynczego studenta, trzeba się zastanowić czy nie zamienić adresu tego endpointu z adresem '/:id', który teraz służy do pobrania tylko danych profilowych.
   @Get('/initial/:email')
   findOneInitialProfile(@Param('email') email: string) {
     return this.studentService.findOneInitialProfile(email);
-  }
-
-  @Post()
-  createProfile(@Body() studentDto: CreateStudentProfileDto) {
-    return this.studentService.createStudentProfile(studentDto);
   }
 
   @Get('/list/:status?/:page?/:take?/')
@@ -81,6 +60,11 @@ export class StudentController {
   @Patch('/hired')
   markEmployed(@Req() req: Request) {
     return this.studentService.markEmployed((req.user as UserFromReq).userId);
+  }
+
+  @Post()
+  createProfile(@Body() studentDto: CreateStudentProfileDto) {
+    return this.studentService.createStudentProfile(studentDto);
   }
 
   @Patch('/:id')

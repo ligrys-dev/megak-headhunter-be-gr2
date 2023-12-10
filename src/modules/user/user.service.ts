@@ -7,7 +7,19 @@ import {
   NotFoundException,
   forwardRef,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { MailService } from 'src/common/mail/mail.service';
+import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
+import { StudentService } from '../student/student.service';
+import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
+import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
+import { comparePwd, hashPwd } from 'src/utils/handle-pwd';
+import { generateRandomPwd } from 'src/utils/generate-random-pwd';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 import { User } from './entities/user.entity';
+import { validate } from 'class-validator';
+import { plainToClass } from 'class-transformer';
 import {
   StudentEmails,
   Role,
@@ -16,18 +28,6 @@ import {
   FailedEmails,
   SuccessfulEmails,
 } from 'src/types';
-import { comparePwd, hashPwd } from 'src/utils/handle-pwd';
-import { generateRandomPwd } from 'src/utils/generate-random-pwd';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
-import { MailService } from 'src/common/mail/mail.service';
-import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
-import { HrRecruiterService } from '../hr-recruiter/hr-recruiter.service';
-import { StudentService } from '../student/student.service';
-import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
-import { validate } from 'class-validator';
-import { plainToClass } from 'class-transformer';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
