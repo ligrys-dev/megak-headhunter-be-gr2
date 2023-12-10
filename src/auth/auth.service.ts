@@ -8,7 +8,6 @@ import { Response } from 'express';
 import { comparePwd } from 'src/utils/handle-pwd';
 import { JwtService } from '@nestjs/jwt';
 import { Role, SaveUserEntity, StudentStatus, UserJwtPayload } from 'src/types';
-import { Response } from 'express';
 import { StudentService } from 'src/modules/student/student.service';
 
 @Injectable()
