@@ -209,4 +209,4 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
 
 ## 15. Widok tabel w bazie danych oraz relacji:
-![database](C:\Users\Ivan\Desktop\MEGAK\head-hunter\megak-v3-headhunter-be-gr2\database-relations.jpg)
+![database](./database-relations.jpg)
