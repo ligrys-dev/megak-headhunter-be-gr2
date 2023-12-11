@@ -1,9 +1,4 @@
-import {
-  ContractType,
-  NewStudentProfileInterface,
-  StudentInitialInterface,
-  TypeWork,
-} from 'src/types';
+import { ContractType, NewStudentProfileInterface, TypeWork } from 'src/types';
 import {
   IsOptional,
   IsNotEmpty,
@@ -16,17 +11,9 @@ import {
   MaxLength,
   Max,
   IsUrl,
-  IsEmail,
 } from 'class-validator';
 
 export class CreateStudentProfileDto implements NewStudentProfileInterface {
-  @IsString()
-  id: string;
-
-  @IsNotEmpty()
-  @IsEmail()
-  initialData: StudentInitialInterface;
-
   @IsOptional()
   @Length(9, 20)
   tel: string | null;

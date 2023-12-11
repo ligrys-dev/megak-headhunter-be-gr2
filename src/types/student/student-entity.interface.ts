@@ -16,7 +16,7 @@ export type OneStudentInitialResponse = StudentInitialInterface;
 
 export interface StudentProfileInterface {
   id: string;
-  initialData: StudentInitialInterface | null;
+  initialData?: StudentInitialInterface;
   tel: string | null;
   firstName: string;
   lastName: string;

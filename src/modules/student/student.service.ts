@@ -32,14 +32,20 @@ export class StudentService {
     });
   }
 
-  async createStudentProfile(createStudentDto: CreateStudentProfileDto) {
-    const newStudent: CreateStudentProfileDto = new StudentProfile();
+  async createStudentProfile(
+    createStudentDto: CreateStudentProfileDto,
+    userId: string,
+  ): Promise<StudentProfile> {
+    const newStudent = new StudentProfile();
+    const user = (await this.userService.getSelf(userId)) as UserType;
 
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
     });
 
-    const checkGitHubUsername = await fetch(
+    newStudent.initialData = user.student;
+
+    const checkGitHubUsername: Response = await fetch(
       `https://api.github.com/users/${newStudent.githubUsername}`,
     );
     const res = await checkGitHubUsername.json();

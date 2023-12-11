@@ -13,6 +13,7 @@ import { Request } from 'express';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import {
+  OneStudentProfileResponse,
   StudentFilters,
   StudentOrderByOptions,
   StudentStatus,
@@ -63,8 +64,14 @@ export class StudentController {
   }
 
   @Post()
-  createProfile(@Body() studentDto: CreateStudentProfileDto) {
-    return this.studentService.createStudentProfile(studentDto);
+  createProfile(
+    @Req() req: Request,
+    @Body() studentDto: CreateStudentProfileDto,
+  ): Promise<OneStudentProfileResponse> {
+    return this.studentService.createStudentProfile(
+      studentDto,
+      (req.user as UserFromReq).userId,
+    );
   }
 
   @Patch('/:id')
