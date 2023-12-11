@@ -8,7 +8,6 @@ import { Response } from 'express';
 import { comparePwd } from 'src/utils/handle-pwd';
 import { JwtService } from '@nestjs/jwt';
 import { Role, SaveUserEntity, StudentStatus, UserJwtPayload } from 'src/types';
-import { Response } from 'express';
 import { StudentService } from 'src/modules/student/student.service';
 
 @Injectable()
@@ -34,8 +33,9 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(payload);
 
     res.cookie('access_token', accessToken, {
-      httpOnly: true,
       secure: false, //XXX true in https
+      domain: 'localhost',
+      httpOnly: true,
       maxAge: 1000 * 60 * 60, // 1h
     });
 

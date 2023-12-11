@@ -1,4 +1,9 @@
-import { StudentStatus, TypeWork, ContractType } from './enums';
+import {
+  StudentStatus,
+  TypeWork,
+  ContractType,
+  RecruiterInterface,
+} from 'src/types';
 
 export interface StudentInitialInterface {
   email: string;
@@ -9,10 +14,17 @@ export interface StudentInitialInterface {
   status: StudentStatus;
   bonusProjectUrls: string[];
   profile?: StudentProfileInterface;
+  recruiter?: RecruiterInterface;
+  reservationExpirationDate?: Date;
 }
 
-export type ListOfStudentInitialResponse = StudentInitialInterface[];
 export type OneStudentInitialResponse = StudentInitialInterface;
+export type ListOfStudentInitialResponse = StudentInitialInterface[];
+export interface FilteredStudents {
+  students: ListOfStudentInitialResponse;
+  studentsCount: number;
+  numberOfPages: number;
+}
 
 export interface StudentProfileInterface {
   id: string;
@@ -37,5 +49,5 @@ export interface StudentProfileInterface {
 
 export type NewStudentProfileInterface = Omit<StudentProfileInterface, 'id'>;
 
-export type ListOfStudentProfilesResponse = StudentProfileInterface[];
 export type OneStudentProfileResponse = StudentProfileInterface;
+export type ListOfStudentProfilesResponse = StudentProfileInterface[];

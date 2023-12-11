@@ -1,7 +1,7 @@
 
 
 ### 1. Uruchomić backend i frontend, oraz bazydanych. To oczywiste, ale dla pewności sprawdzić też ten punkt.
-### 2. Na backendzie w pliku app.module.ts tymczasowo (na czas testów) zakomentowujemy linijkę 35:<br/> `{ provide: APP_GUARD, useClass: JwtAuthGuard },`
+### 2. [JUŻ NIEAKTUALNE] Na backendzie w pliku app.module.ts tymczasowo (na czas testów) zakomentowujemy linijkę 35:<br/> `{ provide: APP_GUARD, useClass: JwtAuthGuard },`
 ### 3. Uruchomić mailslurper z tej wersji https://github.com/mailslurper/mailslurper/releases/tag/1.14.1
    Po prostu ściągnąć, rozpakować folder i uruchomić plik mailslurper.exe,
    uruchomi się okienko wiersza poleceń z kilkoma linijkami logów - to jest właśnie ten mailslurper.<br/>
@@ -31,3 +31,6 @@ Np. `http://localhost:3001/user/activate/1ed2e45b-bb4e-4176-a1c6-d87f7= 232c240/
 ### 10. Po uruchomieniu w przeglądarce poprawnie wklejonego linka nastąpi aktywacja oraz przekierowanie na stronę logowania, a w bazie danych zostanie ustawiony status użytkownika na aktywny oraz wyczyszczony token aktywacyjny.
 ### 11. Logujemy się na konto aktywowanego kursanta przy pomocy jego emaila oraz tymczasowego hasła podanego w powyższym emailu. 
 ## W podobny sposób możemy aktywować też profil HR, tylko na początku w panelu admin trzeba wpisać dane rekrutera i zatwierdzić, wtedy przyjdzie email z danymi aktywacyjnymi — aktywujemy i logujemy się tak samo, jak w przypadku kursanta.
+
+
+### Trzeba wziąć pod uwagę, że kiedy mailslurper zostanie zrestartowany, emaile z hasłami mogą przepaść. Wtedy cały proces trzeba powtórzyć, aby przeprowadzić nowe testy. Można też te hasła z emaili sobie zapisać i używać (o ile dane w bazie danych się nie zmienią). Jeśli natomiast coś się zmieni w bazie danych lub chcemy testować na innych danych, trzeba wszystkie dane z tabel usunąć. Najlepiej robić to przez usuwanie całych tabel; można przez drop table, ale ja robię to w Heidi; klikam na bazę megak_headhunter w lewym okienku, wtedy w prawym pojawiają mi się tabele, zaznaczam je i PPM wybieram 'usuń'.
