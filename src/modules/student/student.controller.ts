@@ -13,6 +13,7 @@ import { Request } from 'express';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import {
+  Role,
   FilteredStudents,
   OneStudentInitialResponse,
   OneStudentProfileResponse,
@@ -21,11 +22,13 @@ import {
   StudentStatus,
   UserFromReq,
 } from 'src/types/';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 @Controller('/student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
+  @Roles(Role.HR)
   @Get('/initial/:email')
   findOneInitialProfile(
     @Param('email') email: string,
@@ -33,7 +36,8 @@ export class StudentController {
     return this.studentService.findOneInitialProfile(email);
   }
 
-  @Get('/list/:status?/:page?/:take?/')
+  @Roles(Role.HR)
+  @Get('/list/:status?/:page?/:take?')
   filterStudents(
     @Req() req: Request,
     @Param('status') status: unknown,
@@ -56,16 +60,19 @@ export class StudentController {
     );
   }
 
+  @Roles(Role.HR)
   @Get('/:id')
   findOneProfile(@Param('id') id: string): Promise<OneStudentProfileResponse> {
     return this.studentService.findOneProfile(id);
   }
 
+  @Roles(Role.STUDENT)
   @Patch('/hired')
   markEmployed(@Req() req: Request): Promise<OneStudentInitialResponse> {
     return this.studentService.markEmployed((req.user as UserFromReq).userId);
   }
 
+  @Roles(Role.STUDENT)
   @Post()
   createProfile(
     @Body() studentDto: CreateStudentProfileDto,
@@ -73,6 +80,7 @@ export class StudentController {
     return this.studentService.createStudentProfile(studentDto);
   }
 
+  @Roles(Role.STUDENT)
   @Patch('/:id')
   updateProfile(
     @Param('id') id: string,
