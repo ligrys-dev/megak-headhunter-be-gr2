@@ -1,5 +1,9 @@
-import { StudentStatus, TypeWork, ContractType } from './enums';
-import { RecruiterInterface } from 'src/types';
+import {
+  StudentStatus,
+  TypeWork,
+  ContractType,
+  RecruiterInterface,
+} from 'src/types';
 
 export interface StudentInitialInterface {
   email: string;
