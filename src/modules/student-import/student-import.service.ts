@@ -37,12 +37,16 @@ export class StudentImportService {
       );
 
       const transformedData = students.map((student) => {
-        const bonusProjectUrlsArray = (
-          student.bonusProjectUrls as unknown as string
-        )
-          .split(',')
-          .map((url: string) => url.trim());
-        return { ...student, bonusProjectUrls: bonusProjectUrlsArray };
+        if (student.bonusProjectUrls) {
+          const bonusProjectUrlsArray = (
+            student.bonusProjectUrls as unknown as string
+          )
+            .split(',')
+            .map((url: string) => url.trim());
+          return { ...student, bonusProjectUrls: bonusProjectUrlsArray };
+        } else {
+          return { ...student };
+        }
       });
 
       await this.cacheManager.set('students', transformedData);
