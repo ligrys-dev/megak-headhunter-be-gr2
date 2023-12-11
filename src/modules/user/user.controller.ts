@@ -9,14 +9,14 @@ import {
   Redirect,
   Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { StudentEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
 import { UserService } from './user.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
-import { Request } from 'express';
 import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { StudentEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
 import { config } from 'dotenv';
 config();
 

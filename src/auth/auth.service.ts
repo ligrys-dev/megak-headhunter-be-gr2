@@ -4,16 +4,18 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from 'src/modules/user/user.service';
+import { Response } from 'express';
 import { comparePwd } from 'src/utils/handle-pwd';
 import { JwtService } from '@nestjs/jwt';
-import { SaveUserEntity, UserJwtPayload } from 'src/types';
-import { Response } from 'express';
+import { Role, SaveUserEntity, StudentStatus, UserJwtPayload } from 'src/types';
+import { StudentService } from 'src/modules/student/student.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private studentService: StudentService,
   ) {}
   async login(user: SaveUserEntity, res: Response) {
     const usr = await this.userService.findOneById(user.id);
@@ -61,6 +63,14 @@ export class AuthService {
 
     if (!isPasswordValid)
       throw new UnauthorizedException('Invalid credentials');
+
+    if (user.role === Role.STUDENT) {
+      const student = await this.studentService.findOneInitialProfile(email);
+
+      if (student && student.status === StudentStatus.HIRED) {
+        throw new UnauthorizedException('Access denied for hired students');
+      }
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { pwdHash, activationToken, ...result } = user;

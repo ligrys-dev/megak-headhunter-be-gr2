@@ -14,6 +14,7 @@ import { RolesGuard } from './common/guards/roles.guard';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { CacheModule } from '@nestjs/cache-manager';
 import { HrRecruiterModule } from './modules/hr-recruiter/hr-recruiter.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { HrRecruiterModule } from './modules/hr-recruiter/hr-recruiter.module';
     AuthModule,
     MailModule,
     DatabaseModule,
+    ScheduleModule.forRoot(),
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({ isGlobal: true }),
   ],

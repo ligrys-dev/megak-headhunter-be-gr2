@@ -1,43 +1,34 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { UserService } from '../user/user.service';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
+import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import { StudentProfile } from './entities/student-profile.entity';
 import { StudentInitial } from './entities/student-initial.entity';
+import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
 import {
   StudentStatus,
-  ListOfStudentInitialResponse,
-  ListOfStudentProfilesResponse,
-  OneStudentProfileResponse,
   StudentFilters,
   StudentOrderByOptions,
+  UserType,
+  StudentInitialInterface,
+  StudentProfileInterface,
+  FilteredStudents,
 } from 'src/types';
-import { CreateStudentInitialDto } from './dto/create-student-initial.dto';
-import { InvalidDataFormatException } from '../../common/exceptions/invalid-data-format.exception';
-import { UserService } from '../user/user.service';
-import { UserType } from 'src/types/user/user';
 
 @Injectable()
 export class StudentService {
   constructor(
     @Inject(forwardRef(() => UserService)) private userService: UserService,
   ) {}
-  async findAllInitialProfile(): Promise<ListOfStudentInitialResponse> {
-    return StudentInitial.find();
-  }
 
-  async findOneInitialProfile(email: string) {
+  async findOneInitialProfile(email: string): Promise<StudentInitial> {
     return StudentInitial.findOneOrFail({
       where: { email },
     });
   }
 
-  async findAllProfiles(): Promise<ListOfStudentProfilesResponse> {
-    return StudentProfile.find({
-      relations: ['initialData'],
-    });
-  }
-
-  async findOneProfile(id: string): Promise<OneStudentProfileResponse> {
+  async findOneProfile(id: string): Promise<StudentProfile> {
     return StudentProfile.findOneOrFail({
       where: { id },
       relations: ['initialData'],
@@ -46,14 +37,14 @@ export class StudentService {
 
   async createStudentProfile(
     createStudentDto: CreateStudentProfileDto,
-  ): Promise<OneStudentProfileResponse> {
+  ): Promise<StudentProfileInterface> {
     const newStudent: CreateStudentProfileDto = new StudentProfile();
 
     Object.keys(createStudentDto).forEach((prop) => {
       newStudent[prop] = createStudentDto[prop];
     });
 
-    const checkGitHubUsername = await fetch(
+    const checkGitHubUsername: Response = await fetch(
       `https://api.github.com/users/${newStudent.githubUsername}`,
     );
     const res = await checkGitHubUsername.json();
@@ -79,7 +70,9 @@ export class StudentService {
     return newStudent;
   }
 
-  async createInitialProfile(initialProfile: CreateStudentInitialDto) {
+  async createInitialProfile(
+    initialProfile: CreateStudentInitialDto,
+  ): Promise<StudentInitial> {
     const newInitialProfile = new StudentInitial();
 
     Object.keys(initialProfile).forEach((prop) => {
@@ -95,7 +88,7 @@ export class StudentService {
   async updateStudentProfile(
     id: string,
     updateStudentDto: UpdateStudentProfileDto,
-  ): Promise<OneStudentProfileResponse> {
+  ): Promise<StudentProfileInterface> {
     const updatingStudent: UpdateStudentProfileDto =
       await this.findOneProfile(id);
 
@@ -113,7 +106,7 @@ export class StudentService {
 
   async findByGithubUsername(
     githubUsername: string,
-  ): Promise<ListOfStudentProfilesResponse> {
+  ): Promise<StudentProfile[]> {
     return StudentProfile.find({
       where: {
         githubUsername,
@@ -121,12 +114,22 @@ export class StudentService {
     });
   }
 
-  async findAllReservedStudents(recruiterId: string) {
+  async findAllReservedStudentsForRecruiter(
+    recruiterId: string,
+  ): Promise<StudentInitial[]> {
     return await StudentInitial.find({
       where: {
         recruiter: { recruiterId },
       },
       relations: ['profile'],
+    });
+  }
+
+  async findAllReservedStudents(): Promise<StudentInitial[]> {
+    return await StudentInitial.find({
+      where: {
+        status: `${StudentStatus.CONVERSATION}` as unknown as number,
+      },
     });
   }
 
@@ -137,7 +140,7 @@ export class StudentService {
     orderBy: StudentOrderByOptions,
     filters: StudentFilters,
     recruiterUserId: string,
-  ) {
+  ): Promise<FilteredStudents> {
     const { recruiter } = (await this.userService.getSelf(
       recruiterUserId,
     )) as UserType;
@@ -168,7 +171,7 @@ export class StudentService {
     return { students, studentsCount, numberOfPages };
   }
 
-  async markEmployed(studentUserId: string) {
+  async markEmployed(studentUserId: string): Promise<StudentInitialInterface> {
     const { student } = (await this.userService.getSelf(
       studentUserId,
     )) as UserType;

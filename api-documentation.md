@@ -1,6 +1,5 @@
 ### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta. Przy pracy developerskiej jest to 'http://localhost:3001'. W kodzie powinno to być zapisane w zmiennej, aby można było to łatwo zmienić przy wrzucaniu na serwer.
 
-
 #### Spis treści:
 
 1. [Import studentów](#1-import-studentów)
@@ -61,7 +60,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
   "error": "Bad Request",<br/>
   "statusCode": 400<br/>
   }<br/>
-- res — json: {ok: true} | patrz wyżej
+- res — json: {type `FailedEmails` (będzie pusty), type `SuccesfulEmails` (tablica z jednym elementem)}
 
 ## 3. Logowanie:
 
@@ -209,4 +208,5 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
 
 ## 15. Widok tabel w bazie danych oraz relacji:
+
 ![database](./database-relations.jpg)
