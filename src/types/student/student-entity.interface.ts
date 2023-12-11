@@ -28,7 +28,7 @@ export interface FilteredStudents {
 
 export interface StudentProfileInterface {
   id: string;
-  initialData?: StudentInitialInterface;
+  initialData: StudentInitialInterface;
   tel: string | null;
   firstName: string;
   lastName: string;
