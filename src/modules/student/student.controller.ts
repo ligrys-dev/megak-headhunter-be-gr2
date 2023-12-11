@@ -37,7 +37,7 @@ export class StudentController {
   }
 
   @Roles(Role.HR)
-  @Get('/list/:status?/:page?/:take?/')
+  @Get('/list/:status?/:page?/:take?')
   filterStudents(
     @Req() req: Request,
     @Param('status') status: unknown,
@@ -72,7 +72,7 @@ export class StudentController {
     return this.studentService.markEmployed((req.user as UserFromReq).userId);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(Role.STUDENT)
   @Post()
   createProfile(
     @Body() studentDto: CreateStudentProfileDto,

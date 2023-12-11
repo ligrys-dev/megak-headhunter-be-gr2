@@ -15,7 +15,7 @@ export class StudentImportController {
   constructor(private readonly studentImportService: StudentImportService) {}
 
   @Roles(Role.ADMIN)
-  @Post('/students/')
+  @Post('/students')
   @Redirect('/user/students')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
