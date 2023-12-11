@@ -23,7 +23,7 @@ type AdminUser = {
   email: string;
   role: Role.ADMIN;
   student?: never;
-  recruiter: never;
+  recruiter?: never;
 };
 
 export type UserType = StudentUser | RecruiterUser | AdminUser;

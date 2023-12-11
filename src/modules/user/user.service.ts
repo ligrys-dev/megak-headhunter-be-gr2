@@ -175,14 +175,14 @@ export class UserService {
       await this.mailService.sendMail(
         email,
         'headhunter-app account activation',
-        `<div><p>Aby aktywowac swoje konto, kliknij ponizszy link:</p>
+        `<div><p>Aby aktywować swoje konto, kliknij poniższy link:</p>
         <a href="${appPath}/user/activate/${id}/${activationToken}">
           ${appPath}/user/activate/${id}/${activationToken}</a>
         <p>Twoje tymczasowe hasło: <strong>${user.password}</strong></p>
         <p>Po zalogowaniu się po raz pierwszy zalecamy zmianę hasła na bardziej bezpieczne.</p>
-        <p>Dziękujemy za korzystanie z naszej aplikacji!</p>
+        <p>Dziękujemy za skorzystanie z naszej aplikacji!</p>
         <p>Z poważaniem,</p>
-        MegaK v3 gr2</div>`, // naprawić problem z polskimi znakami oraz linkiem
+        <p>Zespół Head-Hunters v3 gr2</p></div>`,
       );
     }
 
