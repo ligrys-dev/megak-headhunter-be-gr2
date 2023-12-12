@@ -36,7 +36,7 @@ export class AuthService {
       secure: false, //XXX true in https
       domain: 'localhost',
       httpOnly: true,
-      maxAge: 1000 * 60 * 60, // 1h
+      maxAge: 1000 * 60 * 60 * 24, // 24h
     });
 
     return { id: usr.id, role: usr.role };
