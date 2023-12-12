@@ -49,7 +49,7 @@ export interface StudentProfileInterface {
 
 export type NewStudentProfileInterface = Omit<
   StudentProfileInterface,
-  'id' | 'initalData'
+  'id' | 'initialData'
 >;
 
 export type OneStudentProfileResponse = StudentProfileInterface;
