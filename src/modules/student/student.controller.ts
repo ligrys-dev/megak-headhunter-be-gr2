@@ -73,7 +73,7 @@ export class StudentController {
   }
 
   @Roles([Role.STUDENT])
-  @Post()
+  @Post('/')
   createProfile(
     @Req() req: Request,
     @Body() studentDto: CreateStudentProfileDto,
