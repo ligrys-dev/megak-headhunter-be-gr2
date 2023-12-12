@@ -75,9 +75,13 @@ export class StudentController {
   @Roles(Role.STUDENT)
   @Post()
   createProfile(
+    @Req() req: Request,
     @Body() studentDto: CreateStudentProfileDto,
   ): Promise<OneStudentProfileResponse> {
-    return this.studentService.createStudentProfile(studentDto);
+    return this.studentService.createStudentProfile(
+      studentDto,
+      (req.user as UserFromReq).userId,
+    );
   }
 
   @Roles(Role.STUDENT)
