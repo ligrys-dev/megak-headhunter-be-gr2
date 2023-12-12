@@ -37,7 +37,10 @@ export class HrRecruiterService {
     if (student.status === StudentStatus.HIRED)
       throw new Error('This student is already hired!');
 
-    if (recruiter.maxReservedStudents < this.getAllReservedStudents.length) {
+    const reservedStudents = (await this.getAllReservedStudents(recruiter.id))
+      .length;
+
+    if (recruiter.maxReservedStudents < reservedStudents) {
       throw new Error('Maximum amount of reserved students reached!');
     }
 
