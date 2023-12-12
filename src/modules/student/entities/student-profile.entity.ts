@@ -65,4 +65,6 @@ export class StudentProfile extends BaseEntity {
   @OneToOne(() => StudentInitial, (initial) => initial.email)
   @JoinColumn({ name: 'initialData' })
   initialData: StudentInitial;
+
+  [key: string]: any;
 }

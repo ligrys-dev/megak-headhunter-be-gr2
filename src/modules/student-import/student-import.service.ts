@@ -44,9 +44,7 @@ export class StudentImportService {
             .split(',')
             .map((url: string) => url.trim());
           return { ...student, bonusProjectUrls: bonusProjectUrlsArray };
-        } else {
-          return { ...student };
-        }
+        } else return { ...student };
       });
 
       await this.cacheManager.set('students', transformedData);
