@@ -8,7 +8,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 export class HrRecruiterController {
   constructor(private readonly hrRecruiterService: HrRecruiterService) {}
 
-  @Roles(Role.HR)
+  @Roles([Role.HR])
   @Patch('/reserve/:email')
   reserveStudent(@Req() req: Request, @Param('email') email: string) {
     return this.hrRecruiterService.reserveStudent(
