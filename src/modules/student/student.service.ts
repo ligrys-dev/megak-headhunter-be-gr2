@@ -11,8 +11,6 @@ import {
   StudentFilters,
   StudentOrderByOptions,
   UserType,
-  StudentInitialInterface,
-  StudentProfileInterface,
   FilteredStudents,
 } from 'src/types';
 
@@ -92,9 +90,8 @@ export class StudentService {
   async updateStudentProfile(
     id: string,
     updateStudentDto: UpdateStudentProfileDto,
-  ): Promise<StudentProfileInterface> {
-    const updatingStudent: UpdateStudentProfileDto =
-      await this.findOneProfile(id);
+  ): Promise<StudentProfile> {
+    const updatingStudent = await this.findOneProfile(id);
 
     Object.keys(updateStudentDto).forEach((prop) => {
       updatingStudent[prop] = updateStudentDto[prop];
@@ -175,7 +172,7 @@ export class StudentService {
     return { students, studentsCount, numberOfPages };
   }
 
-  async markEmployed(studentUserId: string): Promise<StudentInitialInterface> {
+  async markEmployed(studentUserId: string): Promise<StudentInitial> {
     const { student } = (await this.userService.getSelf(
       studentUserId,
     )) as UserType;
