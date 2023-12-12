@@ -33,7 +33,7 @@ export class UserController {
     return this.userService.getSelf((req.user as UserFromReq).userId);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   @Get('/students')
   @Redirect('/user/sendActivationMail')
   async createStudentUsers() {
@@ -41,14 +41,14 @@ export class UserController {
       await this.cacheManager.get('students');
     return this.userService.createStudents(createStudentDtos);
   }
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   @Post('/recruiter')
   @Redirect('/user/sendActivationMail')
   createRecruiterUser(@Body() createRecruiterDto: CreateHrRecruiterDto) {
     return this.userService.createRecruiter(createRecruiterDto);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   @Get('/sendActivationMail')
   async sendActivationMail() {
     const users: UserWithRandomPwd[] =

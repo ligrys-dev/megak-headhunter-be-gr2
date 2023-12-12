@@ -24,6 +24,6 @@ export class RolesGuard implements CanActivate {
     const user = this.jwtService.decode(req.cookies.access_token);
     if (!user) return false;
 
-    return requiredRoles === user.role;
+    return requiredRoles.includes(user.role);
   }
 }
