@@ -28,7 +28,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Roles(Role.HR)
+  @Roles([Role.HR, Role.STUDENT])
   @Get('/initial/:email')
   findOneInitialProfile(
     @Param('email') email: string,
@@ -36,7 +36,7 @@ export class StudentController {
     return this.studentService.findOneInitialProfile(email);
   }
 
-  @Roles(Role.HR)
+  @Roles([Role.HR])
   @Get('/list/:status?/:page?/:take?')
   filterStudents(
     @Req() req: Request,
@@ -60,19 +60,19 @@ export class StudentController {
     );
   }
 
-  @Roles(Role.HR)
+  @Roles([Role.HR, Role.STUDENT])
   @Get('/:id')
   findOneProfile(@Param('id') id: string): Promise<OneStudentProfileResponse> {
     return this.studentService.findOneProfile(id);
   }
 
-  @Roles(Role.STUDENT)
+  @Roles([Role.STUDENT])
   @Patch('/hired')
   markEmployed(@Req() req: Request): Promise<OneStudentInitialResponse> {
     return this.studentService.markEmployed((req.user as UserFromReq).userId);
   }
 
-  @Roles(Role.STUDENT)
+  @Roles([Role.STUDENT])
   @Post()
   createProfile(
     @Req() req: Request,
@@ -84,7 +84,7 @@ export class StudentController {
     );
   }
 
-  @Roles(Role.STUDENT)
+  @Roles([Role.STUDENT])
   @Patch('/:id')
   updateProfile(
     @Param('id') id: string,

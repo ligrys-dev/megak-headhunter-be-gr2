@@ -14,7 +14,7 @@ import { Role } from 'src/types';
 export class StudentImportController {
   constructor(private readonly studentImportService: StudentImportService) {}
 
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   @Post('/students')
   @Redirect('/user/students')
   @UseInterceptors(FileInterceptor('file'))
