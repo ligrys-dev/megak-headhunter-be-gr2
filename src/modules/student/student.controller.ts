@@ -28,7 +28,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Roles([Role.HR])
+  @Roles([Role.HR, Role.STUDENT])
   @Get('/initial/:email')
   findOneInitialProfile(
     @Param('email') email: string,
