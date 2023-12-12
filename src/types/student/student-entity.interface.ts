@@ -47,7 +47,10 @@ export interface StudentProfileInterface {
   courses: string | null;
 }
 
-export type NewStudentProfileInterface = Omit<StudentProfileInterface, 'id'>;
+export type NewStudentProfileInterface = Omit<
+  StudentProfileInterface,
+  'id' | 'initalData'
+>;
 
 export type OneStudentProfileResponse = StudentProfileInterface;
 export type ListOfStudentProfilesResponse = StudentProfileInterface[];
