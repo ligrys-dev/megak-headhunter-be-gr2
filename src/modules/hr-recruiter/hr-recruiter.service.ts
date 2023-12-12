@@ -37,6 +37,10 @@ export class HrRecruiterService {
     if (student.status === StudentStatus.HIRED)
       throw new Error('This student is already hired!');
 
+    if (recruiter.maxReservedStudents < this.getAllReservedStudents.length) {
+      throw new Error('Maximum amount of reserved students reached!');
+    }
+
     student.recruiter = recruiter;
     student.status = StudentStatus.CONVERSATION;
     student.reservationExpirationDate = new Date(
