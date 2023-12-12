@@ -1,7 +1,7 @@
 
 
 ### 1. Uruchomić backend i frontend, oraz bazydanych. To oczywiste, ale dla pewności sprawdzić też ten punkt.
-### 2. Na backendzie w pliku app.module.ts tymczasowo (na czas testów) zakomentowujemy linijkę 35:<br/> `{ provide: APP_GUARD, useClass: JwtAuthGuard },`
+### 2. [JUŻ NIEAKTUALNE] Na backendzie w pliku app.module.ts tymczasowo (na czas testów) zakomentowujemy linijkę 35:<br/> `{ provide: APP_GUARD, useClass: JwtAuthGuard },`
 ### 3. Uruchomić mailslurper z tej wersji https://github.com/mailslurper/mailslurper/releases/tag/1.14.1
    Po prostu ściągnąć, rozpakować folder i uruchomić plik mailslurper.exe,
    uruchomi się okienko wiersza poleceń z kilkoma linijkami logów - to jest właśnie ten mailslurper.<br/>

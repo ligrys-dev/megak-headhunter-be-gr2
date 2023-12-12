@@ -33,8 +33,9 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(payload);
 
     res.cookie('access_token', accessToken, {
-      httpOnly: true,
       secure: false, //XXX true in https
+      domain: 'localhost',
+      httpOnly: true,
       maxAge: 1000 * 60 * 60, // 1h
     });
 

@@ -20,11 +20,4 @@ export class AuthController {
   logout(@Res() res: Response) {
     return this.authService.logout(res);
   }
-
-  // @UseGuards(JwtAuthGuard) //test
-  // @Roles(Role.ADMIN)
-  // @Get('/role')
-  // testRole(@Req() req: Request) {
-  //   return req.user;
-  // }
 }

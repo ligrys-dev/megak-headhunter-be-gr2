@@ -16,8 +16,9 @@ import { UserService } from './user.service';
 import { CreateHrRecruiterDto } from '../hr-recruiter/dto/create-hr-recruiter.dto';
 import { CreateStudentInitialDto } from '../student/dto/create-student-initial.dto';
 import { Public } from 'src/common/decorators/public.decorator';
-import { StudentEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
+import { Role, StudentEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
 import { config } from 'dotenv';
+import { Roles } from 'src/common/decorators/roles.decorator';
 config();
 
 @Controller('user')
@@ -32,6 +33,7 @@ export class UserController {
     return this.userService.getSelf((req.user as UserFromReq).userId);
   }
 
+  @Roles(Role.ADMIN)
   @Get('/students')
   @Redirect('/user/sendActivationMail')
   async createStudentUsers() {
@@ -39,13 +41,14 @@ export class UserController {
       await this.cacheManager.get('students');
     return this.userService.createStudents(createStudentDtos);
   }
-
+  @Roles(Role.ADMIN)
   @Post('/recruiter')
   @Redirect('/user/sendActivationMail')
   createRecruiterUser(@Body() createRecruiterDto: CreateHrRecruiterDto) {
     return this.userService.createRecruiter(createRecruiterDto);
   }
 
+  @Roles(Role.ADMIN)
   @Get('/sendActivationMail')
   async sendActivationMail() {
     const users: UserWithRandomPwd[] =
