@@ -32,10 +32,17 @@ export class HrRecruiterService {
     )) as UserType;
 
     if (student.status === StudentStatus.CONVERSATION)
-      throw new Error('This student is not avaliable!');
+      throw new Error('This student is not available!');
 
     if (student.status === StudentStatus.HIRED)
       throw new Error('This student is already hired!');
+
+    const reservedStudents = (await this.getAllReservedStudents(recruiter.id))
+      .length;
+
+    if (recruiter.maxReservedStudents < reservedStudents) {
+      throw new Error('Maximum amount of reserved students reached!');
+    }
 
     student.recruiter = recruiter;
     student.status = StudentStatus.CONVERSATION;
