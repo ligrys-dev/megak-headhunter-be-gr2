@@ -122,7 +122,7 @@ export class StudentService {
       where: {
         recruiter: { recruiterId },
       },
-      relations: ['profile'],
+      relations: ['profile', 'recruiter'],
     });
   }
 
