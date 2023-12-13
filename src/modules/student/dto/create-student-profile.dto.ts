@@ -10,11 +10,13 @@ import {
   Length,
   MaxLength,
   Max,
+  Min,
   IsUrl,
 } from 'class-validator';
 
 export class CreateStudentProfileDto implements NewStudentProfileInterface {
   @IsOptional()
+  @IsString()
   @Length(9, 20)
   tel: string | null;
 
@@ -62,6 +64,7 @@ export class CreateStudentProfileDto implements NewStudentProfileInterface {
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   @Max(99999999.99)
   expectedSalary: number | null;
 
