@@ -58,7 +58,7 @@ export class HrRecruiterService {
     );
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_HOUR)
   async changeStudentStatusWhenExpired() {
     const students = await this.studentService.findAllReservedStudents();
 
