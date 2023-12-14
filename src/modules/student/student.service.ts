@@ -179,7 +179,7 @@ export class StudentService {
   }
 
   async markAvailable(email: string): Promise<StudentInitial> {
-    const student = await this.findOneInitialProfile(email);
+    const { student } = await this.findOneInitialProfile(email);
     student.status = StudentStatus.AVAILABLE;
     return await student.save();
   }
