@@ -52,6 +52,23 @@ export class HrRecruiterService {
     return await student.save();
   }
 
+  async cancelReservation(studentEmail: string, recruiterUserId: string) {
+    const student =
+      await this.studentService.findOneInitialProfile(studentEmail);
+
+    const { recruiter } = (await this.userService.getSelf(
+      recruiterUserId,
+    )) as UserType;
+
+    console.log(recruiter.reservedStudents);
+
+    student.reservationExpirationDate = null;
+    student.status = StudentStatus.AVAILABLE;
+    student.recruiter = null;
+
+    return await student.save();
+  }
+
   async getAllReservedStudents(recruiterId: string) {
     return await this.studentService.findAllReservedStudentsForRecruiter(
       recruiterId,

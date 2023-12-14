@@ -177,12 +177,4 @@ export class StudentService {
     student.status = StudentStatus.HIRED;
     return await student.save();
   }
-
-  async markAvailable(email: string): Promise<StudentInitial> {
-    const student = await this.findOneInitialProfile(email);
-    student.reservationExpirationDate = null;
-    student.status = StudentStatus.AVAILABLE;
-    student.recruiter = null;
-    return await student.save();
-  }
 }

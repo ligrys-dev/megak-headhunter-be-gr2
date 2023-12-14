@@ -72,14 +72,6 @@ export class StudentController {
     return this.studentService.markEmployed((req.user as UserFromReq).userId);
   }
 
-  @Roles([Role.HR])
-  @Patch('/available/:email')
-  markAvailable(
-    @Param('id') email: string,
-  ): Promise<OneStudentInitialResponse> {
-    return this.studentService.markAvailable(email);
-  }
-
   @Roles([Role.STUDENT])
   @Post('/')
   createProfile(
