@@ -74,7 +74,7 @@ export class StudentController {
 
   @Roles([Role.HR])
   @Patch('/available')
-  markAvailable(@Param('id') id: string) {
+  markAvailable(@Param('id') id: string): Promise<OneStudentInitialResponse> {
     return this.studentService.markAvailable(id);
   }
 
