@@ -73,7 +73,7 @@ export class StudentController {
   }
 
   @Roles([Role.HR])
-  @Patch('/available')
+  @Patch('/available/:email')
   markAvailable(
     @Param('id') email: string,
   ): Promise<OneStudentInitialResponse> {
