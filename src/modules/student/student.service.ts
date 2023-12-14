@@ -182,6 +182,7 @@ export class StudentService {
     const student = await this.findOneInitialProfile(email);
     student.reservationExpirationDate = null;
     student.status = StudentStatus.AVAILABLE;
+    student.recruiter = null;
     return await student.save();
   }
 }
