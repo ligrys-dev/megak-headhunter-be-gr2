@@ -105,7 +105,7 @@ export class UserService {
         if (isExisted) {
           failedEmails.push({
             email: createStudentDto.email,
-            errorDetails: ['User already exists.'],
+            errorDetails: ['Użytkownik istnieje już w bazie danych.'],
           });
           continue;
         }
@@ -233,7 +233,7 @@ export class UserService {
     const usr = await this.findOneById(user.userId);
     const isPasswordValid = await comparePwd(oldPwd, usr.pwdHash);
     if (!isPasswordValid)
-      throw new ForbiddenException('Old password is not valid');
+      throw new ForbiddenException('Stare hasło jest nieprawidłowe.');
 
     usr.pwdHash = await hashPwd(newPwd);
     await usr.save();
