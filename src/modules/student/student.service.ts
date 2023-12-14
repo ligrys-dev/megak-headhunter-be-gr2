@@ -118,12 +118,9 @@ export class StudentService {
   async findAllReservedStudentsForRecruiter(
     recruiterId: string,
   ): Promise<StudentInitial[]> {
-    return await StudentInitial.find({
-      where: {
-        recruiter: { recruiterId },
-      },
-      relations: ['profile'],
-    });
+    return await StudentInitial.createQueryBuilder()
+      .where(`recruiterId = "${recruiterId}"`)
+      .getMany();
   }
 
   async findAllReservedStudents(): Promise<StudentInitial[]> {
