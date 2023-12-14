@@ -152,10 +152,56 @@ export class StudentService {
     }
 
     if (filters) {
-      Object.keys(filters).forEach((filterKey) => {
-        const value = `"${filters[filterKey]}"`;
-        queryBuilder.andWhere(`${filterKey} = ${value}`);
-      });
+      if (filters.courseCompletion)
+        queryBuilder.andWhere(
+          `courseCompletion > "${filters.courseCompletion}"`,
+        );
+
+      if (filters.courseEngagement)
+        queryBuilder.andWhere(
+          `courseEngagement > "${filters.courseEngagement}"`,
+        );
+
+      if (filters.projectDegree)
+        queryBuilder.andWhere(`projectDegree > "${filters.projectDegree}"`);
+
+      if (filters.teamProjectDegree)
+        queryBuilder.andWhere(
+          `teamProjectDegree > "${filters.teamProjectDegree}"`,
+        );
+
+      if (filters['profile.monthsOfCommercialExp'])
+        queryBuilder.andWhere(
+          `profile.monthsOfCommercialExp > "${filters['profile.monthsOfCommercialExp']}"`,
+        );
+
+      if (filters['profile.canTakeApprenticeship'])
+        queryBuilder.andWhere(
+          `profile.canTakeApprenticeship = "${filters['profile.canTakeApprenticeship']}"`,
+        );
+
+      if (filters['profile.expectedContractType'])
+        queryBuilder.andWhere(
+          `profile.expectedContractType = "${filters['profile.expectedContractType']}"`,
+        );
+
+      if (filters['profile.expectedTypeWork'])
+        queryBuilder.andWhere(
+          `profile.expectedTypeWork = "${filters['profile.expectedTypeWork']}"`,
+        );
+
+      if (filters['profile.expectedSalary'])
+        queryBuilder
+          .andWhere(
+            `profile.expectedSalary > "${
+              filters['profile.expectedSalary'].min ?? 0
+            }"`,
+          )
+          .andWhere(
+            `profile.expectedSalary < "${
+              filters['profile.expectedSalary'].max ?? 99999999.99
+            }"`,
+          );
     }
 
     const [students, studentsCount] = await queryBuilder
