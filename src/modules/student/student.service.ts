@@ -178,8 +178,8 @@ export class StudentService {
     return await student.save();
   }
 
-  async markAvailable(id: string): Promise<StudentInitial> {
-    const student = await this.findOneInitialProfile(id);
+  async markAvailable(email: string): Promise<StudentInitial> {
+    const student = await this.findOneInitialProfile(email);
     student.status = StudentStatus.AVAILABLE;
     return await student.save();
   }

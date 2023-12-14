@@ -74,8 +74,10 @@ export class StudentController {
 
   @Roles([Role.HR])
   @Patch('/available')
-  markAvailable(@Param('id') id: string): Promise<OneStudentInitialResponse> {
-    return this.studentService.markAvailable(id);
+  markAvailable(
+    @Param('id') email: string,
+  ): Promise<OneStudentInitialResponse> {
+    return this.studentService.markAvailable(email);
   }
 
   @Roles([Role.STUDENT])
