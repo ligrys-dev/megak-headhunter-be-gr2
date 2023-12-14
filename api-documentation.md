@@ -211,7 +211,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 
 ## 15. Przywrócenie kursantowi statusu "dostępny" (w przypadku rezygnacji z rezerwacji do rozmowy)
 
-- adres `/student/available` metoda PATCH
+- adres `/student/available/:email` metoda PATCH
 - metoda dozwolona dla rekrutera
 - zmienia status studenta na available
 - student jest pobierany na podstawie jego id z danych profilowych
