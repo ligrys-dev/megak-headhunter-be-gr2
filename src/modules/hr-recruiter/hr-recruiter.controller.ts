@@ -28,4 +28,10 @@ export class HrRecruiterController {
       (req.user as UserFromReq).userId,
     );
   }
+
+  @Roles([Role.HR])
+  @Patch('/hire/:email')
+  hireStudent(@Param('email') studentEmail: string) {
+    return this.hrRecruiterService.hireStudent(studentEmail);
+  }
 }

@@ -93,4 +93,12 @@ export class HrRecruiterService {
       'Changing the status of students whose interview time has expired...',
     );
   }
+
+  async hireStudent(studentEmail: string) {
+    const student =
+      await this.studentService.findOneInitialProfile(studentEmail);
+
+    student.status = StudentStatus.HIRED;
+    return await student.save();
+  }
 }
