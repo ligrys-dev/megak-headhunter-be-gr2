@@ -93,7 +93,7 @@ export class UserController {
   @Post('/admin')
   @Public()
   @UseGuards(PasswordProtectGuard)
-  @UsePassword('very-hard-password-to-create-admin')
+  @UsePassword(process.env.CREATE_ADMIN_PASS)
   addAdmin(@Body('email') email: string, @Body('password') password: string) {
     return this.userService.addAdmin(email, password);
   }
