@@ -210,6 +210,12 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - zmienia status studenta na zatrudniony
 - student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
 
+## 15. Zatrudnienie studenta przez rekrutera
+
+- adres `/hr/hire/:email` metoda PATCH
+- parametr email — email studenta, którego chcemy zatrudnić
+- zmienia status studenta na zatrudniony
+
 ## 15. Przywrócenie kursantowi statusu "dostępny" (w przypadku rezygnacji z rezerwacji do rozmowy)
 
 - adres `/hr/available/:email` metoda PATCH
