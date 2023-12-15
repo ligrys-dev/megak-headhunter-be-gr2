@@ -1,10 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
+  Patch,
+  Post,
   Query,
   Req,
 } from '@nestjs/common';
@@ -13,10 +13,10 @@ import { Request } from 'express';
 import { CreateStudentProfileDto } from './dto/create-student-profile.dto';
 import { UpdateStudentProfileDto } from './dto/update-student-profile.dto';
 import {
-  Role,
   FilteredStudents,
   OneStudentInitialResponse,
   OneStudentProfileResponse,
+  Role,
   StudentFilters,
   StudentOrderByOptions,
   StudentStatus,

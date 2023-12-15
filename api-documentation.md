@@ -16,7 +16,8 @@
 12. [Pobieranie siebie](#12-pobieranie-siebie)
 13. [Rezerwacja Studenta](#13-rezerwacja-studenta)
 14. [Zaznaczenie przez studenta, że został zatrudniony](#14-zaznaczenie-przez-studenta-że-został-zatrudniony)
-15. [Widok tabel w bazie danych oraz relacji](#15-widok-tabel-w-bazie-danych-oraz-relacji)
+15. [Przywrócenie kursantowi statusu "dostępny"](#15-przywrócenie-kursantowi-statusu-dostępny-w-przypadku-rezygnacji-z-rezerwacji-do-rozmowy)
+16. [Widok tabel w bazie danych oraz relacji](#16-widok-tabel-w-bazie-danych-oraz-relacji)
 
 ## 1. Import studentów:
 
@@ -204,9 +205,17 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 ## 14. Zaznaczenie przez studenta, że został zatrudniony
 
 - adres `/student/hired` metoda PATCH
+- metoda dozwolona dla kursanta
 - zmienia status studenta na zatrudniony
 - student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
 
-## 15. Widok tabel w bazie danych oraz relacji:
+## 15. Przywrócenie kursantowi statusu "dostępny" (w przypadku rezygnacji z rezerwacji do rozmowy)
+
+- adres `/hr/available/:email` metoda PATCH
+- metoda dozwolona dla rekrutera
+- zmienia status studenta na available
+- student jest pobierany na podstawie jego id z danych profilowych
+
+## 16. Widok tabel w bazie danych oraz relacji:
 
 ![database](./database-relations.jpg)
