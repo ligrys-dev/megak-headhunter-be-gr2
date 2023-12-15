@@ -11,9 +11,3 @@ export interface StudentFilters {
 
   [key: string]: number | { min: number; max: number };
 }
-
-export const obj = {
-  courseCompletion: 1,
-  'profile.expectedContractType': 3,
-  'profile.expectedSalary': { min: 1000 },
-} as StudentFilters;
