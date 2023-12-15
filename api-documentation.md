@@ -17,7 +17,8 @@
 13. [Rezerwacja Studenta](#13-rezerwacja-studenta)
 14. [Zaznaczenie przez studenta, że został zatrudniony](#14-zaznaczenie-przez-studenta-że-został-zatrudniony)
 15. [Przywrócenie kursantowi statusu "dostępny"](#15-przywrócenie-kursantowi-statusu-dostępny-w-przypadku-rezygnacji-z-rezerwacji-do-rozmowy)
-16. [Widok tabel w bazie danych oraz relacji](#16-widok-tabel-w-bazie-danych-oraz-relacji)
+16. [Dodawanie hr](#16-dodawanie-admina)
+17. [Widok tabel w bazie danych oraz relacji](#17-widok-tabel-w-bazie-danych-oraz-relacji)
 
 ## 1. Import studentów:
 
@@ -216,6 +217,13 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - zmienia status studenta na available
 - student jest pobierany na podstawie jego id z danych profilowych
 
-## 16. Widok tabel w bazie danych oraz relacji:
+## 16. Dodawanie admina
+
+- adres `/user/admin` metoda POST
+- body: {email: string, password: string}
+- dodać nagłówek: x-password, który zawiera hasło potrzebne do stworzenia admina (w .env)
+- trzeba to zrobić w insomni/postmanie itp
+
+## 17. Widok tabel w bazie danych oraz relacji:
 
 ![database](./database-relations.jpg)
