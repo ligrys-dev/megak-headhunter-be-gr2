@@ -262,10 +262,10 @@ export class UserService {
     };
   }
 
-  async addAdmin() {
+  async addAdmin(email: string, password: string) {
     const admin = new User();
-    admin.email = 'admin@admin.com';
-    admin.pwdHash = await hashPwd('admin1');
+    admin.email = email;
+    admin.pwdHash = await hashPwd(password);
     admin.role = Role.ADMIN;
     admin.isActive = true;
     admin.activationToken = null;
