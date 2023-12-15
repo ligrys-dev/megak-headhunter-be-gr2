@@ -5,7 +5,7 @@ import { LocalAuthGuard } from 'src/common/guards/local-auth.guard';
 import { Public } from 'src/common/decorators/public.decorator';
 import { SaveUserEntity } from 'src/types';
 
-@Controller('/')
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
