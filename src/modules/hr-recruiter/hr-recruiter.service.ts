@@ -102,4 +102,3 @@ export class HrRecruiterService {
     return await student.save();
   }
 }
-
