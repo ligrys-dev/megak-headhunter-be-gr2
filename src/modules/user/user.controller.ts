@@ -8,6 +8,7 @@ import {
   Post,
   Redirect,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -19,6 +20,8 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { Role, StudentEmails, UserFromReq, UserWithRandomPwd } from 'src/types';
 import { config } from 'dotenv';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { UsePassword } from 'src/common/decorators/use-password.decorator';
+import { PasswordProtectGuard } from 'src/common/guards/password-protected.guard';
 config();
 
 @Controller('user')
@@ -87,9 +90,11 @@ export class UserController {
     return this.userService.resetPassword(email);
   }
 
-  @Public()
   @Post('/admin')
-  addAdmin() {
-    return this.userService.addAdmin();
+  @Public()
+  @UseGuards(PasswordProtectGuard)
+  @UsePassword('very-hard-password-to-create-admin')
+  addAdmin(@Body('email') email: string, @Body('password') password: string) {
+    return this.userService.addAdmin(email, password);
   }
 }
