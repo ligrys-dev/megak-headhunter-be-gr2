@@ -119,7 +119,7 @@ export class StudentService {
     recruiterId: string,
   ): Promise<StudentInitial[]> {
     return await StudentInitial.createQueryBuilder()
-      .where(`recruiterId = "${recruiterId}"`)
+      .where(`recruiterId = ?`, [recruiterId])
       .getMany();
   }
 
@@ -145,63 +145,59 @@ export class StudentService {
 
     const queryBuilder = StudentInitial.createQueryBuilder('student')
       .innerJoinAndSelect('student.profile', 'profile')
-      .where(`status = "${status}"`);
+      .where(`status = ?`, [status]);
 
     if (status === StudentStatus.CONVERSATION) {
-      queryBuilder.andWhere(`recruiter = "${recruiter.id}"`);
+      queryBuilder.andWhere(`recruiter = ?`, [recruiter.id]);
     }
 
     if (filters) {
       if (filters.courseCompletion)
-        queryBuilder.andWhere(
-          `courseCompletion > "${filters.courseCompletion}"`,
-        );
+        queryBuilder.andWhere(`courseCompletion > ?`, [
+          filters.courseCompletion,
+        ]);
 
       if (filters.courseEngagement)
-        queryBuilder.andWhere(
-          `courseEngagement > "${filters.courseEngagement}"`,
-        );
+        queryBuilder.andWhere(`courseEngagement > ?`, [
+          filters.courseEngagement,
+        ]);
 
       if (filters.projectDegree)
-        queryBuilder.andWhere(`projectDegree > "${filters.projectDegree}"`);
+        queryBuilder.andWhere(`projectDegree > ?`, [filters.projectDegree]);
 
       if (filters.teamProjectDegree)
-        queryBuilder.andWhere(
-          `teamProjectDegree > "${filters.teamProjectDegree}"`,
-        );
+        queryBuilder.andWhere(`teamProjectDegree > ?`, [
+          filters.teamProjectDegree,
+        ]);
 
       if (filters['profile.monthsOfCommercialExp'])
-        queryBuilder.andWhere(
-          `profile.monthsOfCommercialExp > "${filters['profile.monthsOfCommercialExp']}"`,
-        );
+        queryBuilder.andWhere(`profile.monthsOfCommercialExp > ?`, [
+          filters['profile.monthsOfCommercialExp'],
+        ]);
 
       if (filters['profile.canTakeApprenticeship'])
-        queryBuilder.andWhere(
-          `profile.canTakeApprenticeship = "${filters['profile.canTakeApprenticeship']}"`,
-        );
+        queryBuilder.andWhere(`profile.canTakeApprenticeship = ?`, [
+          filters['profile.canTakeApprenticeship'],
+        ]);
 
       if (filters['profile.expectedContractType'])
-        queryBuilder.andWhere(
-          `profile.expectedContractType = "${filters['profile.expectedContractType']}"`,
-        );
+        queryBuilder.andWhere(`profile.expectedContractType = ?`, [
+          filters['profile.expectedContractType'],
+        ]);
 
       if (filters['profile.expectedTypeWork'])
-        queryBuilder.andWhere(
-          `profile.expectedTypeWork = "${filters['profile.expectedTypeWork']}"`,
-        );
+        queryBuilder.andWhere(`profile.expectedTypeWork = ?`, [
+          filters['profile.expectedTypeWork'],
+        ]);
 
       if (filters['profile.expectedSalary'])
         queryBuilder
-          .andWhere(
-            `profile.expectedSalary > "${
-              filters['profile.expectedSalary'].min ?? 0
-            }"`,
-          )
-          .andWhere(
-            `profile.expectedSalary < "${
-              filters['profile.expectedSalary'].max ?? 99999999.99
-            }"`,
-          );
+          .andWhere(`profile.expectedSalary > ?`, [
+            filters['profile.expectedSalary'].min ?? 0,
+          ])
+          .andWhere(`profile.expectedSalary < ?`, [
+            filters['profile.expectedSalary'].max ?? 99999999.99,
+          ]);
     }
 
     const [students, studentsCount] = await queryBuilder
