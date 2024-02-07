@@ -9,6 +9,7 @@ import { comparePwd } from 'src/utils/handle-pwd';
 import { JwtService } from '@nestjs/jwt';
 import { Role, SaveUserEntity, StudentStatus, UserJwtPayload } from 'src/types';
 import { StudentService } from 'src/modules/student/student.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,9 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private studentService: StudentService,
+    private configService: ConfigService,
   ) {}
+
   async login(user: SaveUserEntity, res: Response) {
     const usr = await this.userService.findOneById(user.id);
 
@@ -33,10 +36,10 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(payload);
 
     res.cookie('access_token', accessToken, {
-      secure: false, //XXX true in https
-      domain: 'localhost',
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 24h
+      secure: !!this.configService.get('COOKIE_SECURE'),
+      domain: this.configService.get('COOKIE_DOMAIN'),
+      httpOnly: !!this.configService.get('COOKIE_HTTP_ONLY'),
+      maxAge: +this.configService.get('COOKIE_MAX_AGE'),
     });
 
     return { id: usr.id, role: usr.role };
