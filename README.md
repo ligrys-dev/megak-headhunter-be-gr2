@@ -1,27 +1,27 @@
 # MegaK HeadHunter
-The app was created during a programming course MegaK.
+Created during the MegaK programming course.
 
-The application allows easily connect people from HR departments of companies, including Headhunters, with people looking for a job in IT.
+The app allows easily connect people from HR departments of companies, including Headhunters, with people looking for a job in IT.
 
-### Useful links
+## Useful links
 
 [Api documentation](https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2/blob/develop/api-documentation.md) <br/>
 [Running the test environment step by step](https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2/blob/develop/run-test-documentation.md)
 
-### Key Features::
+## Key Features:
 
-- #### Admin:
+- ### Admin:
   - adding a csv file with students' initialization data
   - registration of recruiters
-- #### Student:
+- ### Student:
   - creating and editing a profile
   - showing CV
   - indicating by student, that she or he has been employed
-- #### Recruiter:
+- ### Recruiter:
   - View a list of available students
   - Selecting students for conversation on a separate list
   - Rejecting unselected students
-- #### User
+- ### User
   - profile activation via a link sent by e-mail
   - password change
   - recovery
