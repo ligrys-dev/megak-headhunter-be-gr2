@@ -36,6 +36,8 @@ The app allows easily connect people from HR departments of companies, including
   - recovery
   - login and authorization
 
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 ## Technologies used:
 
 - backend
@@ -59,6 +61,8 @@ The app allows easily connect people from HR departments of companies, including
   - vite
   - papaparse
   - react-icons
+
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
 
 ## Running the application locally
 
@@ -105,41 +109,66 @@ cd ./megak-v3-headhunter-fe-gr2
 npm install
 npm run dev
 ```
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
 
 ## Screenshots
 
 ### Login
 ![Login](https://raw.githubusercontent.com/ligrys-dev/megak-v3-headhunter-fe-gr2/main/src/repo_utils/screenshots/login.jpg)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Admin view - welcome screen
 ![Admin - welcome](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/admin-main-view.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Admin - adding students
 ![Admin - add students](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/admin-adding-students.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Admin - adding recruiter
 ![Admin - add recruiter](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/admin-adding-hr.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Student - welcome screen
 ![Student - welcome](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-welcome.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Student - profile view
 ![Student profile](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-data.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Student - edit profile data
 ![Student - edit profile](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-data-edit.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Student - notifications
 ![Student - notifications](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-notifications.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Recruiter - welcome screen
 ![HR - welcome](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-welcome.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Recruiter - available students view
 ![HR - students view](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-students-available.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Recruiter - students for conversation view
 ![HR - conversation](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-students-conversation.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
 
 ### Recruiter - student's CV preview
 ![HR - cv view](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-students-conversation-cv.jpg?raw=true)
+<p align="right">(<a href="#MegaK-HeadHunter">back to top</a>)</p>
+
