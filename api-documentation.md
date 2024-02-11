@@ -1,26 +1,33 @@
-### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta. Przy pracy developerskiej jest to 'http://localhost:3001'. W kodzie powinno to być zapisane w zmiennej, aby można było to łatwo zmienić przy wrzucaniu na serwer.
+### All endpoint addresses mentioned below start with the host address. For development work, it is: 'http://localhost:3001'. In the code, this should be saved in a variable so that it can be easily changed during the releasing process on a server.
 
-#### Spis treści:
+#### Table of contents:
 
-1. [Import studentów](#1-import-studentów)
-2. [Dodawanie HR](#2-dodawanie-hr)
-3. [Logowanie](#3-logowanie)
-4. [Wylogowywanie](#4-wylogowywanie)
-5. [Token JWT](#5-token-jwt)
-6. [Mail aktywacyjny](#6-mail-aktywacyjny)
-7. [Zmiana hasła](#7-zmiana-hasła)
-8. [Resetowanie hasła](#8-resetowanie-hasła)
-9. [Moduł Kursanta (profil i dane inicjacyjne)](#9-moduł-kursanta-profil-i-dane-inicjacyjne)
-10. [Moduł hr](#10-moduł-hr)
-11. [Filtrowanie, sortowanie i paginacja dostępnych studentów](#11-filtrowanie-sortowanie-i-paginacja-dostępnych-studentów)
-12. [Pobieranie siebie](#12-pobieranie-siebie)
-13. [Rezerwacja Studenta](#13-rezerwacja-studenta)
-14. [Zaznaczenie przez studenta, że został zatrudniony](#14-zaznaczenie-przez-studenta-że-został-zatrudniony)
-15. [Przywrócenie kursantowi statusu "dostępny"](#15-przywrócenie-kursantowi-statusu-dostępny-w-przypadku-rezygnacji-z-rezerwacji-do-rozmowy)
-16. [Dodawanie hr](#16-dodawanie-admina)
-17. [Widok tabel w bazie danych oraz relacji](#17-widok-tabel-w-bazie-danych-oraz-relacji)
+1. [Students import](#1-students-import)
+2. [Adding recruiter](#2-adding-recruiter)
+3. [Logging in](#3-logging-in)
+4. [Logging out](#4-logging-out)
+5. [JWT token](#5-jwt-token)
+6. [Activation e-mail](#6-activation-e-mail)
+7. [Password changing](#7-password-changing)
+8. [Password reset](#8-password-reset)
+9. [Student module (profile and initial data)](#9-student-module-profile-and-initial-data)
+   - [Getting all students profiles](#getting-all-students-profiles)
+   - [Getting one student profile](#getting-one-student-profile)
+   - [Creating new student profile](#creating-new-student-profile)
+   - [Updating student profile](#updating-student-profile)
+   - [List of initial data of students](#list-of-initial-data-of-students-and-with-profile-data-if-student-have-done-activation-and-filled-up-profile-data)
+   - [Initial data of one student](#initial-data-of-one-student-and-with-profile-data-if-student-have-done-activation-and-filled-up-profile-data)
+10. [HR module](#10-hr-module)
+11. [Filtering, sorting and pagination of available students](#11-filtering-sorting-and-pagination-of-available-students)
+12. [Getting yourself (your user data)](#12-getting-yourself-your-user-data)
+13. [Student reservation](#13-student-reservation)
+14. [Marking by the student that he or she has been hired](#14-marking-by-the-student-that-he-or-she-has-been-hired)
+15. [Hiring student by recruiter](#15-hiring-student-by-recruiter)
+16. [Restoring the "available" status to the student (in case of cancellation of the reservation)](#16-restoring-the-available-status-to-the-student-in-case-of-cancellation-of-the-reservation)
+17. [Adding admin](#17-adding-admin)
+18. [View of the tables in the database and the relationships between them](#18-view-of-the-tables-in-the-database-and-the-relationships-between-them)
 
-## 1. Import studentów:
+## 1. Students import:
 
 - `/import/students` POST
 - UWAGA: Do testowania tego modułu potrzebny jest [mailslurper](https://github.com/mailslurper/mailslurper/releases/tag/1.14.1), po ściągnięciu po prostu odpalić mailslurper.exe i otworzyć adres http://localhost:8080 i upewnić się, że port 8085 też jest wolny.
@@ -46,7 +53,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json: <br/>
   {type `FailedEmails`, type `SuccesfulEmails`}
 
-## 2. Dodawanie HR:
+## 2. Adding recruiter:
 
 - `/user/recruiter` POST
 - body: `RecruiterInterface`<br/> {
@@ -64,7 +71,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
   }<br/>
 - res — json: {type `FailedEmails` (będzie pusty), type `SuccesfulEmails` (tablica z jednym elementem)}
 
-## 3. Logowanie:
+## 3. Logging in:
 
 - `/login` POST
 - body: {email: string, password: string}
@@ -73,41 +80,41 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - jeżeli błędne dane logowania zwracany wyjątek Forbidden exception
 - res - json: {id: string} jeżeli poprawne dane
 
-## 4. Wylogowywanie:
+## 4. Logging out:
 
 - `/logout` POST
 - następuje czyszczenie ciasteczka z tokenem
 - res - json: {ok: true}
 
-## 5. Token jwt:
+## 5. JWT Token:
 
 - przechowuje informacje o id usera i jego roli
 - na podstawie tokenu następuje identyfikacja usera w aplikacji
 - można pobrać dane - interface UserFromReq - z req.user
 
-## 6. Mail aktywacyjny:
+## 6. Activation e-mail:
 
 - podczas dodawania studenta/hr zostaje wysłany mail aktywacyjny
 - `/user/activate/id/activationToken` GET
 - podczas aktywacji ustawiany jest isActive na true i activationToken na null
 
-## 7. Zmiana hasła:
+## 7. Password changing:
 
 - `/user/change-pass` PATCH
 - body: {oldPwd: string; newPwd: string}
 - sprawdza czy stare hasło jest prawidłowe i jeżeli tak to zmienia w bazie danych
 - res - json: {ok: true}
 
-## 8. Resetowanie hasła:
+## 8. Password reset:
 
 - `/user/reset-pass` PATCH
 - body: {email: string}
 - metoda szuka usera z podanym mailem i jeżeli znajduje to zmienia hasło na nowe, wygenerowane automatycznie i wysyła maila z tym hasłem a jeżeli nie to wyrzuca wyjątek Forbidden exception
 - res - json: {ok: true}
 
-## 9. Moduł kursanta (profil i dane inicjacyjne)
+## 9. Student module (profile and initial data)
 
-### Pobieranie wszystkich profilów kursantów:
+### Getting all students profiles:
 
 - adres `/student` metoda: GET,
 - zwraca tablicę obiektów z danymi studentów:<br/>
@@ -132,26 +139,26 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
   courses: string | null;<br/>
   }
 
-### Pobieranie pojedynczego kursanta
+### Getting one student profile
 
 - adres `/student/:id` metoda: GET,
 - zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
 
-### Tworzenie nowego profilu kursanta
+### Creating new student profile
 
 - adres `/student` metoda: POST,
 - przyjmuje w body obiekt `StudentProfileInterface`,
 - dodaje nowy profil kursanta,
 - wraca tenże nowy obiekt.
 
-### Aktualizowanie profilu kursanta
+### Updating student profile
 
 - adres `/student/:id` metoda: PATCH,
 - przyjmuje w body obiekt `StudentProfileInterface`,
 - aktualizuje profil kursanta,
 - zwraca zaktualizowany obiekt.
 
-### Lista z danymi inicjacyjnymi dla profili (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
+### List of initial data of students (and with profile data if student have done activation and filled up profile data)
 
 - adres `/student/initial` metoda: GET,
 - zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
@@ -164,17 +171,17 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
   bonusProjectUrls: string[];<br/>
   }
 
-### Dane inicjacyjne dla pojedynczego konkretnego profilu (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
+### Initial data of one student (and with profile data if student have done activation and filled up profile data)
 
 - adres `/student/initial/:email` metoda: GET,
 - zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
 
-## 10. Moduł HR
+## 10. HR module
 
 - adres `/hr` metoda: GET
 - adres `/hr/:id` metoda: GET
 
-## 11. Filtrowanie, sortowanie i paginacja dostępnych studentów
+## 11. Filtering, sorting and pagination of available students
 
 - adres `student/list/:status/:page/:take?orderBy=&filters=` metoda GET
 - parametr status jest opcjonalny — domyślnie przyjmuje 0
@@ -189,13 +196,13 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - zwracany jest json: {students(tablica ze studentami), studentsCount(liczba pobranych studenów), numberOfPages(liczba stron)}
 - przykładowy endpoint: `http://localhost:3001/student/list/0/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
 
-## 12. Pobieranie siebie
+## 12. Getting yourself (your user data)
 
 - adres `/user` metoda GET
 - pobiera swoją encję za pomocą id usera z requestu
 - zwracany jest json zawierający id, email, rolę i encję studenta(wraz z profilem) lub hr — w zależności od roli.
 
-## 13. Rezerwacja studenta
+## 13. Student reservation
 
 - adres `/hr/reserve/:email` metoda PATCH
 - parametr email — email studenta, którego chcemy zarezerwować
@@ -203,33 +210,33 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 - przypisuje studenta do rekrutera
 - dodaje datę wygaśnięcia rezerwacji na za 10 dni
 
-## 14. Zaznaczenie przez studenta, że został zatrudniony
+## 14. Marking by the student that he or she has been hired
 
 - adres `/student/hired` metoda PATCH
 - metoda dozwolona dla kursanta
 - zmienia status studenta na zatrudniony
 - student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
 
-## 15. Zatrudnienie studenta przez rekrutera
+## 15. Hiring student by recruiter
 
 - adres `/hr/hire/:email` metoda PATCH
 - parametr email — email studenta, którego chcemy zatrudnić
 - zmienia status studenta na zatrudniony
 
-## 15. Przywrócenie kursantowi statusu "dostępny" (w przypadku rezygnacji z rezerwacji do rozmowy)
+## 16. Restoring the "available" status to the student (in case of cancellation of the reservation)
 
 - adres `/hr/available/:email` metoda PATCH
 - metoda dozwolona dla rekrutera
 - zmienia status studenta na available
 - student jest pobierany na podstawie jego id z danych profilowych
 
-## 16. Dodawanie admina
+## 17. Adding admin
 
 - adres `/user/admin` metoda POST
 - body: {email: string, password: string}
 - dodać nagłówek: x-password, który zawiera hasło potrzebne do stworzenia admina (w .env)
 - trzeba to zrobić w insomni/postmanie itp
 
-## 17. Widok tabel w bazie danych oraz relacji:
+## 18. View of the tables in the database and the relationships between them:
 
 ![database](./database-relations.jpg)
