@@ -3,7 +3,7 @@ Created during the MegaK programming course.
 
 The app allows easily connect people from HR departments of companies, including Headhunters, with people looking for a job in IT.
 
-<img src='https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/public/assets/logo_main.png?raw=true' width="350" align="right" alt="logo">
+<img src='https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/public/assets/logo_main.png?raw=true' width="360" align="right" alt="logo" hspace="60">
 
 ### Table of contents
 1. [Useful links](#useful-links)
