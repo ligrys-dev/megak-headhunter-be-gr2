@@ -1,6 +1,6 @@
 ### All endpoint addresses mentioned below start with the host address. For development work, it is: 'http://localhost:3001'. In the code, this should be saved in a variable so that it can be easily changed during the releasing process on a server.
 
-#### Table of contents:
+### Table of contents:
 
 1. [Students import](#1-students-import)
 2. [Adding recruiter](#2-adding-recruiter)
@@ -27,11 +27,12 @@
 17. [Adding admin](#17-adding-admin)
 18. [View of the tables in the database and the relationships between them](#18-view-of-the-tables-in-the-database-and-the-relationships-between-them)
 
-## 1. Students import:
+## 1. Students import
 
-- `/import/students` POST
-- UWAGA: Do testowania tego modułu potrzebny jest [mailslurper](https://github.com/mailslurper/mailslurper/releases/tag/1.14.1), po ściągnięciu po prostu odpalić mailslurper.exe i otworzyć adres http://localhost:8080 i upewnić się, że port 8085 też jest wolny.
-- plik csv lub json - interface `StudentInitialInterface[]`,<br/> a więc tablica obiektów:<br/>
+- address: `/import/students` method: POST
+- NOTE: To test this module you need any data in your database.<br/>
+First you need to have [mailslurper](https://github.com/mailslurper/mailslurper/releases/tag/1.14.1). After downloading, just run mailslurper.exe and open in your browser this address: http://localhost:8080 make sure that port 8085 is free.<br/>
+You need a .csv file with data matching the interface: `StudentInitialInterface[]`,<br/> so an array of objects:<br/>
   `StudentInitialInterface` {<br/>
   email: string;<br/>
   courseCompletion: number;<br/>
@@ -39,84 +40,85 @@
   projectDegree: number;<br/>
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
-  profile?: StudentProfileInterface; `<< TEGO OCZYWIŚCIE NIE DODAJEMY PRZY TORZENIU, to będzie automatycznie przypisane przy stworzeniu swojego profilu przez kursanta`<br/>
+  profile?: StudentProfileInterface; `<< THIS OF COURSE YOU DO NOT NEED TO ADD DURING CREATING, it will be assigned automatically when student profile will be created`<br/>
   }<br/>
-  Przykładowa zawartość pliku .csv :
-  `email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
+  Example content of .csv file:
+  >email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
 asd@asdghjghjghj.com;4;4;3;5;https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2, https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2
 ok@okrj6jfghjghj.com;2;2;2;2;www.cos.com,www.asd.com,www.aha.it
 ssd@example.io;3;3;5;5;urlexample.asd,wp.pl,https://megak.pl
-aaa@test.pl;3.5;2;5;1;https://megak.pl`
-  Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
-- wysyłane są maile aktywacyjne i hasło pierwszego logowania<br/>
-  (można to sprawdzić przez mailsluprer na http://localhost:8080)
-- nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json: <br/>
+aaa@test.pl;3.5;2;5;1;https://megak.pl   
+
+  You can just copy this to any text editor and save as .csv file keeping the "enters" appropriately.<br/><br/>
+- Activation emails with temporary password are sent. <br/>
+  (you can check it with mailsluprer when you open http://localhost:8080 in your browser)
+- no validation errors are thrown, only json is returned in response: <br/>
   {type `FailedEmails`, type `SuccesfulEmails`}
 
 ## 2. Adding recruiter:
 
-- `/user/recruiter` POST
-- body: `RecruiterInterface`<br/> {
+- address: `/user/recruiter` method: POST
+- body: `RecruiterInterface`{<br/> 
   id: string;<br/>
   email: string;<br/>
   fullName: string;<br/>
   company: string;<br/>
   maxReservedStudents: number;<br/>
   }
-- w przypadku błędu w walidacji zwracany jest wyjątek Bad Request:<br/>
+- in case of validation error, a Bad Request exception is returned:<br/>
   {<br/>
-  "message": <tablica stringów z błędami walidacji>,<br/>
+  "message": <`An string array with validation errors`>,<br/>
   "error": "Bad Request",<br/>
   "statusCode": 400<br/>
   }<br/>
-- res — json: {type `FailedEmails` (będzie pusty), type `SuccesfulEmails` (tablica z jednym elementem)}
+- res — json: {type `FailedEmails` (it will be empty), type `SuccesfulEmails` (an array with one element)}
 
 ## 3. Logging in:
 
-- `/login` POST
+- address: `/login` method: POST
 - body: {email: string, password: string}
-- do ciasteczka httpOnly jest dodawany token jwt, który przechowuje dane - interface UserFromReq
-- dostępny publicznie
-- jeżeli błędne dane logowania zwracany wyjątek Forbidden exception
-- res - json: {id: string} jeżeli poprawne dane
+- a JWT token is added to the httpOnly cookie, which stores data - interface UserFromReq
+- public available
+- if the login data is incorrect, a Forbidden Exception is returned
+- res - json: {id: string} if login data is correct
 
 ## 4. Logging out:
 
-- `/logout` POST
-- następuje czyszczenie ciasteczka z tokenem
+- address: `/logout` method: POST
+- the cookie with the token is cleared
 - res - json: {ok: true}
 
 ## 5. JWT Token:
 
-- przechowuje informacje o id usera i jego roli
-- na podstawie tokenu następuje identyfikacja usera w aplikacji
-- można pobrać dane - interface UserFromReq - z req.user
+- stores information about the user's ID and his role
+- based on the token, the user is identified in the application
+- you can get the data - interface UserFromReq - z req.user
 
 ## 6. Activation e-mail:
 
-- podczas dodawania studenta/hr zostaje wysłany mail aktywacyjny
-- `/user/activate/id/activationToken` GET
-- podczas aktywacji ustawiany jest isActive na true i activationToken na null
+- after adding a student/recruiter, an activation e-mail is sent
+- address: `/user/activate/id/activationToken` method: GET
+- during activation, `isActive` is set to `true` and `activationToken` to `null`
 
 ## 7. Password changing:
 
-- `/user/change-pass` PATCH
+- address: `/user/change-pass` method: PATCH
 - body: {oldPwd: string; newPwd: string}
-- sprawdza czy stare hasło jest prawidłowe i jeżeli tak to zmienia w bazie danych
+- checks whether the old password is correct and if so, changes pwdHash in the database
 - res - json: {ok: true}
 
 ## 8. Password reset:
 
-- `/user/reset-pass` PATCH
+- address: `/user/reset-pass` method: PATCH
 - body: {email: string}
-- metoda szuka usera z podanym mailem i jeżeli znajduje to zmienia hasło na nowe, wygenerowane automatycznie i wysyła maila z tym hasłem a jeżeli nie to wyrzuca wyjątek Forbidden exception
+- the method searches for a user with the given email address and if it finds it, it changes the password to a new, automatically generated one and sends an email with this password, and if not, it throws a Forbidden Exception
 - res - json: {ok: true}
 
 ## 9. Student module (profile and initial data)
 
 ### Getting all students profiles:
 
-- adres `/student` metoda: GET,
+- address: `/student` method: GET,
 - zwraca tablicę obiektów z danymi studentów:<br/>
   `StudentProfileInterface` {<br/>
   id: string;<br/>
@@ -141,26 +143,26 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 
 ### Getting one student profile
 
-- adres `/student/:id` metoda: GET,
+- address: `/student/:id` method: GET,
 - zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
 
 ### Creating new student profile
 
-- adres `/student` metoda: POST,
+- address: `/student` method: POST,
 - przyjmuje w body obiekt `StudentProfileInterface`,
 - dodaje nowy profil kursanta,
 - wraca tenże nowy obiekt.
 
 ### Updating student profile
 
-- adres `/student/:id` metoda: PATCH,
+- address: `/student/:id` method: PATCH,
 - przyjmuje w body obiekt `StudentProfileInterface`,
 - aktualizuje profil kursanta,
 - zwraca zaktualizowany obiekt.
 
 ### List of initial data of students (and with profile data if student have done activation and filled up profile data)
 
-- adres `/student/initial` metoda: GET,
+- address: `/student/initial` method: GET,
 - zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
   `StudentInitialInterface` {<br/>
   email: string;<br/>
@@ -173,17 +175,17 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 
 ### Initial data of one student (and with profile data if student have done activation and filled up profile data)
 
-- adres `/student/initial/:email` metoda: GET,
+- address: `/student/initial/:email` method: GET,
 - zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
 
 ## 10. HR module
 
-- adres `/hr` metoda: GET
-- adres `/hr/:id` metoda: GET
+- address: `/hr` method: GET
+- address: `/hr/:id` method: GET
 
 ## 11. Filtering, sorting and pagination of available students
 
-- adres `student/list/:status/:page/:take?orderBy=&filters=` metoda GET
+- address: `student/list/:status/:page/:take?orderBy=&filters=` method GET
 - parametr status jest opcjonalny — domyślnie przyjmuje 0
 - status: 0 - dostępni studenci (domyślnie), 1 - w trakcie rozmowy, 2 - zatrudnieni
 - parametry page i take są opcjonalne. Domyślnie page przyjmuje wartość 1 a take 10
@@ -198,13 +200,13 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 
 ## 12. Getting yourself (your user data)
 
-- adres `/user` metoda GET
+- address: `/user` method: GET
 - pobiera swoją encję za pomocą id usera z requestu
 - zwracany jest json zawierający id, email, rolę i encję studenta(wraz z profilem) lub hr — w zależności od roli.
 
 ## 13. Student reservation
 
-- adres `/hr/reserve/:email` metoda PATCH
+- address: `/hr/reserve/:email` method: PATCH
 - parametr email — email studenta, którego chcemy zarezerwować
 - zmienia status studenta na do rozmowy
 - przypisuje studenta do rekrutera
@@ -212,27 +214,27 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
 
 ## 14. Marking by the student that he or she has been hired
 
-- adres `/student/hired` metoda PATCH
+- address: `/student/hired` method: PATCH
 - metoda dozwolona dla kursanta
 - zmienia status studenta na zatrudniony
 - student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
 
 ## 15. Hiring student by recruiter
 
-- adres `/hr/hire/:email` metoda PATCH
+- address: `/hr/hire/:email` method: PATCH
 - parametr email — email studenta, którego chcemy zatrudnić
 - zmienia status studenta na zatrudniony
 
 ## 16. Restoring the "available" status to the student (in case of cancellation of the reservation)
 
-- adres `/hr/available/:email` metoda PATCH
+- address: `/hr/available/:email` method: PATCH
 - metoda dozwolona dla rekrutera
 - zmienia status studenta na available
 - student jest pobierany na podstawie jego id z danych profilowych
 
 ## 17. Adding admin
 
-- adres `/user/admin` metoda POST
+- address: `/user/admin` method: POST
 - body: {email: string, password: string}
 - dodać nagłówek: x-password, który zawiera hasło potrzebne do stworzenia admina (w .env)
 - trzeba to zrobić w insomni/postmanie itp
