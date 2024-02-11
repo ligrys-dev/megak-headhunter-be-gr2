@@ -36,9 +36,7 @@ export class StudentInitial extends BaseEntity {
   @Column({ type: 'datetime', nullable: true })
   reservationExpirationDate: Date | null;
 
-  @OneToOne(() => StudentProfile, (profile) => profile.initialData, {
-    eager: true,
-  })
+  @OneToOne(() => StudentProfile, (profile) => profile.initialData)
   profile: StudentProfile | null;
 
   @ManyToOne(() => Recruiter, (recruiter) => recruiter.reservedStudents)
