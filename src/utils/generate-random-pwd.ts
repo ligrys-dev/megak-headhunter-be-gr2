@@ -1,17 +1,15 @@
-export function generateRandomPwd() {
-  const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const format = '____-____-____';
+import generatePassword, { charsets } from 'pswd-generator';
 
-  for (let i = 0; i < format.length; i++) {
-    if (format[i] === '_') {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters.charAt(randomIndex);
-    } else {
-      result += format[i];
-    }
+export function generateRandomPwd() {
+  let password = '';
+
+  for (let i = 0; i < 3; i++) {
+    password +=
+      generatePassword(
+        5,
+        charsets.NUMBERS + charsets.LOWERCASE + charsets.UPPERCASE,
+      ) + '_';
   }
 
-  return result;
+  return password.slice(0, password.length - 1);
 }
