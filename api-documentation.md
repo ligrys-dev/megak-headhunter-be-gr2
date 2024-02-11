@@ -191,7 +191,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - parameters `page` i `take` are optional. Default value for `page` is `1` and for `take` is `10`
 - parameters `query` are also optional, if there is nothing, the list will not be filtered or sorted
 - If we want to change some parameter, we need to pass all the previous ones, for example: if we want to change only the `page` number, we must also provide the `status`
-- recruiter's ID is taken from logged user, so it is not necessary to provide it
+- recruiter's ID is taken from logged-in user, so it is not necessary to provide it
 - query `orderBy` - responsible for sorting — takes value from enum `StudentOrderByOptions`
 - query `filters` - responsible for filtering — takes object `filters`, which implements interface `StudentFilters`, every field is optional
 - `filters` in url must be transformed to string and to an url component: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
@@ -207,37 +207,37 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 ## 13. Student reservation
 
 - address: `/hr/reserve/:email` method: PATCH
-- parametr email — email studenta, którego chcemy zarezerwować
-- zmienia status studenta na do rozmowy
-- przypisuje studenta do rekrutera
-- dodaje datę wygaśnięcia rezerwacji na za 10 dni
+- parameter `email` — an email of student, which are going to be reserved
+- changes `status` of student for 'to conversation'
+- assigns a student to a recruiter (in the database)
+- adds the reservation expiration date after 10 days
 
 ## 14. Marking by the student that he or she has been hired
 
 - address: `/student/hired` method: PATCH
-- metoda dozwolona dla kursanta
-- zmienia status studenta na zatrudniony
-- student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
+- method allowed only for student
+- changes `status` of student for 'hired'
+- student is taken from logged-in user, so it is not necessary to provide any id or email
 
 ## 15. Hiring student by recruiter
 
 - address: `/hr/hire/:email` method: PATCH
-- parametr email — email studenta, którego chcemy zatrudnić
-- zmienia status studenta na zatrudniony
+- parameter `email` — email of student, which will be hired
+- changes `status` of the student for 'hired'
 
 ## 16. Restoring the "available" status to the student (in case of cancellation of the reservation)
 
 - address: `/hr/available/:email` method: PATCH
-- metoda dozwolona dla rekrutera
-- zmienia status studenta na available
-- student jest pobierany na podstawie jego id z danych profilowych
+- method allowed only for recruiter
+- changes `status` of a student for 'available'
+- student is taken with id from profile data
 
 ## 17. Adding admin
 
 - address: `/user/admin` method: POST
 - body: {email: string, password: string}
-- dodać nagłówek: x-password, który zawiera hasło potrzebne do stworzenia admina (w .env)
-- trzeba to zrobić w insomni/postmanie itp
+- add a heading: x-password, which contains the password needed to create an admin (w .env)
+- it is necessary to do it in insomnia/postman (or another similar) client 
 
 ## 18. View of the tables in the database and the relationships between them:
 
