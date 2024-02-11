@@ -185,24 +185,24 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 
 ## 11. Filtering, sorting and pagination of available students
 
-- address: `student/list/:status/:page/:take?orderBy=&filters=` method GET
-- parametr status jest opcjonalny — domyślnie przyjmuje 0
-- status: 0 - dostępni studenci (domyślnie), 1 - w trakcie rozmowy, 2 - zatrudnieni
-- parametry page i take są opcjonalne. Domyślnie page przyjmuje wartość 1 a take 10
-- parametry query również są opcjonalne, jeżeli nic się nie przekaże, lista nie zostanie przefiltrowana ani posortowana
-- jeżeli chcemy zmienić jakiś parametr, trzeba przekazać wszyskie wcześniejsze, np: jeżeli chcemy zmienić tylko nr strony to musimy podać także status
-- id hr pobierane jest z zalogowanego usera, także nie trzeba, bo przekazywać
-- query `orderBy` - odpowiedzialne za sortowanie — przyjmuje wartość z enuma `StudentOrderByOptions`
-- query `filters` - odpowiedzialne za filtrowanie — przyjmuje obiekt filters, który implementuje interface `StudentFilters`, każde z pól jest opcjonalne
-- filters w adresie url musi zostać przekształcone do stringa i componentu url: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
-- zwracany jest json: {students(tablica ze studentami), studentsCount(liczba pobranych studenów), numberOfPages(liczba stron)}
-- przykładowy endpoint: `http://localhost:3001/student/list/0/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
+- address: `student/list/:status/:page/:take?orderBy=&filters=` method: GET
+- `status` is optional — it default value is `0`
+- `status`: `0` - available students (default), `1` - reserved for conversation, `2` - hired
+- parameters `page` i `take` are optional. Default value for `page` is `1` and for `take` is `10`
+- parameters `query` are also optional, if there is nothing, the list will not be filtered or sorted
+- If we want to change some parameter, we need to pass all the previous ones, for example: if we want to change only the `page` number, we must also provide the `status`
+- recruiter's ID is taken from logged user, so it is not necessary to provide it
+- query `orderBy` - responsible for sorting — takes value from enum `StudentOrderByOptions`
+- query `filters` - responsible for filtering — takes object `filters`, which implements interface `StudentFilters`, every field is optional
+- `filters` in url must be transformed to string and to an url component: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
+- json is returned: `{students(an array with students data), studentsCount(amount of students), numberOfPages(number of pages)}`
+- example endpoint: `http://localhost:3001/student/list/0/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
 
 ## 12. Getting yourself (your user data)
 
 - address: `/user` method: GET
-- pobiera swoją encję za pomocą id usera z requestu
-- zwracany jest json zawierający id, email, rolę i encję studenta(wraz z profilem) lub hr — w zależności od roli.
+- getting own entity with user ID from request
+- returns json with id, email, role and entity of student (with profile) or hr — depending on the role.
 
 ## 13. Student reservation
 
