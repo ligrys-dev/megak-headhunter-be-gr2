@@ -97,4 +97,40 @@ npm install
 npm run dev
 ```
 
-###
+## Screenshots
+
+### Login
+![Login](https://raw.githubusercontent.com/ligrys-dev/megak-v3-headhunter-fe-gr2/main/src/repo_utils/screenshots/login.jpg)
+
+### Admin view - welcome screen
+![Admin - welcome](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/admin-main-view.jpg?raw=true)
+
+### Admin - adding students
+![Admin - add students](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/admin-adding-students.jpg?raw=true)
+
+### Admin - adding recruiter
+![Admin - add recruiter](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/admin-adding-hr.jpg?raw=true)
+
+### Student - welcome screen
+![Student - welcome](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-welcome.jpg?raw=true)
+
+### Student - profile view
+![Student profile](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-data.jpg?raw=true)
+
+### Student - edit profile data
+![Student - edit profile](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-data-edit.jpg?raw=true)
+
+### Student - notifications
+![Student - notifications](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/student-notifications.jpg?raw=true)
+
+### Recruiter - welcome screen
+![HR - welcome](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-welcome.jpg?raw=true)
+
+### Recruiter - available students view
+![HR - students view](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-students-available.jpg?raw=true)
+
+### Recruiter - students for conversation view
+![HR - conversation](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-students-conversation.jpg?raw=true)
+
+### Recruiter - student's CV preview
+![HR - cv view](https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2/blob/main/src/repo_utils/screenshots/recruiter-students-conversation-cv.jpg?raw=true)
