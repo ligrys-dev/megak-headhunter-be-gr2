@@ -119,7 +119,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 ### Getting all students profiles:
 
 - address: `/student` method: GET,
-- zwraca tablicę obiektów z danymi studentów:<br/>
+- returns students data in an array of objects matching the interface :<br/>
   `StudentProfileInterface` {<br/>
   id: string;<br/>
   initialData: `StudentInitialInterface`;<br/>
@@ -144,26 +144,26 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 ### Getting one student profile
 
 - address: `/student/:id` method: GET,
-- zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
+- returns one object matching the interface `StudentProfileInterface` (look up)
 
 ### Creating new student profile
 
 - address: `/student` method: POST,
-- przyjmuje w body obiekt `StudentProfileInterface`,
-- dodaje nowy profil kursanta,
-- wraca tenże nowy obiekt.
+- takes in body an object `StudentProfileInterface`,
+- it adds new student profile,
+- returns this new object.
 
 ### Updating student profile
 
 - address: `/student/:id` method: PATCH,
-- przyjmuje w body obiekt `StudentProfileInterface`,
-- aktualizuje profil kursanta,
-- zwraca zaktualizowany obiekt.
+- takes in body an object `StudentProfileInterface`,
+- it updates the student's profile,
+- returns updated object.
 
 ### List of initial data of students (and with profile data if student have done activation and filled up profile data)
 
 - address: `/student/initial` method: GET,
-- zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
+- returns an array of objects with initial data of students:<br/>
   `StudentInitialInterface` {<br/>
   email: string;<br/>
   courseCompletion: number;<br/>
@@ -176,7 +176,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 ### Initial data of one student (and with profile data if student have done activation and filled up profile data)
 
 - address: `/student/initial/:email` method: GET,
-- zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
+- returns one object `StudentInitialInterface` (look up)
 
 ## 10. HR module
 
