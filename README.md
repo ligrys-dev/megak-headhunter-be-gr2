@@ -3,12 +3,21 @@ Created during the MegaK programming course.
 
 The app allows easily connect people from HR departments of companies, including Headhunters, with people looking for a job in IT.
 
+### Table of contents
+1. [Useful links](#useful-links)
+2. [Key features](#key-features)
+3. [Technologies used](#technologies-used)
+4. [Running the application locally](#running-the-application-locally)
+   - [Backend](#backend)
+   - [Frontend](#frontend)
+5. [Screenshots](#screenshots)
+
 ## Useful links
 
 [Api documentation](https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2/blob/develop/api-documentation.md) <br/>
 [Running the test environment step by step](https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2/blob/develop/run-test-documentation.md)
 
-## Key Features:
+## Key features:
 
 - ### Admin:
   - adding a csv file with students' initialization data
