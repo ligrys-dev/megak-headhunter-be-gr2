@@ -24,9 +24,7 @@ export class Recruiter extends BaseEntity {
   @Column({ type: 'smallint' })
   maxReservedStudents: number;
 
-  @OneToMany(() => StudentInitial, (student) => student.recruiter, {
-    eager: true,
-  })
+  @OneToMany(() => StudentInitial, (student) => student.recruiter)
   reservedStudents: StudentInitial[];
 
   [key: string]: unknown;
