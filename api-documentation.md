@@ -54,6 +54,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
   (you can check it with mailsluprer when you open http://localhost:8080 in your browser)
 - no validation errors are thrown, only json is returned in response: <br/>
   {type `FailedEmails`, type `SuccesfulEmails`}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 2. Adding recruiter:
 
@@ -72,6 +73,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
   "statusCode": 400<br/>
   }<br/>
 - res — json: {type `FailedEmails` (it will be empty), type `SuccesfulEmails` (an array with one element)}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 3. Logging in:
 
@@ -81,24 +83,28 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - public available
 - if the login data is incorrect, a Forbidden Exception is returned
 - res - json: {id: string} if login data is correct
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 4. Logging out:
 
 - address: `/logout` method: POST
 - the cookie with the token is cleared
 - res - json: {ok: true}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 5. JWT Token:
 
 - stores information about the user's ID and his role
 - based on the token, the user is identified in the application
 - you can get the data - interface UserFromReq - z req.user
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 6. Activation e-mail:
 
 - after adding a student/recruiter, an activation e-mail is sent
 - address: `/user/activate/id/activationToken` method: GET
 - during activation, `isActive` is set to `true` and `activationToken` to `null`
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 7. Password changing:
 
@@ -106,6 +112,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - body: {oldPwd: string; newPwd: string}
 - checks whether the old password is correct and if so, changes pwdHash in the database
 - res - json: {ok: true}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 8. Password reset:
 
@@ -113,6 +120,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - body: {email: string}
 - the method searches for a user with the given email address and if it finds it, it changes the password to a new, automatically generated one and sends an email with this password, and if not, it throws a Forbidden Exception
 - res - json: {ok: true}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 9. Student module (profile and initial data)
 
@@ -140,6 +148,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
   workExperience: string | null;<br/>
   courses: string | null;<br/>
   }
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ### Getting one student profile
 
@@ -159,6 +168,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - takes in body an object `StudentProfileInterface`,
 - it updates the student's profile,
 - returns updated object.
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ### List of initial data of students (and with profile data if student have done activation and filled up profile data)
 
@@ -172,6 +182,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
   }
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ### Initial data of one student (and with profile data if student have done activation and filled up profile data)
 
@@ -182,6 +193,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 
 - address: `/hr` method: GET
 - address: `/hr/:id` method: GET
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 11. Filtering, sorting and pagination of available students
 
@@ -197,12 +209,14 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - `filters` in url must be transformed to string and to an url component: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
 - json is returned: `{students(an array with students data), studentsCount(amount of students), numberOfPages(number of pages)}`
 - example endpoint: `http://localhost:3001/student/list/0/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 12. Getting yourself (your user data)
 
 - address: `/user` method: GET
 - getting own entity with user ID from request
 - returns json with id, email, role and entity of student (with profile) or hr — depending on the role.
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 13. Student reservation
 
@@ -211,6 +225,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - changes `status` of student for 'to conversation'
 - assigns a student to a recruiter (in the database)
 - adds the reservation expiration date after 10 days
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 14. Marking by the student that he or she has been hired
 
@@ -218,12 +233,14 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - method allowed only for student
 - changes `status` of student for 'hired'
 - student is taken from logged-in user, so it is not necessary to provide any id or email
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 15. Hiring student by recruiter
 
 - address: `/hr/hire/:email` method: PATCH
 - parameter `email` — email of student, which will be hired
 - changes `status` of the student for 'hired'
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 16. Restoring the "available" status to the student (in case of cancellation of the reservation)
 
@@ -231,6 +248,7 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - method allowed only for recruiter
 - changes `status` of a student for 'available'
 - student is taken with id from profile data
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 17. Adding admin
 
@@ -238,7 +256,9 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl
 - body: {email: string, password: string}
 - add a heading: x-password, which contains the password needed to create an admin (w .env)
 - it is necessary to do it in insomnia/postman (or another similar) client 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
 ## 18. View of the tables in the database and the relationships between them:
 
 ![database](./database-relations.jpg)
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
