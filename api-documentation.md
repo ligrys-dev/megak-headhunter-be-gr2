@@ -1,30 +1,38 @@
-### Wszystkie adresy endpointów, o których mowa poniżej, zaczynają się od adresu hosta. Przy pracy developerskiej jest to 'http://localhost:3001'. W kodzie powinno to być zapisane w zmiennej, aby można było to łatwo zmienić przy wrzucaniu na serwer.
+### All endpoint addresses mentioned below start with the host address. For development work, it is: 'http://localhost:3001'. In the code, this should be saved in a variable so that it can be easily changed during the releasing process on a server.
 
-#### Spis treści:
+### Table of contents:
 
-1. [Import studentów](#1-import-studentów)
-2. [Dodawanie HR](#2-dodawanie-hr)
-3. [Logowanie](#3-logowanie)
-4. [Wylogowywanie](#4-wylogowywanie)
-5. [Token JWT](#5-token-jwt)
-6. [Mail aktywacyjny](#6-mail-aktywacyjny)
-7. [Zmiana hasła](#7-zmiana-hasła)
-8. [Resetowanie hasła](#8-resetowanie-hasła)
-9. [Moduł Kursanta (profil i dane inicjacyjne)](#9-moduł-kursanta-profil-i-dane-inicjacyjne)
-10. [Moduł hr](#10-moduł-hr)
-11. [Filtrowanie, sortowanie i paginacja dostępnych studentów](#11-filtrowanie-sortowanie-i-paginacja-dostępnych-studentów)
-12. [Pobieranie siebie](#12-pobieranie-siebie)
-13. [Rezerwacja Studenta](#13-rezerwacja-studenta)
-14. [Zaznaczenie przez studenta, że został zatrudniony](#14-zaznaczenie-przez-studenta-że-został-zatrudniony)
-15. [Przywrócenie kursantowi statusu "dostępny"](#15-przywrócenie-kursantowi-statusu-dostępny-w-przypadku-rezygnacji-z-rezerwacji-do-rozmowy)
-16. [Dodawanie hr](#16-dodawanie-admina)
-17. [Widok tabel w bazie danych oraz relacji](#17-widok-tabel-w-bazie-danych-oraz-relacji)
+1. [Students import](#1-students-import)
+2. [Adding recruiter](#2-adding-recruiter)
+3. [Logging in](#3-logging-in)
+4. [Logging out](#4-logging-out)
+5. [JWT token](#5-jwt-token)
+6. [Activation e-mail](#6-activation-e-mail)
+7. [Password changing](#7-password-changing)
+8. [Password reset](#8-password-reset)
+9. [Student module (profile and initial data)](#9-student-module-profile-and-initial-data)
+   - [Getting all students profiles](#getting-all-students-profiles)
+   - [Getting one student profile](#getting-one-student-profile)
+   - [Creating new student profile](#creating-new-student-profile)
+   - [Updating student profile](#updating-student-profile)
+   - [List of initial data of students](#list-of-initial-data-of-students-and-with-profile-data-if-student-have-done-activation-and-filled-up-profile-data)
+   - [Initial data of one student](#initial-data-of-one-student-and-with-profile-data-if-student-have-done-activation-and-filled-up-profile-data)
+10. [HR module](#10-hr-module)
+11. [Filtering, sorting and pagination of available students](#11-filtering-sorting-and-pagination-of-available-students)
+12. [Getting yourself (your user data)](#12-getting-yourself-your-user-data)
+13. [Student reservation](#13-student-reservation)
+14. [Marking by the student that he or she has been hired](#14-marking-by-the-student-that-he-or-she-has-been-hired)
+15. [Hiring student by recruiter](#15-hiring-student-by-recruiter)
+16. [Restoring the "available" status to the student (in case of cancellation of the reservation)](#16-restoring-the-available-status-to-the-student-in-case-of-cancellation-of-the-reservation)
+17. [Adding admin](#17-adding-admin)
+18. [View of the tables in the database and the relationships between them](#18-view-of-the-tables-in-the-database-and-the-relationships-between-them)
 
-## 1. Import studentów:
+## 1. Students import
 
-- `/import/students` POST
-- UWAGA: Do testowania tego modułu potrzebny jest [mailslurper](https://github.com/mailslurper/mailslurper/releases/tag/1.14.1), po ściągnięciu po prostu odpalić mailslurper.exe i otworzyć adres http://localhost:8080 i upewnić się, że port 8085 też jest wolny.
-- plik csv lub json - interface `StudentInitialInterface[]`,<br/> a więc tablica obiektów:<br/>
+- address: `/import/students` method: POST
+- NOTE: To test this module you need any data in your database.<br/>
+First you need to have [mailslurper](https://github.com/mailslurper/mailslurper/releases/tag/1.14.1). After downloading, just run mailslurper.exe and open in your browser this address: http://localhost:8080 make sure that port 8085 is free.<br/>
+You need a .csv file with data matching the interface: `StudentInitialInterface[]`,<br/> so an array of objects:<br/>
   `StudentInitialInterface` {<br/>
   email: string;<br/>
   courseCompletion: number;<br/>
@@ -32,85 +40,94 @@
   projectDegree: number;<br/>
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
-  profile?: StudentProfileInterface; `<< TEGO OCZYWIŚCIE NIE DODAJEMY PRZY TORZENIU, to będzie automatycznie przypisane przy stworzeniu swojego profilu przez kursanta`<br/>
+  profile?: StudentProfileInterface; `<< THIS OF COURSE YOU DO NOT NEED TO ADD DURING CREATING, it will be assigned automatically when student profile will be created`<br/>
   }<br/>
-  Przykładowa zawartość pliku .csv :
-  `email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
+  Example content of .csv file:
+  >email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls
 asd@asdghjghjghj.com;4;4;3;5;https://github.com/ligrys-dev/megak-v3-headhunter-be-gr2, https://github.com/ligrys-dev/megak-v3-headhunter-fe-gr2
 ok@okrj6jfghjghj.com;2;2;2;2;www.cos.com,www.asd.com,www.aha.it
 ssd@example.io;3;3;5;5;urlexample.asd,wp.pl,https://megak.pl
-aaa@test.pl;3.5;2;5;1;https://megak.pl`
-  Można to skopiować do edytora tekstowego i zapisać jako .csv zachowując odpowiednio entery.
-- wysyłane są maile aktywacyjne i hasło pierwszego logowania<br/>
-  (można to sprawdzić przez mailsluprer na http://localhost:8080)
-- nie są wyrzucane błędy w walidacji tylko w odpowiedzi jest zwracany json: <br/>
+aaa@test.pl;3.5;2;5;1;https://megak.pl   
+
+  You can just copy this to any text editor and save as .csv file keeping the "enters" appropriately.<br/><br/>
+- Activation emails with temporary password are sent. <br/>
+  (you can check it with mailsluprer when you open http://localhost:8080 in your browser)
+- no validation errors are thrown, only json is returned in response: <br/>
   {type `FailedEmails`, type `SuccesfulEmails`}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 2. Dodawanie HR:
+## 2. Adding recruiter:
 
-- `/user/recruiter` POST
-- body: `RecruiterInterface`<br/> {
+- address: `/user/recruiter` method: POST
+- body: `RecruiterInterface`{<br/> 
   id: string;<br/>
   email: string;<br/>
   fullName: string;<br/>
   company: string;<br/>
   maxReservedStudents: number;<br/>
   }
-- w przypadku błędu w walidacji zwracany jest wyjątek Bad Request:<br/>
+- in case of validation error, a Bad Request exception is returned:<br/>
   {<br/>
-  "message": <tablica stringów z błędami walidacji>,<br/>
+  "message": <`An string array with validation errors`>,<br/>
   "error": "Bad Request",<br/>
   "statusCode": 400<br/>
   }<br/>
-- res — json: {type `FailedEmails` (będzie pusty), type `SuccesfulEmails` (tablica z jednym elementem)}
+- res — json: {type `FailedEmails` (it will be empty), type `SuccesfulEmails` (an array with one element)}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 3. Logowanie:
+## 3. Logging in:
 
-- `/login` POST
+- address: `/login` method: POST
 - body: {email: string, password: string}
-- do ciasteczka httpOnly jest dodawany token jwt, który przechowuje dane - interface UserFromReq
-- dostępny publicznie
-- jeżeli błędne dane logowania zwracany wyjątek Forbidden exception
-- res - json: {id: string} jeżeli poprawne dane
+- a JWT token is added to the httpOnly cookie, which stores data - interface UserFromReq
+- public available
+- if the login data is incorrect, a Forbidden Exception is returned
+- res - json: {id: string} if login data is correct
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 4. Wylogowywanie:
+## 4. Logging out:
 
-- `/logout` POST
-- następuje czyszczenie ciasteczka z tokenem
+- address: `/logout` method: POST
+- the cookie with the token is cleared
 - res - json: {ok: true}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 5. Token jwt:
+## 5. JWT Token:
 
-- przechowuje informacje o id usera i jego roli
-- na podstawie tokenu następuje identyfikacja usera w aplikacji
-- można pobrać dane - interface UserFromReq - z req.user
+- stores information about the user's ID and his role
+- based on the token, the user is identified in the application
+- you can get the data - interface UserFromReq - z req.user
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 6. Mail aktywacyjny:
+## 6. Activation e-mail:
 
-- podczas dodawania studenta/hr zostaje wysłany mail aktywacyjny
-- `/user/activate/id/activationToken` GET
-- podczas aktywacji ustawiany jest isActive na true i activationToken na null
+- after adding a student/recruiter, an activation e-mail is sent
+- address: `/user/activate/id/activationToken` method: GET
+- during activation, `isActive` is set to `true` and `activationToken` to `null`
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 7. Zmiana hasła:
+## 7. Password changing:
 
-- `/user/change-pass` PATCH
+- address: `/user/change-pass` method: PATCH
 - body: {oldPwd: string; newPwd: string}
-- sprawdza czy stare hasło jest prawidłowe i jeżeli tak to zmienia w bazie danych
+- checks whether the old password is correct and if so, changes pwdHash in the database
 - res - json: {ok: true}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 8. Resetowanie hasła:
+## 8. Password reset:
 
-- `/user/reset-pass` PATCH
+- address: `/user/reset-pass` method: PATCH
 - body: {email: string}
-- metoda szuka usera z podanym mailem i jeżeli znajduje to zmienia hasło na nowe, wygenerowane automatycznie i wysyła maila z tym hasłem a jeżeli nie to wyrzuca wyjątek Forbidden exception
+- the method searches for a user with the given email address and if it finds it, it changes the password to a new, automatically generated one and sends an email with this password, and if not, it throws a Forbidden Exception
 - res - json: {ok: true}
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 9. Moduł kursanta (profil i dane inicjacyjne)
+## 9. Student module (profile and initial data)
 
-### Pobieranie wszystkich profilów kursantów:
+### Getting all students profiles:
 
-- adres `/student` metoda: GET,
-- zwraca tablicę obiektów z danymi studentów:<br/>
+- address: `/student` method: GET,
+- returns students data in an array of objects matching the interface :<br/>
   `StudentProfileInterface` {<br/>
   id: string;<br/>
   initialData: `StudentInitialInterface`;<br/>
@@ -131,30 +148,32 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
   workExperience: string | null;<br/>
   courses: string | null;<br/>
   }
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-### Pobieranie pojedynczego kursanta
+### Getting one student profile
 
-- adres `/student/:id` metoda: GET,
-- zwraca pojedynczy obiekt wg `StudentProfileInterface` (patrz wyżej)
+- address: `/student/:id` method: GET,
+- returns one object matching the interface `StudentProfileInterface` (look up)
 
-### Tworzenie nowego profilu kursanta
+### Creating new student profile
 
-- adres `/student` metoda: POST,
-- przyjmuje w body obiekt `StudentProfileInterface`,
-- dodaje nowy profil kursanta,
-- wraca tenże nowy obiekt.
+- address: `/student` method: POST,
+- takes in body an object `StudentProfileInterface`,
+- it adds new student profile,
+- returns this new object.
 
-### Aktualizowanie profilu kursanta
+### Updating student profile
 
-- adres `/student/:id` metoda: PATCH,
-- przyjmuje w body obiekt `StudentProfileInterface`,
-- aktualizuje profil kursanta,
-- zwraca zaktualizowany obiekt.
+- address: `/student/:id` method: PATCH,
+- takes in body an object `StudentProfileInterface`,
+- it updates the student's profile,
+- returns updated object.
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-### Lista z danymi inicjacyjnymi dla profili (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
+### List of initial data of students (and with profile data if student have done activation and filled up profile data)
 
-- adres `/student/initial` metoda: GET,
-- zwraca tablicę obiektów z danymi inicjacyjnymi dla profili kursantów:<br/>
+- address: `/student/initial` method: GET,
+- returns an array of objects with initial data of students:<br/>
   `StudentInitialInterface` {<br/>
   email: string;<br/>
   courseCompletion: number;<br/>
@@ -163,73 +182,83 @@ aaa@test.pl;3.5;2;5;1;https://megak.pl`
   teamProjectDegree: number;<br/>
   bonusProjectUrls: string[];<br/>
   }
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-### Dane inicjacyjne dla pojedynczego konkretnego profilu (oraz z danymi profilowymi jeśli kursant aktywował konto i uzupełnił dane)
+### Initial data of one student (and with profile data if student have done activation and filled up profile data)
 
-- adres `/student/initial/:email` metoda: GET,
-- zwraca pojedynczy obiekt `StudentInitialInterface` (patrz wyżej)
+- address: `/student/initial/:email` method: GET,
+- returns one object `StudentInitialInterface` (look up)
 
-## 10. Moduł HR
+## 10. HR module
 
-- adres `/hr` metoda: GET
-- adres `/hr/:id` metoda: GET
+- address: `/hr` method: GET
+- address: `/hr/:id` method: GET
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 11. Filtrowanie, sortowanie i paginacja dostępnych studentów
+## 11. Filtering, sorting and pagination of available students
 
-- adres `student/list/:status/:page/:take?orderBy=&filters=` metoda GET
-- parametr status jest opcjonalny — domyślnie przyjmuje 0
-- status: 0 - dostępni studenci (domyślnie), 1 - w trakcie rozmowy, 2 - zatrudnieni
-- parametry page i take są opcjonalne. Domyślnie page przyjmuje wartość 1 a take 10
-- parametry query również są opcjonalne, jeżeli nic się nie przekaże, lista nie zostanie przefiltrowana ani posortowana
-- jeżeli chcemy zmienić jakiś parametr, trzeba przekazać wszyskie wcześniejsze, np: jeżeli chcemy zmienić tylko nr strony to musimy podać także status
-- id hr pobierane jest z zalogowanego usera, także nie trzeba, bo przekazywać
-- query `orderBy` - odpowiedzialne za sortowanie — przyjmuje wartość z enuma `StudentOrderByOptions`
-- query `filters` - odpowiedzialne za filtrowanie — przyjmuje obiekt filters, który implementuje interface `StudentFilters`, każde z pól jest opcjonalne
-- filters w adresie url musi zostać przekształcone do stringa i componentu url: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
-- zwracany jest json: {students(tablica ze studentami), studentsCount(liczba pobranych studenów), numberOfPages(liczba stron)}
-- przykładowy endpoint: `http://localhost:3001/student/list/0/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
+- address: `student/list/:status/:page/:take?orderBy=&filters=` method: GET
+- `status` is optional — it default value is `0`
+- `status`: `0` - available students (default), `1` - reserved for conversation, `2` - hired
+- parameters `page` i `take` are optional. Default value for `page` is `1` and for `take` is `10`
+- parameters `query` are also optional, if there is nothing, the list will not be filtered or sorted
+- If we want to change some parameter, we need to pass all the previous ones, for example: if we want to change only the `page` number, we must also provide the `status`
+- recruiter's ID is taken from logged-in user, so it is not necessary to provide it
+- query `orderBy` - responsible for sorting — takes value from enum `StudentOrderByOptions`
+- query `filters` - responsible for filtering — takes object `filters`, which implements interface `StudentFilters`, every field is optional
+- `filters` in url must be transformed to string and to an url component: `const encoded = (encodeURIComponent(JSON.stringify(filters))`
+- json is returned: `{students(an array with students data), studentsCount(amount of students), numberOfPages(number of pages)}`
+- example endpoint: `http://localhost:3001/student/list/0/2/5?orderBy=profile.expectedSalary&filters=%7B%22courseCompletion%22%3A2%2C%22projectDegree%22%3A5%2C%22profile.expectedContractType%22%3A0%2C%22githubUsername%22%3A%22foobar%22%7D`
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 12. Pobieranie siebie
+## 12. Getting yourself (your user data)
 
-- adres `/user` metoda GET
-- pobiera swoją encję za pomocą id usera z requestu
-- zwracany jest json zawierający id, email, rolę i encję studenta(wraz z profilem) lub hr — w zależności od roli.
+- address: `/user` method: GET
+- getting own entity with user ID from request
+- returns json with id, email, role and entity of student (with profile) or hr — depending on the role.
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 13. Rezerwacja studenta
+## 13. Student reservation
 
-- adres `/hr/reserve/:email` metoda PATCH
-- parametr email — email studenta, którego chcemy zarezerwować
-- zmienia status studenta na do rozmowy
-- przypisuje studenta do rekrutera
-- dodaje datę wygaśnięcia rezerwacji na za 10 dni
+- address: `/hr/reserve/:email` method: PATCH
+- parameter `email` — an email of student, which are going to be reserved
+- changes `status` of student for 'to conversation'
+- assigns a student to a recruiter (in the database)
+- adds the reservation expiration date after 10 days
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 14. Zaznaczenie przez studenta, że został zatrudniony
+## 14. Marking by the student that he or she has been hired
 
-- adres `/student/hired` metoda PATCH
-- metoda dozwolona dla kursanta
-- zmienia status studenta na zatrudniony
-- student jest pobierany z zalogowanego usera, nie trzeba nigdzie przekazywać id ani emaila
+- address: `/student/hired` method: PATCH
+- method allowed only for student
+- changes `status` of student for 'hired'
+- student is taken from logged-in user, so it is not necessary to provide any id or email
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 15. Zatrudnienie studenta przez rekrutera
+## 15. Hiring student by recruiter
 
-- adres `/hr/hire/:email` metoda PATCH
-- parametr email — email studenta, którego chcemy zatrudnić
-- zmienia status studenta na zatrudniony
+- address: `/hr/hire/:email` method: PATCH
+- parameter `email` — email of student, which will be hired
+- changes `status` of the student for 'hired'
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 15. Przywrócenie kursantowi statusu "dostępny" (w przypadku rezygnacji z rezerwacji do rozmowy)
+## 16. Restoring the "available" status to the student (in case of cancellation of the reservation)
 
-- adres `/hr/available/:email` metoda PATCH
-- metoda dozwolona dla rekrutera
-- zmienia status studenta na available
-- student jest pobierany na podstawie jego id z danych profilowych
+- address: `/hr/available/:email` method: PATCH
+- method allowed only for recruiter
+- changes `status` of a student for 'available'
+- student is taken with id from profile data
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 16. Dodawanie admina
+## 17. Adding admin
 
-- adres `/user/admin` metoda POST
+- address: `/user/admin` method: POST
 - body: {email: string, password: string}
-- dodać nagłówek: x-password, który zawiera hasło potrzebne do stworzenia admina (w .env)
-- trzeba to zrobić w insomni/postmanie itp
+- add a heading: x-password, which contains the password needed to create an admin (w .env)
+- it is necessary to do it in insomnia/postman (or another similar) client 
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
-## 17. Widok tabel w bazie danych oraz relacji:
+## 18. View of the tables in the database and the relationships between them:
 
 ![database](./database-relations.jpg)
+<p align="right">(<a href="#table-of-contents">back to top</a>)</p>
