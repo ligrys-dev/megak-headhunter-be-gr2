@@ -49,7 +49,8 @@ Przykładowy link z treści emaila:<br/> `http://localhost:3001/user/activate/1e
 Po uruchomieniu w przeglądarce poprawnie wklejonego linka nastąpi aktywacja oraz przekierowanie na stronę logowania, a w bazie danych zostanie ustawiony status użytkownika na aktywny oraz wyczyszczony token aktywacyjny.
 
 ### 10. Logowanie.
-Logujemy się na konto aktywowanego kursanta przy pomocy jego emaila oraz tymczasowego hasła podanego w powyższym emailu. 
+Logujemy się na konto aktywowanego kursanta przy pomocy jego emaila oraz tymczasowego hasła podanego w powyższym emailu.
+<hr/>
 
 ## W podobny sposób możemy aktywować też profil rekrutera, tylko na początku w panelu admin trzeba wpisać dane rekrutera i zatwierdzić, wtedy przyjdzie email z danymi aktywacyjnymi — aktywujemy i logujemy się tak samo, jak w przypadku kursanta.
 
