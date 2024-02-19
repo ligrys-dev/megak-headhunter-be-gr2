@@ -1,5 +1,6 @@
 # 10 Kroków uruchomienia środowiska testowego oraz samej aplikacji.
 
+
 ### 1. Uruchamiamy backend i frontend, oraz bazy danych. 
 To oczywiste, ale dla pewności sprawdzić też ten punkt.
 
@@ -36,7 +37,9 @@ hhh@test.pl;3.5;2;5;3;https://hahaha.ha<br/>
 jjj@test.pl;3.5;2;5;3;www.jajo.po<br/>
 kkk@test.pl;3.5;2;5;3;www.kot.it<br/>
 
-#### w tym momencie mamy w bazie danych uzupełnione tabele "Users" oraz "StudentInitial" o dane naszych studentów, a także rozesłane zostały emaile aktywacyjne do studentów z danymi z pliku.
+Można też użyć własnych danych, jednak należy zachować powyższą składnię pliku .csv 
+
+#### Po zaimportowaniu listy kursantów z pliku .csv mamy w bazie danych uzupełnione tabele "Users" oraz "StudentInitial" o dane naszych studentów, a także rozesłane zostały emaile aktywacyjne do studentów z danymi z pliku.
 
 ### 7. Odczytujemy emaila aktywacyjnego.
 Wchodzimy na interfejs mailslurpera (przez http://localhost:8080) i otwieramy jednego z emaili, które są tam widoczne.
@@ -54,4 +57,15 @@ Logujemy się na konto aktywowanego kursanta przy pomocy jego emaila oraz tymcza
 
 ## W podobny sposób możemy aktywować też profil rekrutera, tylko na początku w panelu admin trzeba wpisać dane rekrutera i zatwierdzić, wtedy przyjdzie email z danymi aktywacyjnymi — aktywujemy i logujemy się tak samo, jak w przypadku kursanta.
 
-### Trzeba wziąć pod uwagę, że kiedy mailslurper zostanie zrestartowany, emaile z hasłami mogą przepaść. Wtedy cały proces trzeba powtórzyć, aby przeprowadzić testy na tych użytkownikach. Można też te hasła z emaili sobie zapisać i je cały czas używać z tymi danymi (o ile dane w bazie danych się nie zmienią). Ewentualnie można sobie hasła z emaili zmienić na jakieś własne i też gdzieś zapisać albo zapamiętać. Jeśli natomiast chcemy przeprowadzać testy na innych danych, można wszystkie dane z tabel usunąć. Najlepiej robić to przez usuwanie całych tabel; można przez polecenie `drop table` w SQL. W Heidi można też w taki sposób; klikamy na bazę megak_headhunter w lewym okienku, wtedy w prawym pojawiają się tabele, zaznaczamy je i PPM wybieramy 'usuń'.
+#### Trzeba wziąć pod uwagę, że kiedy mailslurper zostanie zrestartowany, emaile z hasłami mogą przepaść. Wtedy cały proces trzeba powtórzyć, aby przeprowadzić testy na tych użytkownikach. Można też te hasła z emaili sobie zapisać i je cały czas używać z tymi danymi (o ile dane w bazie danych się nie zmienią). Ewentualnie można sobie hasła z emaili zmienić na jakieś własne i też gdzieś zapisać albo zapamiętać. Jeśli natomiast chcemy przeprowadzać testy na innych danych, można wszystkie dane z tabel usunąć. Najlepiej robić to przez usuwanie całych tabel; można przez polecenie `drop table` w SQL. W Heidi można też w taki sposób; klikamy na bazę megak_headhunter w lewym okienku, wtedy w prawym pojawiają się tabele, zaznaczamy je i PPM wybieramy 'usuń'.
+<hr/>
+
+## BONUS ! 
+Możesz ułatwić sobie proces testowania, używając gotowej bazy danych. <br/>
+Wystarczy na naszej bazie danych po prostu wykonać SQL z tego [pliku](./repo_utils/example-database.sql). <br/>
+Oraz ustawić wartość JWT_SECRET w pliku .env na `asdadsadasdasdq`<br/>
+Stworzymy w ten sposób bazę danych, która zawiera kilka gotowych do użycia kont użytkowników oraz rekruterów. <br/>
+By ułatwić testowanie, hasła użytkowników zostały ustawione na słowa, które zawiera pierwsza część adresu email — według wzoru: <br/> 
+adres: `aaa@test.pl`, hasło: `aaa`
+<br/>lub<br/>
+adres: `firma@test.pl` hasło: `firma`
