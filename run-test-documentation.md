@@ -1,30 +1,29 @@
-# 10 Kroków uruchomienia środowiska testowego oraz samej aplikacji.
+# 10 steps to run testing environment and just the app.
 
 
-### 1. Uruchamiamy backend i frontend, oraz bazy danych. 
-To oczywiste, ale dla pewności sprawdzić też ten punkt.
+### 1. Run the backend, frontend and the database. 
+Just to be sure, check if all of it is working.
 
-### 2. Uruchamiamy mailslurper
-Koniecznie z tej wersji: <br/> https://github.com/mailslurper/mailslurper/releases/tag/1.14.1
+### 2. Run mailslurper
+Be sure to use this version:: <br/> https://github.com/mailslurper/mailslurper/releases/tag/1.14.1
 <br/>
-   Po prostu, ściągnąć, rozpakować folder i uruchomić plik mailslurper.exe
-   uruchomi się okienko wiersza poleceń z kilkoma linijkami logów — to jest właśnie ten mailslurper.<br/>
-   `WAŻNE !` — nazwa tego okienka to ścieżka, pod którą mailslurper.exe się znajduje, ale przy uruchomieniu ta nazwa jest poprzedzona czasem słowem "Wybierz" (np. WybierzC:\Users\itd...). Wtedy należy kliknąć gdzieś w tym okienku, wcisnąć "enter" (słowo "Wybierz" zniknie z nazwy okienka), i dopiero potem je zminimalizować. Program działa sobie w tle.
+Simply download, unpack the folder and run the mailslurper.exe file, a command prompt window with a few lines of logs will appear - this is the mailslurper.<br/>
+   `IMPORTANT !` — in the name of the mailslurper window appears the path where mailslurper.exe is located, but when you start the mailslurper app the name is sometimes preceded by the word "Select" (e.g. `SelectC:\Users\etc...`). Then you should click somewhere in this window, press "enter" (the word "Select" will disappear from the window name), and only then minimize it. The program runs in the background.
 
-### 3. Sprawdzenie, czy mailslurper działa. 
-Wchodzimy na http://localhost:8080 i widzimy interfejs mailslurpera — działa. Jeśli nie, sprawdzić czy port 8080 nie jest zablokowany. Trzeba też sprawdzić port 8085. Kiedy wejdziemy na adres http://localhost:8085 w przeglądarce, powinno nam wyświetlić JSONa: `{"message":"Not Found"}`
+### 3. Check if mailslurper is working. 
+Open http://localhost:8080 in your browser and then you will see mailslurper interface = is working. If not, check if 8080 port is not blocked. You need to check also 8085 port. When you open http://localhost:8085 in your browser, it should display JSON: `{"message":"Not Found"}` - that is good.
 
-### 4. Stworzenie profilu admina w aplikacji.
-Aby później dodać innych użytkowników, musimy pierw stworzyć profil admina. W tym celu w Insomnii uruchamiamy http://localhost:3001/user/admin na metodzie POST, to wystarczy, aby stworzyć taki działający profil.
+### 4. Creating an admin profile in the application.
+To add anny other users, first we need to create an admin profile. To do this, in Insomnia we run http://localhost:3001/user/admin using the POST method, this is enough to create such a working profile.
 
-### 5. Wchodzimy w przeglądarce na adres frontu i logujemy się na profil admina.
-Na stronie logowania uzupełniamy formularz następującymi danymi:<br/>
+### 5. Run frontend in your browser and log in to the admin profile.
+On the login page, we complete the form with the following data:<br/>
 email: `admin@admin.com` hasło: `admin1`)
 
-### 6. Importujemy listę kursantów z pliku .csv
-Przykładowa zawartość pliku .csv poniżej.<br/>
-Można skopiować, wkleić w jakimś edytorze tekstowym i zapisać jako .csv<br/>
-`Uwaga !` — w pliku .md repozytorium zostały dodane `<br/>` żeby wyświetlało dane poprawnie na podglądzie — dlatego kopiować najlepiej z podglądu: <br/>
+### 6. Import the list of students from the .csv file
+Sample content of the .csv file you can find below.<br/>
+You can copy it and paste it in any text editor and save as .csv<br/>
+`ATTENTION !` — there are  `<br/>` added to the .md file of the repository to display correctly the data in preview, therefore it is best to copy from the preview:: <br/>
 >email;courseCompletion;courseEngagement;projectDegree;teamProjectDegree;bonusProjectUrls<br/>
 aaa@test.pl;3.5;2;5;3;https://megak.pl<br/>
 bbb@test.pl;3.5;2;5;3;www.bbb.pl<br/>
@@ -37,34 +36,34 @@ hhh@test.pl;3.5;2;5;3;https://hahaha.ha<br/>
 jjj@test.pl;3.5;2;5;3;www.jajo.po<br/>
 kkk@test.pl;3.5;2;5;3;www.kot.it<br/>
 
-Można też użyć własnych danych, jednak należy zachować powyższą składnię pliku .csv 
+You can also use your own data, but please keep the above .csv file syntax 
 
-#### Po zaimportowaniu listy kursantów z pliku .csv mamy w bazie danych uzupełnione tabele "Users" oraz "StudentInitial" o dane naszych studentów, a także rozesłane zostały emaile aktywacyjne do studentów z danymi z pliku.
+#### After importing the list of students from the .csv file, the "Users" and "StudentInitial" tables in the database have been completed with our students data, and activation emails have been sent to students mentioned in the .csv file.
 
-### 7. Odczytujemy emaila aktywacyjnego.
-Wchodzimy na interfejs mailslurpera (przez http://localhost:8080) i otwieramy jednego z emaili, które są tam widoczne.
+### 7. Read the activation email..
+Open the mailslurpera interface (przez http://localhost:8080) and check one of the visible emails.
 
-### 8. Kopiujemy link aktywacyjny z tego emaila
-Przykładowy link z treści emaila:<br/> `http://localhost:3001/user/activate/1ed2e45b-bb4e-4176-a1c6-d87f7= 232c240/bdc07655-9760-11ee-9906-309c2381f43b`
-#### `UWAGA !` Treści tych emaili są zniekształcane przez mailslurpera, dlatego w linkach jest zawsze błąd: dodatkowa spacja i znak równości. Dlatego trzeba ręcznie poprawić link aktywacyjny. Poprawny link aktywacyjny (używając przykładu) powinien wyglądać tak: <br/> `http://localhost:3001/user/activate/1ed2e45b-bb4e-4176-a1c6-d87f7232c240/bdc07655-9760-11ee-9906-309c2381f43b`<br/> Trzeba zawsze poszukać w linku tego znaku równości i spacji `'= '` i je skasować, następnie wklejając w przeglądarkę bez tych znaków.
+### 8. Copy the activation link from this email
+Example link from the email content:<br/> `http://localhost:3001/user/activate/1ed2e45b-bb4e-4176-a1c6-d87f7= 232c240/bdc07655-9760-11ee-9906-309c2381f43b`
+#### `ATTENTION !` The content of these emails is distorted by mailslurper, so the links always contain an error: an extra space and an equal sign. Therefore, you need to manually correct the activation link. The correct activation link (using the above example) should look like this: <br/> `http://localhost:3001/user/activate/1ed2e45b-bb4e-4176-a1c6-d87f7232c240/bdc07655-9760-11ee-9906-309c2381f43b`<br/> You should always find the equal sign and space '= ' in the link and delete them, then paste the correct link (without these characters) into the browser.
 
-### 9. Aktywacja użytkownika.
-Po uruchomieniu w przeglądarce poprawnie wklejonego linka nastąpi aktywacja oraz przekierowanie na stronę logowania, a w bazie danych zostanie ustawiony status użytkownika na aktywny oraz wyczyszczony token aktywacyjny.
+### 9. User activation.
+After running the correctly pasted link in the browser, activation will occur and you will be redirected to the login page, and the user status will be set to active in the database and the activation token will be cleared.
 
-### 10. Logowanie.
-Logujemy się na konto aktywowanego kursanta przy pomocy jego emaila oraz tymczasowego hasła podanego w powyższym emailu.
+### 10. Login.
+Log in to the activated account using this student's e-mail address and the temporary password provided in the e-mail mentioned below.
 <hr/>
 
-## W podobny sposób możemy aktywować też profil rekrutera, tylko na początku w panelu admin trzeba wpisać dane rekrutera i zatwierdzić, wtedy przyjdzie email z danymi aktywacyjnymi — aktywujemy i logujemy się tak samo, jak w przypadku kursanta.
+## We can also activate the recruiter's profile in a similar way, but first, in the admin panel, you need to enter the recruiter's data and confirm it, then you will receive an e-mail with activation data - we activate and log in just in the same way as in the case of a student.
 
-#### Trzeba wziąć pod uwagę, że kiedy mailslurper zostanie zrestartowany, emaile z hasłami mogą przepaść. Wtedy cały proces trzeba powtórzyć, aby przeprowadzić testy na tych użytkownikach. Można też te hasła z emaili sobie zapisać i je cały czas używać z tymi danymi (o ile dane w bazie danych się nie zmienią). Ewentualnie można sobie hasła z emaili zmienić na jakieś własne i też gdzieś zapisać albo zapamiętać. Jeśli natomiast chcemy przeprowadzać testy na innych danych, można wszystkie dane z tabel usunąć. Najlepiej robić to przez usuwanie całych tabel; można przez polecenie `drop table` w SQL. W Heidi można też w taki sposób; klikamy na bazę megak_headhunter w lewym okienku, wtedy w prawym pojawiają się tabele, zaznaczamy je i PPM wybieramy 'usuń'.
+#### Please note that when mailslurper is restarted, emails with passwords may be lost. Then the whole process has to be repeated to test on these users. You can also save these passwords from emails and use them with these data all the time (as long as the data in the database does not change). Alternatively, you can change email passwords to your own and save them somewhere. However, if we want to test on other data, we can remove all data from the tables. This is best done by deleting entire tables; you can via the `drop table` command in SQL. In Heidi you can also do it this way; click on the megak_headhunter database in the left panel, then the tables appear in the right panel, select them and choice 'delete' from RMB menu.
 <hr/>
 
 ## BONUS ! 
-Możesz ułatwić sobie proces testowania, używając gotowej bazy danych. <br/>
-Wystarczy na naszej bazie danych po prostu wykonać SQL z tego [pliku](./repo_utils/example-database.sql). <br/>
-Stworzymy w ten sposób bazę danych, która zawiera kilka gotowych do użycia kont użytkowników oraz rekruterów. <br/>
-By ułatwić testowanie, hasła użytkowników zostały ustawione na słowa, które zawiera pierwsza część adresu email — według wzoru: <br/> 
-adres: `aaa@test.pl`, hasło: `aaa`
-<br/>lub<br/>
-adres: `firma@test.pl` hasło: `firma`
+You can make the testing process easier with ready-to-use database. <br/>
+You just need to execute SQL from this [file](./repo_utils/example-database.sql) on our database. <br/>
+In this way, we will create a database that contains several ready-to-use user accounts (students and recruiters). <br/>
+To make it even easier, user passwords have been set to the words contained in the first part of the email address - according to the example: <br/> 
+e-mail: `aaa@test.pl`, password: `aaa`
+<br/>or<br/>
+e-mail: `firma@test.pl` password: `firma`
