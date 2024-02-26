@@ -1,10 +1,20 @@
 # 10 steps to run testing environment and just the app.
 
+1. [Run the backend, frontend and the database.](#1-run-the-backend-frontend-and-the-database-)
+2. [Run mailslurper.](#2-run-mailslurper)
+3. [Check if mailslurper is working. ](#3-check-if-mailslurper-is-working-)
+4. [Creating an admin profile in the application.](#4-creating-an-admin-profile-in-the-application)
+5. [Run frontend in your browser and log in to the admin profile.](#5-run-frontend-in-your-browser-and-log-in-to-the-admin-profile)
+6. [Import the list of students from the .csv file.](#6-import-the-list-of-students-from-the-csv-file)
+7. [Read the activation email.](#7-read-the-activation-email)
+8. [Copy the activation link from this email.](#8-copy-the-activation-link-from-this-email)
+9. [User activation.](#9-user-activation)
+10. [Login.](#10-login)
 
 ### 1. Run the backend, frontend and the database. 
 Just to be sure, check if all of it is working.
 
-### 2. Run mailslurper
+### 2. Run mailslurper.
 Be sure to use this version:: <br/> https://github.com/mailslurper/mailslurper/releases/tag/1.14.1
 <br/>
 Simply download, unpack the folder and run the mailslurper.exe file, a command prompt window with a few lines of logs will appear - this is the mailslurper.<br/>
@@ -20,7 +30,7 @@ To add anny other users, first we need to create an admin profile. To do this, i
 On the login page, we complete the form with the following data:<br/>
 email: `admin@admin.com` hasło: `admin1`)
 
-### 6. Import the list of students from the .csv file
+### 6. Import the list of students from the .csv file.
 Sample content of the .csv file you can find below.<br/>
 You can copy it and paste it in any text editor and save as .csv<br/>
 `ATTENTION !` — there are  `<br/>` added to the .md file of the repository to display correctly the data in preview, therefore it is best to copy from the preview:: <br/>
@@ -40,10 +50,10 @@ You can also use your own data, but please keep the above .csv file syntax
 
 #### After importing the list of students from the .csv file, the "Users" and "StudentInitial" tables in the database have been completed with our students data, and activation emails have been sent to students mentioned in the .csv file.
 
-### 7. Read the activation email..
+### 7. Read the activation email.
 Open the mailslurpera interface (przez http://localhost:8080) and check one of the visible emails.
 
-### 8. Copy the activation link from this email
+### 8. Copy the activation link from this email.
 Example link from the email content:<br/> `http://localhost:3001/user/activate/1ed2e45b-bb4e-4176-a1c6-d87f7= 232c240/bdc07655-9760-11ee-9906-309c2381f43b`
 #### `ATTENTION !` The content of these emails is distorted by mailslurper, so the links always contain an error: an extra space and an equal sign. Therefore, you need to manually correct the activation link. The correct activation link (using the above example) should look like this: <br/> `http://localhost:3001/user/activate/1ed2e45b-bb4e-4176-a1c6-d87f7232c240/bdc07655-9760-11ee-9906-309c2381f43b`<br/> You should always find the equal sign and space '= ' in the link and delete them, then paste the correct link (without these characters) into the browser.
 
