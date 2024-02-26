@@ -63,7 +63,6 @@ Logujemy się na konto aktywowanego kursanta przy pomocy jego emaila oraz tymcza
 ## BONUS ! 
 Możesz ułatwić sobie proces testowania, używając gotowej bazy danych. <br/>
 Wystarczy na naszej bazie danych po prostu wykonać SQL z tego [pliku](./repo_utils/example-database.sql). <br/>
-Oraz ustawić wartość JWT_SECRET w pliku .env na `asdadsadasdasdq`<br/>
 Stworzymy w ten sposób bazę danych, która zawiera kilka gotowych do użycia kont użytkowników oraz rekruterów. <br/>
 By ułatwić testowanie, hasła użytkowników zostały ustawione na słowa, które zawiera pierwsza część adresu email — według wzoru: <br/> 
 adres: `aaa@test.pl`, hasło: `aaa`
